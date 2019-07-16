@@ -9,7 +9,11 @@ class RegModel extends Model
     protected $table = "users";
     protected $pk = "uid";
     protected $filter = array('account','password','repassword','userName','vcode','email');
-    
+
+    public function  (){
+
+    }
+
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-
+session_start();
 spl_autoload_register(function($class){
     require_once("../databases/{$class}.php");
 });
@@ -31,6 +31,10 @@ class Model extends Mysql
         }else{
             return false;
         }
+    }
+
+    public function checkvcode($data){   //驗證使用者輸入的驗證碼是否相符 返回 true or false
+        return $data === $_SESSION['vcode'];
     }
 
 }
