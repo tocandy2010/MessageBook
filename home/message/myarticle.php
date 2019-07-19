@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>我的文章</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 914px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+        #messagetable{
+            padding: 30px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php include_once('../public/head.php') ?>
+
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
+            <div class="col-sm-8 text-left">
+                <div class="container" id='messagetable'>
+                    <table class="table table-striped" >
+                        <thead>
+                            <tr>
+                                <th>主題</th>
+                                <th>發佈時間</th>
+                                <th>修改</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href='./content.php'>標題</a></td>
+                                <td>2019-7-16</td>
+                                <td><a href='./meyarticleedit.php?conid=1'><button type="button" class="btn btn-info">編輯</button><a></td>
+                                <td><button type="button" class="btn btn-danger">刪除</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
+        </div>
+    </div>
+
+</body>
+
+</html>

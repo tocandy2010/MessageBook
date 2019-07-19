@@ -9,7 +9,7 @@ class Mysql
     private $account = 'root';  //sql帳號
     private $password = '';  //sql密碼
     private $info = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_EMULATE_PREPARES, false);
-    private $con = null;
+    protected $con = null;
     public function __construct()
     {
         try {
@@ -25,25 +25,26 @@ class Mysql
         return $this->con;
     }
     
-    public function auto_insert($table, $array)  //自動insert 指定表 和 一個陣列
+    public function auto_insert($array)  ## 自動insert 指定表 和 一個陣列
     {
         if (!is_array($array)) {
             return false;
         }
+        
         $count = count($array);
         $sql = "insert into {$this->table} (";
         foreach ($array as $k => $v) {
             $sql .= "$k,";
         }
         $sql = rtrim($sql, ',');
-        $sql .= ")values(";
+        $sql .= ") values(";
         $sql .= str_repeat('?,', $count);
-        $sql = rtrim($sql, ',') . ")";
-        //return $sql;    
+        $sql = rtrim($sql, ',') . ")";    
         $res = $this->con->prepare($sql);
-        foreach (array_values($array) as $k => $v) {
-            $res->bindParam($k + 1, $v);
+         foreach (array_values($array) as $k => $v) {
+            $res->bindValue(($k+1), $v);
         }
+        $res->execute();
         return $this->affected_rows($res);
     }
 
@@ -61,7 +62,7 @@ class Mysql
         $sql .= " where {$this->pk} = {$id}";
         $res = $this->con->prepare($sql);
         foreach (array_values($array) as $k => $v) {
-            $res->bindParam($k + 1, $v);
+            $res->bindValue($k + 1, $v);
         }
         $res->execute();
         return $this->affected_rows($res);
@@ -96,13 +97,17 @@ class Mysql
         $res->execute();
         if ($show == 'index') {
             $show = PDO::FETCH_NUM;
-            return $res->fetchAll($show);
+            return $res->fetch($show);
         }
-        return $res->fetchAll($show);
+        return $res->fetch($show);
     }
 
     public function affected_rows($res)  //返回受 insert update delete 所影響行數
     {
         return $res->rowCount();
+    }
+
+    public function getinsertid(){   //取得隊後一次insert的id
+        return $this->con->lastInsertId();
     }
 }

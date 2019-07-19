@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 class vcode{
     private $font = 'abcdefghijkmnpqrstuvwxy23456789abcdefghijkmnpqrstuvwxy23456789';
     private $width = 80;  //圖寬
@@ -32,7 +32,7 @@ class vcode{
     }
 
     private function font(){
-        ImageTTFText($this->img, 25, 0, mt_rand(0,5), mt_rand(30,35), $this->font_color, "c:/xampp/htdocs/message/Arial.ttf", $this->vcode);
+        ImageTTFText($this->img, 22, 0, mt_rand(0,5), mt_rand(30,35), $this->font_color, "c:/xampp/htdocs/message/Arial.ttf", $this->vcode);
     }
 
    private function line(){
@@ -46,7 +46,6 @@ class vcode{
     }
 
     private function setsession(){
-        session_start();
         $_SESSION['vcode'] = $this->vcode;
     }
 
