@@ -71,10 +71,11 @@
     </div>
     <script>
         let conid = null;
-        let titlemaxlen = 10;   //title 最大字數限制
-        let contentmaxlen = 10;  //content 最大字數限制  
+        let titlemaxlen = 10; //title 最大字數限制
+        let contentmaxlen = 10; //content 最大字數限制  
         $().ready(function() {
             let res = ['title', 'content'];
+
             function getUrlParam(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                 var r = window.location.search.substr(1).match(reg);
@@ -82,48 +83,48 @@
                 return null;
             }
             let getconid = getUrlParam('conid');
-            if(getconid !== null){
+            if (getconid !== null) {
                 $.ajax({
-                url: `../../back/controller/myarticleedit.php?conid=${getconid}`,
-                type: "GET",
-                dataType: "json",
-                contentType: false,
-                processData: false,
-                success: function(result) {
-                    if (typeof(result) == 'object') {
-                        for (error of res) {
-                            $(`#${error}text`).val(result[error]);
+                    url: `../../back/controller/myarticleedit.php?conid=${getconid}`,
+                    type: "GET",
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function(result) {
+                        if (typeof(result) == 'object') {
+                            for (error of res) {
+                                $(`#${error}text`).val(result[error]);
+                            }
+                            let titlelength = $("#titletext").val().length;
+                            let contentlength = $("#contenttext").val().length;
+                            let contentnum = contentmaxlen - contentlength;
+                            let titlenum = titlemaxlen - titlelength;
+                            if (contentnum < 0) {
+                                $("#contentlength").html(0)
+                            } else {
+                                $("#contentlength").html(contentnum)
+                            }
+                            if (titlenum < 0) {
+                                $("#titlelength").html(0)
+                            } else {
+                                $("#titlelength").html(titlenum)
+                            }
+                            conid = getconid; //需要修改的id
+                        } else {
+                            $(window).attr('location', './index.php');
                         }
-                        let titlelength = $("#titletext").val().length;
-                        let contentlength = $("#contenttext").val().length;
-                        let contentnum = contentmaxlen-contentlength;
-                        let titlenum = titlemaxlen-titlelength;
-                        if(contentnum<0){
-                            $("#contentlength").html(0)
-                        }else{
-                            $("#contentlength").html(contentnum)
-                        }
-                        if(titlenum<0){
-                            $("#titlelength").html(0)
-                        }else{
-                            $("#titlelength").html(titlenum)
-                        }
-                        conid = getconid;  //需要修改的id
-                    }else{
-                        $(window).attr('location', './index.php');
                     }
-                }
-            });
-            }else{
+                });
+            } else {
                 $(window).attr('location', './index.php');
             }
-            
+
         });
 
         $("#articlesend").click(function() {
             let articleeditform = document.getElementById('articleeditform')
             let fd = new FormData(articleeditform);
-            fd.append('editconid',conid);
+            fd.append('editconid', conid);
             let res = ['title', 'content', 'error'];
             for (error of res) {
                 $(`#${error}Info`).html("");

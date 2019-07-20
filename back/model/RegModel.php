@@ -19,6 +19,7 @@ class RegModel extends Model
         'notempty'=>'尚未輸入'
     ];
     protected $errorInfo = [];   //驗證後的錯誤訊息放這
+    
 
     public function checkVcode($data){   //驗證使用者輸入的驗證碼是否相符 返回 true or false
         return $data === $_SESSION['vcode'];

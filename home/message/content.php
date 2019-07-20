@@ -52,7 +52,7 @@
                 <div id='message'>
                     <h1>標題</h1>
                     <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    <p>{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore
                         et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
                         ut
@@ -61,7 +61,7 @@
                         officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
                         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                         ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
+                    }</p>
                 </div>
                 <hr>
 
@@ -79,7 +79,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" id="lmtextarea" name="textarea"></textarea>
+                                    <textarea class="form-control" id="lmtextarea" name="message"></textarea>
                                 </div>
                             </div>
 

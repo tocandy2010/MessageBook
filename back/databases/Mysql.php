@@ -7,7 +7,7 @@ class Mysql
     private $host = 'localhost';  //主機
     private $dbname = 'messagebook';  //資料庫名
     private $account = 'root';  //sql帳號
-    private $password = '';  //sql密碼
+    private $password = '123456789';  //sql密碼
     private $info = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_EMULATE_PREPARES, false);
     protected $con = null;
     public function __construct()
@@ -77,9 +77,9 @@ class Mysql
         return $this->affected_rows($res);
     }
 
-    public function auto_selectAll($show = PDO::FETCH_ASSOC)   //select全部  show參數等於index 回傳索引陣列
+    public function auto_selectAll($where=1,$show = PDO::FETCH_ASSOC)   //select全部  show參數等於index 回傳索引陣列
     {
-        $sql = "select * from {$this->table}";
+        $sql = "select * from {$this->table} where {$where}";
         $res = $this->con->prepare($sql);
         $res->execute();
         if ($show == 'index') {

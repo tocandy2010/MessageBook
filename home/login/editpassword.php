@@ -42,7 +42,7 @@
                 <label class="col-md-4 control-label" for="">新密碼</label>
                 <div class="col-md-4">
                     <input id="" name="password" type="password" placeholder="" class="form-control input-md">
-                    <span class="help-block">請輸入6~20位數 英文+數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
+                    <span class="help-block">請輸入6~20位數 英文或數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
                     <span class='errorred' id='passwordInfo'></span>
                 </div>
             </div>
