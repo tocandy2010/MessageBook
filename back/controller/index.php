@@ -8,15 +8,7 @@ $page = $_GET;
 
 $newpage = $index->auto_filter($page);
 
-if($index->checkuserlogin()!==false){  //判斷是否燈入
-    $userinfo = $_SESSION['userinfo'];
-}else{
-    echo 2;
-    exit;
-}
-
-$condition = '1 order by conid desc';
-
+$condition = "status = 1 order by conid desc limit 0,3";
 $data = $index->auto_selectAll($condition);
 
 $newdata = $index->totaiwantime($data,'createtime');

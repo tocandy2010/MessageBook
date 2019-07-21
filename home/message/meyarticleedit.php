@@ -143,9 +143,10 @@
                         }
                     } else if (result == 1) {
                         alert('修改成功');
-                        $(window).attr('location', 'http://localhost/MessageBook/home/message/index.php');
+                        $(window).attr('location', 'http://localhost/MessageBook/home/message/myarticle.php');
                     } else {
-                        $(`#errorInfo`).html("修改失敗");
+                        alert('修改失敗');
+                        $(window).attr('location', 'http://localhost/MessageBook/home/message/index.php');
                     }
                 }
             });

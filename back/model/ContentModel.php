@@ -36,7 +36,20 @@ class ContentModel extends Model
             $arr[$k]['account'] = $data['account'];
         }
         return $arr;
+    }    
+    
+    public function totaiwantime($arr,$name)  //傳入陣列  找到對應的欄位名稱修改其時間為台灣時間格式 Y-M-D H:i:s
+    {
+        date_default_timezone_set("Asia/Taipei");
+        foreach($arr as $k=>$v){
+            if(isset($v[$name])){
+                $arr[$k][$name] = date("Y-m-d H:i:s",$v[$name]);
+            }
+        }
+        return $arr;
     }
+
+
     
 
 }

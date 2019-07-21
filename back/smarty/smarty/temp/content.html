@@ -52,6 +52,11 @@
             overflow-Y:scroll;
             width:200%;
         }
+        .messagetime{
+            display: inline-block;
+            width:90%;
+            text-align: right
+        }
 
     </style>
 </head>
@@ -98,7 +103,7 @@
                 <div class="container">
                     {foreach from=$allmessage key=$k item=$v}
                         <div class="panel panel-default">
-                            <div class="panel-heading">{$v['userName']}</div>
+                            <div class="panel-heading">{$v['userName']}({$v['account']})<span class='messagetime'>{$v['createtime']}</span></div>
                             <div class="panel-body">{$v['message']}</div>
                         </div>
                     {/foreach}

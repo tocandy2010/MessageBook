@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-20 19:39:52
-  from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\content.html' */
+/* Smarty version 3.1.33, created on 2019-07-21 15:09:12
+  from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3351e8a381f6_41373903',
+  'unifunc' => 'content_5d340f984787e4_34594585',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '566dd23d77374f1afb5fb04eb4c0b07b26a3238e' => 
+    '577a97b50dae7b04b0e3ab616adb4cb3c235c13c' => 
     array (
-      0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\content.html',
-      1 => 1563644392,
+      0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\content.html',
+      1 => 1563692950,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3351e8a381f6_41373903 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d340f984787e4_34594585 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -79,6 +79,11 @@ function content_5d3351e8a381f6_41373903 (Smarty_Internal_Template $_smarty_tpl)
             overflow-Y:scroll;
             width:200%;
         }
+        .messagetime{
+            display: inline-block;
+            width:90%;
+            text-align: right
+        }
 
     </style>
 </head>
@@ -132,7 +137,9 @@ foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars[
 ?>
                         <div class="panel panel-default">
                             <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
-</div>
+(<?php echo $_smarty_tpl->tpl_vars['v']->value['account'];?>
+)<span class='messagetime'><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
+</span></div>
                             <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['v']->value['message'];?>
 </div>
                         </div>

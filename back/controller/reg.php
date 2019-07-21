@@ -1,8 +1,5 @@
 <?php
 
-require_once("../model/Model.php");
-
-
 require_once("../model/RegModel.php");
 
 $reg  = new RegModel();

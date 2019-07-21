@@ -23,7 +23,7 @@ class Mysmarty extends Smarty {
         $path = substr(__DIR__,0,$pathstrpos+4);
         parent::__construct();
         $this->settemplateDir("{$path}\\smarty\\smarty\\temp");
-        $this->setcompileDir('../comp');
+        $this->setcompileDir("{$path}\\smarty\\smarty\\comp");
     }
 }
 

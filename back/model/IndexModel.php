@@ -32,10 +32,10 @@ class IndexModel extends Model
             </tr>";
         }else{
             foreach($arr as $v){
-                $userName = $this->findarticler($pdo,$v['uid']);
+                $userinfo = $this->findarticler($pdo,$v['uid']);
                 $index .= "<tr>";
                     $index .= "<td><a href=\"../../back/controller/content.php?article={$v['conid']}\">{$v['title']}</a></td>";
-                    $index .= "<td>{$userName['userName']}</td>";
+                    $index .= "<td>{$userinfo['userName']}({$userinfo['account']})</td>";
                     $index .= "<td>{$v['createtime']}</td>";
                 $index .= "</tr>";
             }
@@ -45,7 +45,7 @@ class IndexModel extends Model
 
     public function findarticler($pdo,$uid)
     {
-        $sql = "select userName from users where uid = {$uid}";
+        $sql = "select * from users where uid = {$uid}";
         $res = $pdo->prepare($sql);
         $res->execute();
         return $res->fetch(PDO::FETCH_ASSOC);

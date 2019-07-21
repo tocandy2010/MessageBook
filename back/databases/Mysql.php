@@ -7,7 +7,7 @@ class Mysql
     private $host = 'localhost';  //主機
     private $dbname = 'messagebook';  //資料庫名
     private $account = 'root';  //sql帳號
-    private $password = '123456789';  //sql密碼
+    private $password = '';  //sql密碼
     private $info = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_EMULATE_PREPARES, false);
     protected $con = null;
     public function __construct()
@@ -70,7 +70,8 @@ class Mysql
 
     public function auto_delete($id)  //傳入id 並且刪除回傳影響行數
     {
-        $sql = "delete from users where uid = ?";
+        $sql = "delete from {$this->table} where {$this->pk} = ?";
+        return $sql;
         $res = $this->con->prepare($sql);
         $res->bindParam(1, $id);
         $res->execute();

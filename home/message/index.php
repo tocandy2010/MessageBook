@@ -31,6 +31,13 @@
             padding: 30px;
             font-size: 20px;
         }
+
+        #page{
+            width:40%;
+            position: absolute;
+            top:110%;
+            left:40%
+        }
     </style>
 </head>
 
@@ -54,15 +61,7 @@
                         <tbody id='buildindex'>
                         </tbody>
                     </table>
-                    <div class="container">
-                        <ul class="pagination">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -71,10 +70,13 @@
 
     </div>
 
+    <div class="container" id='page'>
+        <ul class="pagination" id='pageul'>
+         </ul>
+    </div>
+
     <script>
         $().ready(function() {
-
-
             function getUrlParam(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                 var r = window.location.search.substr(1).match(reg);
@@ -87,15 +89,30 @@
                 type: "GET",
                 dataType: "html",
                 success: function(result) {
-                    if (typeof(result) == 'string') {
-                        console.log(result)
-                        $('#buildindex').append(result)
-                    } else {
-
-                    }
+                    $('#buildindex').append(result)
                 }
             });
+            showpage(page)
         })
+
+        function showpage(page){
+            function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return decodeURI(r[2]);
+                return 1;
+            }
+            let pagenum = getUrlParam('page')
+            $.ajax({
+                url: `../../back/controller/page.php?page=${pagenum}`,
+                type: "GET",
+                dataType: "html",
+                success: function(result) {
+                    $('#pageul').append(result)
+                }
+            });
+        }
+
     </script>
 
 </body>

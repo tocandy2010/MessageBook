@@ -50,13 +50,7 @@
                                 <th>修改</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href='./content.php'>標題</a></td>
-                                <td>2019-7-16</td>
-                                <td><a href='./meyarticleedit.php?conid=1'><button type="button" class="btn btn-info">編輯</button><a></td>
-                                <td><button type="button" class="btn btn-danger">刪除</button></td>
-                            </tr>
+                        <tbody id='buildmyarticle'>
                         </tbody>
                     </table>
                 </div>
@@ -64,7 +58,30 @@
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
+    <script>
+        $().ready(function() {
+            function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return decodeURI(r[2]);
+                return null;
+            }
+            let page = getUrlParam('page')
+            $.ajax({
+                url: `../../back/controller/myarticle.php?page=${page}`,
+                type: "GET",
+                dataType: "html",
+                success: function(result) {
+                    if (typeof(result) == 'string') {
+                        $('#buildmyarticle').append(result)
+                    } else {
 
+                    }
+                }
+            });
+        })
+    
+    </script>
 </body>
 
 </html>

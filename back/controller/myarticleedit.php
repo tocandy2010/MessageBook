@@ -18,7 +18,6 @@ if($myarticle->checkuserlogin()!==false){  //判斷是否燈入
 
 $contentdata = $myarticle->auto_selectOne($newmyarticle['conid']);
 
-
 if(!empty($contentdata)){
     unset($contentdata['uid']);
     unset($contentdata['createtime']);

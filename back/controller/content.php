@@ -9,12 +9,12 @@ $contentinfo = $_GET;
 
 $newcontentinfo = $content->auto_filter($contentinfo);
 
-if($content->checkuserlogin()!==false){  //判斷是否燈入
-    $userinfo = $_SESSION['userinfo'];
-}else{
-    echo 2;
-    exit;
-}
+// if($content->checkuserlogin()!==false){  //判斷是否燈入
+//     $userinfo = $_SESSION['userinfo'];
+// }else{
+//     echo 2;
+//     exit;
+// }
 
 $data = $content->auto_selectOne($contentinfo['article']);
 
@@ -24,6 +24,7 @@ $getmessage = $content->getmessage($con,$newcontentinfo['article']);
 
 if(count($getmessage)>=1){
     $allmessage = $content->findwhosend($con,$getmessage);
+    $allmessage = $content->totaiwantime($allmessage,'createtime');
 }else{
     $allmessage = [];
 }
