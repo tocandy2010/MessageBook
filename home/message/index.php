@@ -35,8 +35,12 @@
         #page{
             width:40%;
             position: absolute;
-            top:110%;
+            top:90%;
             left:40%
+        }
+
+        .nowpage{
+            color: red; 
         }
     </style>
 </head>

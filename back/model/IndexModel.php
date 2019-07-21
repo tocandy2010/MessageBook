@@ -6,7 +6,7 @@ class IndexModel extends Model
 {
     protected $table = "content";
     protected $pk = "conid";
-    protected $filter = [];
+    protected $filter = ['page'];
     protected $verification = array();
     protected $errormessage =[];
 

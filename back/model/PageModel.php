@@ -18,9 +18,17 @@ class PageModel extends Model
         return ceil($sum/$this->length);
     }    
     
-    public function bulidpage($num){
+    public function bulidpage ($num,$nowpage)
+    {
         $page = '';
-        for($i=1;$i<=$num;$i++){
+        if ($nowpage>$num){
+            $nowpage = 1;
+        }
+        for ($i=1;$i<=$num;$i++){
+            if ($i==$nowpage){
+                $page.="<li ><a style='color:black' href=./index.php?page={$i}>{$i}</a></li>";
+                continue;
+            }
             $page.="<li><a href=./index.php?page={$i}>{$i}</a></li>";
         }
         return $page;
