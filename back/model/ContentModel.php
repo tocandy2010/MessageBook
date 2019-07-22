@@ -28,7 +28,7 @@ class ContentModel extends Model
     {
         $sql = "select userName,account from users where uid = ?";
         $res = $pdo->prepare($sql);
-        foreach($arr as $k=>$v){
+        foreach ($arr as $k=>$v) {
             $res->bindValue(1,$v['uid']);
             $res->execute();
             $data = $res->fetch(PDO::FETCH_ASSOC);
@@ -41,8 +41,8 @@ class ContentModel extends Model
     public function totaiwantime($arr,$name)  //傳入陣列  找到對應的欄位名稱修改其時間為台灣時間格式 Y-M-D H:i:s
     {
         date_default_timezone_set("Asia/Taipei");
-        foreach($arr as $k=>$v){
-            if(isset($v[$name])){
+        foreach ($arr as $k=>$v) {
+            if (isset($v[$name])) {
                 $arr[$k][$name] = date("Y-m-d H:i:s",$v[$name]);
             }
         }

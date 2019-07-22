@@ -4,10 +4,12 @@ require_once("../model/MyarticleModel.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
 
 $smarty = new Mysmarty();
+
 $myarticle  = new MyarticleModel();
 
-$myarticleinfo = $_GET;
+$page = $_GET;
 
+$newpage = $myarticle->auto_filter($page);
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
@@ -24,11 +26,25 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$head = $myarticle->getheader($userinfo);
+$condition = "uid  = {$userinfo['uid']} order by conid desc";
+$data = $myarticle->auto_selectAll($condition);
 
-$smarty->assign('head',$head);
+$newdata = $myarticle->totaiwantime($data,'createtime');
 
-$smarty->display('./message/meyarticleedit.html');
+$con = $myarticle->getcon();
+echo $myarticle->buildindex($con,$newdata);
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
 ?>

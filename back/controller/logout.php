@@ -1,8 +1,6 @@
 <?php
 
-session_start();
-unset($_SESSION['vcode']);
-unset($_SESSION['userinfo']);
+setcookie('token','',time()-10,'/');
 
-header('Location: http://localhost/MessageBook/home/message/index.php');
+header('Location: ./index.php');
 ?>

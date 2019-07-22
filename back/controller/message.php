@@ -11,16 +11,24 @@ $newmessageinfo = $message->auto_filter($messageinfo);
 $message->auto_verification($newmessageinfo);
 
 
-if($message->checkuserlogin()!==false){  //判斷是否燈入
-    $userinfo = $_SESSION['userinfo'];
-}else{
+if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     echo 2;
     exit;
+} else {
+    $con = $message->getcon();
+    $checklogin = $message->checklogin($con,$_COOKIE['token']);
+
+    if (empty($checklogin)) {
+        $userinfo = [];
+    } else {
+        $userinfo = $checklogin[0];
+        unset($userinfo['token']);
+    }
 }
 
-if(!empty($message->geterrorInfo())){  //檢查資料空白
+if (!empty($message->geterrorInfo())) {  //檢查資料空白
     $error = [];
-    foreach($message->geterrorInfo() as $k=>$v){
+    foreach ($message->geterrorInfo() as $k=>$v) {
         $errormessage = $message->toerrormessage($v);
         $error[$k] = implode('、',$errormessage);
     }
@@ -32,9 +40,9 @@ $newmessageinfo['message'] = $message->tohtmlspecialchars($newmessageinfo['messa
 $newmessageinfo['uid'] = $userinfo['uid'];
 $newmessageinfo['createtime'] = time();
 
-if($message->auto_insert($newmessageinfo)==1){
+if ($message->auto_insert($newmessageinfo)==1) {
     echo 1;
-}else{
+} else {
     echo 0;
 }
 

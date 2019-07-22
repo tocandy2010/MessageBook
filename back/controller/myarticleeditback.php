@@ -1,16 +1,17 @@
 <?php
 
 require_once("../model/MyarticleModel.php");
-require_once("../smarty/smarty/public/Mysmarty.php");
 
-$smarty = new Mysmarty();
 $myarticle  = new MyarticleModel();
 
 $myarticleinfo = $_GET;
 
 
+$newmyarticle = $myarticle->auto_filter($myarticleinfo);
+
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    $userinfo = [];
+    echo 2;
+    exit;
 } else {
     $con = $myarticle->getcon();
 
@@ -24,11 +25,17 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$head = $myarticle->getheader($userinfo);
+$contentdata = $myarticle->auto_selectOne($newmyarticle['conid']);
 
-$smarty->assign('head',$head);
+if (!empty($contentdata)) {
+    unset($contentdata['uid']);
+    unset($contentdata['createtime']);
+    echo json_encode($contentdata,JSON_UNESCAPED_UNICODE);
+} else {
+    echo 0;
+    exit;
+}
 
-$smarty->display('./message/meyarticleedit.html');
 
 
 ?>

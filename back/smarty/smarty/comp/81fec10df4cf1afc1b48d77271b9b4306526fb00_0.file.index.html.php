@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 3.1.33, created on 2019-07-22 16:45:16
+  from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\index.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d35779c7bdd59_50501212',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '81fec10df4cf1afc1b48d77271b9b4306526fb00' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\index.html',
+      1 => 1563785115,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5d35779c7bdd59_50501212 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,8 +29,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -46,9 +73,19 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <?php echo $_smarty_tpl->tpl_vars['head']->value;?>
 
-    <?php include_once('../public/head.php') ?>
-
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
@@ -57,12 +94,14 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>主題</th>
+                                <th>標題</th>
                                 <th>發佈者</th>
                                 <th>發佈時間</th>
                             </tr>
                         </thead>
                         <tbody id='buildindex'>
+                        <?php echo $_smarty_tpl->tpl_vars['contentdata']->value;?>
+
                         </tbody>
                     </table>                    
                 </div>
@@ -75,26 +114,9 @@
         <ul class="pagination" id='pageul'></ul>
     </div>
 
-    <script>
-        $().ready(function() {
-            function getUrlParam(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return decodeURI(r[2]);
-                return null;
-            }
-            let page = getUrlParam('page')
-            $.ajax({
-                url: `../../back/controller/indexback.php?page=${page}`,
-                type: "GET",
-                dataType: "html",
-                success: function(result) {
-                    $('#buildindex').append(result)
-                }
-            });
-            showpage(page)
-        })
-
+    <?php echo '<script'; ?>
+>
+        
         function showpage(page){
             function getUrlParam(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -104,7 +126,7 @@
             }
             let pagenum = getUrlParam('page')
             $.ajax({
-                url: `../../back/controller/page.php?page=${pagenum}`,
+                url: '../../back/controller/page.php?page='+pagenum,
                 type: "GET",
                 dataType: "html",
                 success: function(result) {
@@ -112,9 +134,17 @@
                 }
             });
         }
-
-    </script>
+        function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return decodeURI(r[2]);
+                return 1;
+        }
+        showpage(getUrlParam('page'))
+    <?php echo '</script'; ?>
+>
 
 </body>
 
-</html>
+</html><?php }
+}

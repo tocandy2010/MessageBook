@@ -34,9 +34,17 @@ class LoginModel extends Model
         return password_verify($inputpassword,$sqlpassword);
     }
 
-    /*public function isSame($a,$b){  //全等於比對 返回 true or false
-        return $a === $b;
-    }*/
+    public function create_token()  //產生token
+    {
+        $str = "abcdefghijklmnopqrstuvwxyz";
+        $str .= strtoupper($str);
+        $str .= "0123456789";
+        $str .= "+-*/$.?:";
+        $str = str_repeat($str,10);
+        $str = str_shuffle($str);
+        $token = substr($str,0,100);
+        return $token;
+    }
 
 }
 

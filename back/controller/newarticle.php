@@ -1,20 +1,17 @@
 <?php
 
-require_once("../model/MyarticleModel.php");
+require_once("../model/ArticleModel.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
 
 $smarty = new Mysmarty();
-$myarticle  = new MyarticleModel();
-
-$myarticleinfo = $_GET;
-
+$article  = new ArticleModel();
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $con = $myarticle->getcon();
+    $con = $article->getcon();
 
-    $checklogin = $myarticle->checklogin($con,$_COOKIE['token']);
+    $checklogin = $article->checklogin($con,$_COOKIE['token']);
 
     if (empty($checklogin)) {
         $userinfo = [];
@@ -24,11 +21,13 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$head = $myarticle->getheader($userinfo);
+
+$head = $article->getheader($userinfo);
 
 $smarty->assign('head',$head);
 
-$smarty->display('./message/meyarticleedit.html');
+$smarty->display('./message/newarticle.html');
+
 
 
 ?>

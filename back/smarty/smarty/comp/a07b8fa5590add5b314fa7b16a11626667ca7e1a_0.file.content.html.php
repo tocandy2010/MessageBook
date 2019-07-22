@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 3.1.33, created on 2019-07-22 16:40:06
+  from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d357666c981d1_09615679',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
+      1 => 1563784805,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,8 +29,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -62,15 +89,29 @@
 </head>
 
 <body>
-<?php include_once('../public/head.php') ?>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <?php echo $_smarty_tpl->tpl_vars['head']->value;?>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2>{$data['title']}</h2>
+                    <h2><?php echo $_smarty_tpl->tpl_vars['data']->value['title'];?>
+</h2>
                     <hr>
-                    <p>{$data['content']}</p>
+                    <p><?php echo $_smarty_tpl->tpl_vars['data']->value['content'];?>
+</p>
                 </div>
                 <hr>
                 <div id='leavemessage'><!-- 留言表單區 -->
@@ -101,26 +142,39 @@
                 </div>
 
                 <div class="container">
-                    {foreach from=$allmessage key=$k item=$v}
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['allmessage']->value, 'v', false, 'k');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
+?>
                         <div class="panel panel-default">
-                            <div class="panel-heading">{$v['userName']}({$v['account']})<span class='messagetime'>{$v['createtime']}</span></div>
-                            <div class="panel-body">{$v['message']}</div>
+                            <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
+(<?php echo $_smarty_tpl->tpl_vars['v']->value['account'];?>
+)<span class='messagetime'><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
+</span></div>
+                            <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['v']->value['message'];?>
+</div>
                         </div>
-                    {/foreach}
+                    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 </div>
 
             </div>
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
-    <script>
+    <?php echo '<script'; ?>
+>
         $("#messagesend").click(function() {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
-            fd.append('conid',{$conid})
+            fd.append('conid',<?php echo $_smarty_tpl->tpl_vars['conid']->value;?>
+)
             let res = ['message'];
             for (error of res) {
-                {literal}$(`#${error}Info`).html(""){/literal};
+                $('#'+error+'Info').html("");
             }
             $.ajax({
                 url: "../../back/controller/message.php",
@@ -132,10 +186,13 @@
                 success: function(result) {
                     if(typeof(result) == 'object'){
                         for (error of res) {
-                            {literal}$(`#${error}Info`).html(result[error]) {/literal};
+                           $('#'+error+'Info').html(result[error]);
                         }
-                    }else if(result == 1){
+                    }else if (result == 1){
                         location.reload();
+                    }else {
+                        alert('留言失敗');
+                        $(window).attr('location', '../../back/controller/login.php');
                     }
                 }
             });
@@ -153,7 +210,9 @@
                 $('#messagesend').attr('disabled',true)
             }
         })
-    </script>
+    <?php echo '</script'; ?>
+>
 </body>
 
-</html>
+</html><?php }
+}
