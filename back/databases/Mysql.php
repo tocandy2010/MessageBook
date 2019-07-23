@@ -7,7 +7,7 @@ class Mysql
     private $host = 'localhost';  //主機
     private $dbname = 'messagebook';  //資料庫名
     private $account = 'root';  //sql帳號
-    private $password = '';  //sql密碼
+    private $password = '123456789';  //sql密碼
     private $info = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8', PDO::ATTR_EMULATE_PREPARES, false);
     protected $con = null;
     public function __construct()
@@ -79,7 +79,6 @@ class Mysql
     public function auto_selectAll($table,$where=1,$show = PDO::FETCH_ASSOC)   //select全部  show參數等於index 回傳索引陣列
     {
         $sql = "select * from {$table} where {$where}";
-        return $sql;
         $res = $this->con->prepare($sql);
         $res->execute();
         if ($show == 'index') {
@@ -89,11 +88,11 @@ class Mysql
         return $res->fetchAll($show);
     }
 
-    public function auto_selectOne($id, $show = PDO::FETCH_ASSOC)   //傳入主鍵select該主鍵  show參數等於index 回傳索引陣列
+    public function auto_selectOne($table,$key,$value, $show = PDO::FETCH_ASSOC)   //傳入主鍵select該主鍵  show參數等於index 回傳索引陣列
     {
-        $sql = "select * from {$this->table} where {$this->pk} = ?";
+        $sql = "select * from {$table} where {$key} = ?";
         $res = $this->con->prepare($sql);
-        $res->bindParam(1, $id);
+        $res->bindParam(1, $value);
         $res->execute();
         if ($show == 'index') {
             $show = PDO::FETCH_NUM;

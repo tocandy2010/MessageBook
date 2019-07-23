@@ -1,26 +1,19 @@
 <?php
 
 require_once("../smarty/smarty/public/Mysmarty.php");
-require_once("../model/IndexModel.php");
+require_once("../model/ContentModel.php");
+require_once("../public/Pagetool.php");
 
-$index  = new IndexModel();
+$index  = new ContentModel();
 $smarty = new Mysmarty();
+
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $con = $index->getcon();
-
-    $checklogin = $index->checklogin($con,$_COOKIE['token']);
-
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin[0];
-        unset($userinfo['token']);
-    }
+    $userinfo = $index->getUserInfo('users',$_COOKIE['token']);
+    $userinfo = empty($userinfo)?[]:$userinfo;
 }
-
 
 $loginflag = !empty($userinfo);
 
@@ -34,24 +27,15 @@ if (!isset($newpage['page']) || is_null($newpage['page']) || !(is_numeric($newpa
     $newpage['page'] = 1;
 }
 
-$pagelen = ceil(count($index->auto_selectAll('content'))/3);
+$allcontent = $index->getAllContent('content');
 
-if ($newpage['page']>$pagelen){
-    $newpage['page'] = 1;
-}
+$page = new Pagetool(count($allcontent),1,2);
 
-$offset = ($newpage['page']-1)*3;
+var_dump($page->show());
 
-$condition = "status = 1 order by conid desc limit {$offset},3";
-$data = $index->auto_selectAll('content',$condition);
+$newdata = $index->useTaiwanTime($data,'createtime');
 
-$newdata = $index->totaiwantime($data,'createtime');
-
-$con = $index->getcon();
-$contentdata = $index->buildindex($con,$newdata); 
-
-
-
+$contentdata = $index->buildindex($newdata); 
 
 $smarty->assign('loginflag',$loginflag);
 $smarty->assign('userinfo',$userinfo);

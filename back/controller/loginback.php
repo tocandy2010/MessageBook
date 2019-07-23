@@ -66,7 +66,7 @@ if (isset($logininfo['remember'])&& ($logininfo['remember']==='1')) {   //記住
         setcookie("remember",$logininfo['account'], time()+3600*7,'/');
     }
 } else {
-        setcookie("remember",'', time()-100,'/');
+    setcookie("remember",'', time()-100,'/');
 }
 
 if (isset($_COOKIE['token']) && !empty($_COOKIE['token'])) {   //確認cookie token 是否存在
