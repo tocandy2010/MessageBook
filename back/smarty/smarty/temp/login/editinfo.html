@@ -26,7 +26,16 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    {$head}
+                    {if $loginflag}
+                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
+                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    {else}
+                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
+                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    {/if}
                 </ul>
             </div>
         </div>
@@ -42,7 +51,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="textinput">姓名</label>
                 <div class="col-md-4">
-                    <input id="textinput" name="userName" type="text" value="{$userName}" placeholder=""
+                    <input id="textinput" name="userName" type="text" value="{$userinfo['userName']}" placeholder=""
                         class="form-control input-md">
                     <span class="help-block">請輸入姓名</span>
                     <span class='errorred' id='userNameInfo'></span>
@@ -53,7 +62,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">email</label>
                 <div class="col-md-4">
-                    <input id="" name="email" type="text" value="{$email}" placeholder=""
+                    <input id="" name="email" type="text" value="{$userinfo['email']}" placeholder=""
                         class="form-control input-md">
                     <span class="help-block">ex:example@com</span>
                     <span class='errorred' id='emailInfo'></span>

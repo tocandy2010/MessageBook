@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-22 07:16:11
+/* Smarty version 3.1.33, created on 2019-07-23 09:52:12
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\login.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d35469b319b38_06635342',
+  'unifunc' => 'content_5d36bcac93a9a0_51447557',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a7e06cbd94a24511e81ff3eb0859945078f911bc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\login.html',
-      1 => 1563772569,
+      1 => 1563868328,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d35469b319b38_06635342 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d36bcac93a9a0_51447557 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -51,8 +51,17 @@ function content_5d35469b319b38_06635342 (Smarty_Internal_Template $_smarty_tpl)
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <?php echo $_smarty_tpl->tpl_vars['head']->value;?>
-
+                    <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</a></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
+                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    <?php } else { ?>
+                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
+                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    <?php }?>
                 </ul>
             </div>
         </div>
@@ -131,7 +140,7 @@ function content_5d35469b319b38_06635342 (Smarty_Internal_Template $_smarty_tpl)
         $("#loginsend").click(function () {
             let loginform = document.getElementById('loginform')
             let fd = new FormData(loginform);
-            let res = ['error', 'vcode'];
+            let res = ['error', 'vcode','password','account'];
             for (error of res) {
                 $('#'+error+'Info').html("");
             }
@@ -143,7 +152,6 @@ function content_5d35469b319b38_06635342 (Smarty_Internal_Template $_smarty_tpl)
                 processData: false,
                 data: fd,
                 success: function (result) {
-                    
                     if (typeof (result) == 'object') {
                         for (error of res) {
                             $('#'+error+'Info').html(result[error]);

@@ -24,9 +24,11 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
 }
 
 
-$head = $myarticle->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./message/myarticle.html');
     

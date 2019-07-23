@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-22 16:40:06
+/* Smarty version 3.1.33, created on 2019-07-23 03:51:20
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d357666c981d1_09615679',
+  'unifunc' => 'content_5d366818a7fe67_24917688',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1563784805,
+      1 => 1563844510,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d366818a7fe67_24917688 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -57,34 +57,38 @@ function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl)
         #message {
             padding: 0px 50px 0px 50px;
         }
-        #leavemessage{
+
+        #leavemessage {
             position: relative;
-            right:20%;
+            right: 20%;
         }
-        #lmtextarea{
-            width:200%;
-            height:100px;
-            resize:none;
-            overflow-y:scroll;
+
+        #lmtextarea {
+            width: 200%;
+            height: 100px;
+            resize: none;
+            overflow-y: scroll;
         }
+
         .errorred {
             color: darkred;
         }
 
-        #messagelenerror{
+        #messagelenerror {
             display: none;
         }
-        #messagetext{
+
+        #messagetext {
             resize: none;
-            overflow-Y:scroll;
-            width:200%;
-        }
-        .messagetime{
-            display: inline-block;
-            width:90%;
-            text-align: right
+            overflow-Y: scroll;
+            width: 200%;
         }
 
+        .messagetime {
+            display: inline-block;
+            width: 90%;
+            text-align: right
+        }
     </style>
 </head>
 
@@ -96,8 +100,17 @@ function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl)
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <?php echo $_smarty_tpl->tpl_vars['head']->value;?>
-
+                    <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</a></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
+                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    <?php } else { ?>
+                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
+                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    <?php }?>
                 </ul>
             </div>
         </div>
@@ -114,14 +127,16 @@ function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl)
 </p>
                 </div>
                 <hr>
-                <div id='leavemessage'><!-- 留言表單區 -->
+                <div id='leavemessage'>
+                    <!-- 留言表單區 -->
                     <form class="form-horizontal" id='messageform'>
                         <fieldset>
                             <!-- Textarea -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" spellcheck ="false" id="messagetext" name="message"></textarea>
+                                    <textarea class="form-control" spellcheck="false" id="messagetext"
+                                        name="message"></textarea>
                                     <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
                                     <span id='messageInfo' class='errorred' class="help-block"></span>
                                 </div>
@@ -131,7 +146,7 @@ function content_5d357666c981d1_09615679 (Smarty_Internal_Template $_smarty_tpl)
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="button1id"></label>
                                 <div class="col-md-8">
-                                    <button id="messagesend"  type='button' class="btn btn-info">留言</button>
+                                    <button id="messagesend" type='button' class="btn btn-info">留言</button>
                                     <input type="reset" class="btn btn-default" value='清除'>
                                     <span id='messagelenerror' class='errorred'>超過最大字數限制</span>
                                 </div>
@@ -147,14 +162,15 @@ $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->t
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
 ?>
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
 (<?php echo $_smarty_tpl->tpl_vars['v']->value['account'];?>
-)<span class='messagetime'><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
+)<span
+                                class='messagetime'><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
 </span></div>
-                            <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['v']->value['message'];?>
+                        <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['v']->value['message'];?>
 </div>
-                        </div>
+                    </div>
                     <?php
 }
 }
@@ -167,14 +183,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     </div>
     <?php echo '<script'; ?>
 >
-        $("#messagesend").click(function() {
+        $("#messagesend").click(function () {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
-            fd.append('conid',<?php echo $_smarty_tpl->tpl_vars['conid']->value;?>
-)
+            fd.append('conid', { $conid })
             let res = ['message'];
             for (error of res) {
-                $('#'+error+'Info').html("");
+                $('#' + error + 'Info').html("");
             }
             $.ajax({
                 url: "../../back/controller/message.php",
@@ -183,14 +198,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 contentType: false,
                 processData: false,
                 data: fd,
-                success: function(result) {
-                    if(typeof(result) == 'object'){
+                success: function (result) {
+                    if (typeof (result) == 'object') {
                         for (error of res) {
-                           $('#'+error+'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result[error]);
                         }
-                    }else if (result == 1){
+                    } else if (result == 1) {
                         location.reload();
-                    }else {
+                    } else {
                         alert('留言失敗');
                         $(window).attr('location', '../../back/controller/login.php');
                     }
@@ -198,16 +213,16 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
             });
         });
 
-        $('#messagetext').keyup(function() {
+        $('#messagetext').keyup(function () {
             let inplen = $('#messagetext').val();
             if (inplen.length <= 10) {
                 $('#messagelength').html(10 - inplen.length);
                 $('#messagelenerror').attr("style", 'display:none');
-                $('#messagesend').attr('disabled',false)
+                $('#messagesend').attr('disabled', false)
             } else {
                 $('#messagelength').html(0);
                 $('#messagelenerror').attr("style", 'display:inline-block');
-                $('#messagesend').attr('disabled',true)
+                $('#messagesend').attr('disabled', true)
             }
         })
     <?php echo '</script'; ?>

@@ -8,8 +8,7 @@ $myarticle  = new MyarticleModel();
 
 $myarticleinfo = $_GET;
 
-
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
 } else {
     $con = $myarticle->getcon();
@@ -24,9 +23,11 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$head = $myarticle->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./message/meyarticleedit.html');
 

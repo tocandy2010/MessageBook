@@ -8,9 +8,11 @@ $reg  = new RegModel();
 
 
 $userinfo = [];
-$head = $reg->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./login/reg.html');
 

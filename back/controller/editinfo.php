@@ -16,17 +16,15 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
         $userinfo = [];
     } else {
         $userinfo = $checklogin[0];
-        $userName = $userinfo['userName'];
-        $email = $userinfo['email'];
         unset($userinfo['token']);
     }
 }
 
-$head = $editinfo->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
-$smarty->assign('userName',$userName);
-$smarty->assign('email',$email);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./login/editinfo.html');
 

@@ -1,15 +1,14 @@
 <?php
 
-require_once("../model/LoginModel.php");
+require_once("../model/Member.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
 
 $smarty = new Mysmarty();
-$login  = new LoginModel();
+$Member  = new Member();
 
 $userinfo = [];
-$head = $login->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
 
 if (isset($_COOKIE['remember'])&&!empty($_COOKIE['remember'])) {
     $remember = "checked";
@@ -20,7 +19,10 @@ if (isset($_COOKIE['remember'])&&!empty($_COOKIE['remember'])) {
 }
 
 $smarty->assign('remember',$remember);
+
 $smarty->assign('account',$account);
+
+$smarty->assign('loginflag',$loginflag);
 
 $smarty->display('./login/login.html');
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-22 07:28:04
+/* Smarty version 3.1.33, created on 2019-07-23 03:28:09
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editreg.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d354964001273_83535807',
+  'unifunc' => 'content_5d3662a96c2762_62561626',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'fd25c0e254455c7f2cf04ac62e15a2e9e657f2d1' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editreg.html',
-      1 => 1563773283,
+      1 => 1563845262,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d354964001273_83535807 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3662a96c2762_62561626 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -84,8 +84,17 @@ function content_5d354964001273_83535807 (Smarty_Internal_Template $_smarty_tpl)
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <?php echo $_smarty_tpl->tpl_vars['head']->value;?>
-
+                    <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</a></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
+                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    <?php } else { ?>
+                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
+                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    <?php }?>
                 </ul>
             </div>
         </div>

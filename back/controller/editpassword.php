@@ -20,9 +20,11 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$head = $editpassword->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
-$smarty->assign('head',$head);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./login/editpassword.html');
 

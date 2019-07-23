@@ -25,14 +25,14 @@ class Mysql
         return $this->con;
     }
     
-    public function auto_insert($array)  ## 自動insert 指定表 和 一個陣列
+    public function auto_insert($table,$array)  ## 自動insert 指定表 和 一個陣列
     {
         if (!is_array($array)) {
             return false;
         }
         
         $count = count($array);
-        $sql = "insert into {$this->table} (";
+        $sql = "insert into {$table} (";
         foreach ($array as $k => $v) {
             $sql .= "$k,";
         }
@@ -48,18 +48,17 @@ class Mysql
         return $this->affected_rows($res);
     }
 
-    public function auto_update($array,$id)  //自動update 指定表 一個關聯陣列 一個陣列主鍵 返回影響行數 
+    public function auto_update($table,$array,$pk,$id)  //自動update 指定表 一個關聯陣列 一個陣列主鍵 返回影響行數 
     {  
         if (!is_array($array)) {
             return false;
         }
-        $count = count($array);
-        $sql = "update {$this->table} set ";
+        $sql = "update {$table} set ";
         foreach ($array as $k => $v) {
             $sql .= "{$k} = ?,";
         }
         $sql = rtrim($sql, ',');
-        $sql .= " where {$this->pk} = {$id}";
+        $sql .= " where {$pk} = {$id}";
         $res = $this->con->prepare($sql);
         foreach (array_values($array) as $k => $v) {
             $res->bindValue($k + 1, $v);
@@ -71,16 +70,16 @@ class Mysql
     public function auto_delete($id)  //傳入id 並且刪除回傳影響行數
     {
         $sql = "delete from {$this->table} where {$this->pk} = ?";
-        return $sql;
         $res = $this->con->prepare($sql);
         $res->bindParam(1, $id);
         $res->execute();
         return $this->affected_rows($res);
     }
 
-    public function auto_selectAll($where=1,$show = PDO::FETCH_ASSOC)   //select全部  show參數等於index 回傳索引陣列
+    public function auto_selectAll($table,$where=1,$show = PDO::FETCH_ASSOC)   //select全部  show參數等於index 回傳索引陣列
     {
-        $sql = "select * from {$this->table} where {$where}";
+        $sql = "select * from {$table} where {$where}";
+        return $sql;
         $res = $this->con->prepare($sql);
         $res->execute();
         if ($show == 'index') {

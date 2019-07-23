@@ -25,7 +25,7 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
- $head = $content->getheader($userinfo);
+$loginflag = !empty($userinfo);
 
 $data = $content->auto_selectOne($contentinfo['article']);
 
@@ -46,7 +46,9 @@ $smarty->assign('conid',$contentinfo['article']);
 
 $smarty->assign('allmessage',$allmessage);
 
-$smarty->assign('head',$head);
+$smarty->assign('loginflag',$loginflag);
+
+$smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./message/content.html');
 

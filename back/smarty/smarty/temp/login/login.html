@@ -26,7 +26,16 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    {$head}
+                    {if $loginflag}
+                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
+                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    {else}
+                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
+                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    {/if}
                 </ul>
             </div>
         </div>
@@ -102,7 +111,7 @@
         $("#loginsend").click(function () {
             let loginform = document.getElementById('loginform')
             let fd = new FormData(loginform);
-            let res = ['error', 'vcode'];
+            let res = ['error', 'vcode','password','account'];
             for (error of res) {
                 $('#'+error+'Info').html("");
             }
@@ -114,7 +123,6 @@
                 processData: false,
                 data: fd,
                 success: function (result) {
-                    
                     if (typeof (result) == 'object') {
                         for (error of res) {
                             $('#'+error+'Info').html(result[error]);

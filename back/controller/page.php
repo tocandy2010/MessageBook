@@ -6,10 +6,12 @@ $page = new PageModel();
 
 $pageinfo = $_GET;
 
-$newpageinfo= $page->auto_filter($pageinfo);
+$allowpostinfo = ['page'];
+
+$newpage = $page->auto_filter($page,$allowpostinfo);
 
 $condition = 'status = 1';
-$allcontentnum = $page->auto_selectAll($condition);
+$allcontentnum = $page->auto_selectAll('content',$condition);
 
 $pagelen = $page->contentpage(count($allcontentnum));
 echo $page->bulidpage($pagelen,$newpageinfo['page']);
