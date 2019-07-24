@@ -71,7 +71,7 @@
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
                     <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"></textarea>
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>10</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>100</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
                     <span class='errorred' id="contentInfo"></span>
                 </div>
             </div>
@@ -89,7 +89,6 @@
     </div>
     <script>
     $("#articlesend").click(function() {
-
             let articleform = document.getElementById('articleform')
             let fd = new FormData(articleform);
             let res = ['title', 'content','error'];
@@ -97,7 +96,7 @@
                 $('#'+error+'Info').html("");
             }
             $.ajax({
-                url: "../../back/controller/article.php",
+                url: "../../back/controller/newarticleback.php",
                 type: "POST",
                 dataType: "json",
                 contentType: false,
@@ -111,7 +110,10 @@
                     }else if(result == 1){
                         alert('成功發佈');
                         $(window).attr('location','./index.php');
-                    }else{
+                    }else if(result == 2){
+                        alert('請先登入會員');
+                        $(window).attr('location','./index.php');
+                    }else {
                         alert('失敗發佈');
                         $(window).attr('location','./login.php');
                     }
@@ -137,8 +139,8 @@
         
         $('#contenttext').keyup(function(){
             let inplen = $('#contenttext').val();
-            if(inplen.length<=10){
-                $('#contentlength').html(10-inplen.length);
+            if(inplen.length<=100){
+                $('#contentlength').html(100-inplen.length);
                 $('#contentlenerror').attr("style", 'display:none');
                 contentflag = true; 
             }else{

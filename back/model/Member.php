@@ -117,6 +117,21 @@ class Member extends Model
         $res->execute();
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getUser($token)
+    {
+        return $this->auto_selectOne('users','token',$token);
+    }
+
+    public function resetPassword($password,$uid)
+    {
+        return $this->auto_update('users',$password,'uid',$uid);
+    }
+
+    public function editUserInfo($arr,$uid)
+    {
+        return $this->auto_update('users',$arr,'uid',$uid);
+    }
 }
 
 

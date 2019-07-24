@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 03:51:20
+/* Smarty version 3.1.33, created on 2019-07-24 18:37:46
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d366818a7fe67_24917688',
+  'unifunc' => 'content_5d3834fad73c06_81510042',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1563844510,
+      1 => 1563962815,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d366818a7fe67_24917688 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -120,10 +120,10 @@ function content_5d366818a7fe67_24917688 (Smarty_Internal_Template $_smarty_tpl)
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2><?php echo $_smarty_tpl->tpl_vars['data']->value['title'];?>
+                    <h2><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
 </h2>
                     <hr>
-                    <p><?php echo $_smarty_tpl->tpl_vars['data']->value['content'];?>
+                    <p><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
 </p>
                 </div>
                 <hr>
@@ -135,8 +135,8 @@ function content_5d366818a7fe67_24917688 (Smarty_Internal_Template $_smarty_tpl)
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" spellcheck="false" id="messagetext"
-                                        name="message"></textarea>
+                                    <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
+                                    <input type="hidden" name="conid" value="">
                                     <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
                                     <span id='messageInfo' class='errorred' class="help-block"></span>
                                 </div>
@@ -158,7 +158,7 @@ function content_5d366818a7fe67_24917688 (Smarty_Internal_Template $_smarty_tpl)
 
                 <div class="container">
                     <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['allmessage']->value, 'v', false, 'k');
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['getmessage']->value, 'v', false, 'k');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
 ?>
@@ -186,7 +186,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
         $("#messagesend").click(function () {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
-            fd.append('conid', { $conid })
+            fd.append('conid',);
             let res = ['message'];
             for (error of res) {
                 $('#' + error + 'Info').html("");
@@ -207,7 +207,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         location.reload();
                     } else {
                         alert('留言失敗');
-                        $(window).attr('location', '../../back/controller/login.php');
                     }
                 }
             });

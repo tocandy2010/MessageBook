@@ -42,6 +42,11 @@
         .nowpage {
             color: red;
         }
+
+        #page {
+            position: absolute;
+            top:85%;
+        }
     </style>
 </head>
 
@@ -81,45 +86,35 @@
                             </tr>
                         </thead>
                         <tbody id='buildindex'>
-                            {$contentdata}
+                            {foreach from=$contentdata key=$k item=$v} 
+                            <tr>
+                                <td><a href = "../controller/content.php?conid={$v['conid']}">{$v['title']}</a></td>
+                                <td>{$v['userName']}</td>
+                                <td>{$v['createTime']}</td>
+                            </tr>
+                            {/foreach}
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
-
     <div class="container" id='page'>
-        <ul class="pagination" id='pageul'></ul>
+        <ul class="pagination">
+            {foreach from=$showpage key=$k item=$v}
+                {if $pagenum !== $v}
+                    <li><a href="../controller/index.php?page={$v}">{$v}</a></li>
+                {else}
+                    <li class="active"><a href="../controller/index.php?page={$v}">{$v}</a></li>
+                {/if}
+            {/foreach}
+        </ul>
     </div>
 
     <script>
-
-        function showpage(page) {
-            function getUrlParam(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return decodeURI(r[2]);
-                return 1;
-            }
-            let pagenum = getUrlParam('page')
-            $.ajax({
-                url: '../../back/controller/page.php?page=' + pagenum,
-                type: "GET",
-                dataType: "html",
-                success: function (result) {
-                    $('#pageul').append(result)
-                }
-            });
-        }
-        function getUrlParam(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return decodeURI(r[2]);
-            return 1;
-        }
-        showpage(getUrlParam('page'))
     </script>
 
 </body>

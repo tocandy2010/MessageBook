@@ -1,26 +1,27 @@
 <?php
 
-require_once("../model/ArticleModel.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
+require_once("../model/ContentModel.php");
 
+$newarticle  = new ContentModel();
 $smarty = new Mysmarty();
-$article  = new ArticleModel();
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $con = $article->getcon();
-
-    $checklogin = $article->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $newarticle->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
+if (empty($userinfo)) {
+    header('location: ./login.php');
+    exit;
+}
 
 $loginflag = !empty($userinfo);
 

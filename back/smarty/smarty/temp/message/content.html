@@ -92,9 +92,9 @@
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2>{$data['title']}</h2>
+                    <h2>{$content['title']}</h2>
                     <hr>
-                    <p>{$data['content']}</p>
+                    <p>{$content['content']}</p>
                 </div>
                 <hr>
                 <div id='leavemessage'>
@@ -105,8 +105,8 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" spellcheck="false" id="messagetext"
-                                        name="message"></textarea>
+                                    <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
+                                    <input type="hidden" name="conid" value="">
                                     <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
                                     <span id='messageInfo' class='errorred' class="help-block"></span>
                                 </div>
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="container">
-                    {foreach from=$allmessage key=$k item=$v}
+                    {foreach from=$getmessage key=$k item=$v}
                     <div class="panel panel-default">
                         <div class="panel-heading">{$v['userName']}({$v['account']})<span
                                 class='messagetime'>{$v['createtime']}</span></div>
@@ -144,7 +144,7 @@
         $("#messagesend").click(function () {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
-            fd.append('conid', { $conid })
+            fd.append('conid',);
             let res = ['message'];
             for (error of res) {
                 $('#' + error + 'Info').html("");
@@ -165,7 +165,6 @@
                         location.reload();
                     } else {
                         alert('留言失敗');
-                        $(window).attr('location', '../../back/controller/login.php');
                     }
                 }
             });

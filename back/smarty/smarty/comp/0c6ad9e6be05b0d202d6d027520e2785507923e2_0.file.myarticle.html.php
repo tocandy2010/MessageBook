@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 03:22:02
+/* Smarty version 3.1.33, created on 2019-07-24 17:51:45
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\myarticle.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d36613a8e6274_51411723',
+  'unifunc' => 'content_5d382a31e846e7_53367157',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0c6ad9e6be05b0d202d6d027520e2785507923e2' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\myarticle.html',
-      1 => 1563844880,
+      1 => 1563961876,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d36613a8e6274_51411723 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d382a31e846e7_53367157 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -95,9 +95,31 @@ function content_5d36613a8e6274_51411723 (Smarty_Internal_Template $_smarty_tpl)
                                 <th>主題</th>
                                 <th>發佈時間</th>
                                 <th>修改</th>
+                                <th>刪除</th>
                             </tr>
                         </thead>
                         <tbody id='buildmyarticle'>
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['mycontent']->value, 'v', false, 'k');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
+?> 
+                            <tr>
+                                <td><a href = "./content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+</a></td>
+                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
+</td>
+                                <td><a href="./myarticleedit.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><button type="button" class="btn btn-success">編輯</button></a></td>
+                                <td><button type="button" class="btn btn-danger" data-title= "<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+" onclick="del(this,<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+)">刪除</button></td>
+                            </tr>
+                            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </tbody>
                     </table>
                 </div>
@@ -107,27 +129,23 @@ function content_5d36613a8e6274_51411723 (Smarty_Internal_Template $_smarty_tpl)
     </div>
     <?php echo '<script'; ?>
 >
-        $().ready(function () {
-            function getUrlParam(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return decodeURI(r[2]);
-                return null;
-            }
-            let page = getUrlParam('page')
-            $.ajax({
-                url: '../../back/controller/myarticleback.php?page=' + page,
-                type: "GET",
-                dataType: "html",
-                success: function (result) {
-                    if (typeof (result) == 'string') {
-                        $('#buildmyarticle').append(result)
-                    } else {
-
+        function del(obj,id,name){
+            alert(obj.getAttribute('data-title'));
+            if(confirm('確認刪除'+name+'"嗎?')){
+                $.ajax({
+                    url: '../../back/controller/myarticledel.php?conid='+id,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (result) {
+                        if(result == 1){
+                            $(window).attr('location', '../../back/controller/myarticle.php');
+                        }else{
+                            alert('刪除失敗')
+                        }
                     }
-                }
-            });
-        })
+                });
+            }
+        }
 
     <?php echo '</script'; ?>
 >

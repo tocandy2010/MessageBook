@@ -57,9 +57,7 @@ if (!empty($error)) {
 
 $token = $login->createToken($userinfo['uid']);   //獲得token
 
-if($login->setToken('users',array('token'=>$token),'uid',$userinfo['uid']) === 1){  //設定 cookie token
-    setcookie("token",$token, time()+3600,'/');
-}
+
 
 if (isset($logininfo['remember'])&& ($logininfo['remember']==='1')) {   //記住帳號
     if (!isset($_COOKIE['remember']) || empty($_COOKIE['remember'])) { 
@@ -69,7 +67,8 @@ if (isset($logininfo['remember'])&& ($logininfo['remember']==='1')) {   //記住
     setcookie("remember",'', time()-100,'/');
 }
 
-if (isset($_COOKIE['token']) && !empty($_COOKIE['token'])) {   //確認cookie token 是否存在
+if ($login->setToken('users',array('token'=>$token),'uid',$userinfo['uid']) === 1) {  //設定 cookie token
+    setcookie("token",$token, time()+3600,'/');
     echo 1;
 } else {
     echo 0;

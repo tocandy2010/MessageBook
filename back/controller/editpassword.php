@@ -1,21 +1,21 @@
 <?php
 
-require_once("../model/EditinfoModel.php");
+
 require_once("../smarty/smarty/public/Mysmarty.php");
+require_once("../model/Member.php");
 
+$editpassword  = new Member();
 $smarty = new Mysmarty();
-$editpassword  = new EditinfoModel();
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    header('location:./index.php');
+
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+    $userinfo = [];
 } else {
-    $con = $editpassword->getcon();
-    $checklogin = $editpassword->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $editpassword->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }

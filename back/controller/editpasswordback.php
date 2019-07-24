@@ -1,55 +1,58 @@
 <?php
 
-require_once("../model/EditinfoModel.php");
+require_once("../model/Member.php");
 
-$editpassword  = new EditinfoModel();
+$editpassword = new Member();
 
 $editpasswordinfo = $_POST;
 
-$neweditpasswordinfo = $editpassword->auto_filter($editpasswordinfo);
+$allowpostinfo = ['oldpassword','password','repassword'];
 
-$editpassword->auto_verification($neweditpasswordinfo);
+$neweditpasswordinfo = $editpassword->auto_filter($editpasswordinfo,$allowpostinfo);
 
+$verification = [
+    'oldpassword'=>array('notempty'=>'0'),
+    'password'=>array('notempty'=>'0'),
+    'password'=>array('length'=>'6,12'),
+    'repassword'=>array('notempty'=>'0'),
+];
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    echo 2;
-    exit;
-} else {
-    $con = $editpassword->getcon();
-    $checklogin = $editpassword->checklogin($con,$_COOKIE['token']);
+$editpassword->auto_verification($neweditpasswordinfo,$verification);
 
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin[0];
-        unset($userinfo['token']);
-    }
-}
+$errorMessage = [
+    'length'=>'資料長度錯誤',
+    'notempty'=>'未輸入'
+];
 
-if (!empty($editpassword->geterrorInfo())){  //檢查資料空白
-    $error = [];
-    foreach ($editpassword->geterrorInfo() as $k=>$v) {
-        $errormessage = $editpassword->toerrormessage($v);
-        $error[$k] = implode('、',$errormessage);
-    }
+if(!empty($editpassword->geterrorInfo())){  //檢查資料空白
+    $error = $editpassword->changeErrormessage($editpassword->geterrorInfo(),$errorMessage);
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+    $userinfo = [];
+} else {
+    $checklogin = $editpassword->getUser($_COOKIE['token']);
+    if (empty($checklogin)) {
+        $userinfo = [];
+    } else {
+        $userinfo = $checklogin;
+        unset($userinfo['token']);
+    }
+}
+
 $error = [];
 
-$userdata = $editpassword->auto_selectOne($userinfo['uid']);
-
-if (!$editpassword->checkpassword($editpasswordinfo['oldpassword'],$userdata['password'])) {  //確認舊密碼
+if (!$editpassword->checkpassword($editpasswordinfo['oldpassword'],$userinfo['password'])) {  //確認舊密碼
     $error['oldpassword'] = '舊密碼錯誤';
 }
 
-
-if (!$editpassword->isSame($neweditpasswordinfo['repassword'],$neweditpasswordinfo['password'])) {  
+if ($neweditpasswordinfo['repassword'] !== $neweditpasswordinfo['password']) {  
     $error['repassword'] = '與新密碼不相同';
 }
 
-if (!$editpassword->onlynumandeng($neweditpasswordinfo['password'])) {
+if (!$editpassword->onlyNumandEng($neweditpasswordinfo['password'])) {
     $error['password'] = '密碼中不能包含任何符號';
 }
 
@@ -61,9 +64,9 @@ if (!empty($error)) {
 unset($neweditpasswordinfo['oldpassword']);
 unset($neweditpasswordinfo['repassword']);
 
-$neweditpasswordinfo['password'] = password_hash($neweditpasswordinfo['password'], PASSWORD_DEFAULT);
+$newpassword = $editpassword->encryptionPassword($neweditpasswordinfo['password']);
 
-if ($editpassword->auto_update($neweditpasswordinfo,$userinfo['uid'])== 1) {
+if ($editpassword->resetPassword(['password'=>$newpassword],$userinfo['uid']) == 1) {
     echo 1;
 } else {
     echo 0;

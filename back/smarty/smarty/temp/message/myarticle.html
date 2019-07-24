@@ -67,9 +67,18 @@
                                 <th>主題</th>
                                 <th>發佈時間</th>
                                 <th>修改</th>
+                                <th>刪除</th>
                             </tr>
                         </thead>
                         <tbody id='buildmyarticle'>
+                            {foreach from=$mycontent key=$k item=$v} 
+                            <tr>
+                                <td><a href = "./content.php?conid={$v['conid']}">{$v['title']}</a></td>
+                                <td>{$v['createtime']}</td>
+                                <td><a href="./myarticleedit.php?conid={$v['conid']}"><button type="button" class="btn btn-success">編輯</button></a></td>
+                                <td><button type="button" class="btn btn-danger" data-title= "{$v['title']}" onclick="del(this,{$v['conid']})">刪除</button></td>
+                            </tr>
+                            {/foreach}
                         </tbody>
                     </table>
                 </div>
@@ -78,27 +87,23 @@
         </div>
     </div>
     <script>
-        $().ready(function () {
-            function getUrlParam(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return decodeURI(r[2]);
-                return null;
-            }
-            let page = getUrlParam('page')
-            $.ajax({
-                url: '../../back/controller/myarticleback.php?page=' + page,
-                type: "GET",
-                dataType: "html",
-                success: function (result) {
-                    if (typeof (result) == 'string') {
-                        $('#buildmyarticle').append(result)
-                    } else {
-
+        function del(obj,id,name){
+            alert(obj.getAttribute('data-title'));
+            if(confirm('確認刪除'+name+'"嗎?')){
+                $.ajax({
+                    url: '../../back/controller/myarticledel.php?conid='+id,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (result) {
+                        if(result == 1){
+                            $(window).attr('location', '../../back/controller/myarticle.php');
+                        }else{
+                            alert('刪除失敗')
+                        }
                     }
-                }
-            });
-        })
+                });
+            }
+        }
 
     </script>
 </body>

@@ -1,39 +1,60 @@
 <?php
 
-require_once("../model/MyarticleModel.php");
+require_once("../model/ContentModel.php");
 
-$myarticle  = new MyarticleModel();
+$articleedit  = new ContentModel();
 
-$myarticleinfo = $_GET;
+$myarticleinfo = $_POST;
 
+$allowinfo = ['editconid','title','content'];
 
-$newmyarticle = $myarticle->auto_filter($myarticleinfo);
+$newmyarticleinfo = $articleedit->auto_filter($myarticleinfo,$allowinfo);
+
+$verification = [
+    'title'=>array('notempty'=>'0'),
+    'content'=>array('notempty'=>'0'),
+    'content'=>array('length'=>'1,1000'),
+    'title'=>array('length'=>'1,100 '),
+];
+
+$articleedit->auto_verification($newmyarticleinfo,$verification);
+
+$errorMessage = [
+    'length'=>'資料長度錯誤',
+    'notempty'=>'未輸入'
+];
+
+if(!empty($articleedit->geterrorInfo())){  //檢查資料空白
+    $error = $articleedit->changeErrormessage($articleedit->geterrorInfo(),$errorMessage);
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    echo 2;
-    exit;
+    $userinfo = [];
 } else {
-    $con = $myarticle->getcon();
-
-    $checklogin = $myarticle->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $articleedit->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-$contentdata = $myarticle->auto_selectOne($newmyarticle['conid']);
+if ($userinfo === false) {
+    header('location: ./login.php');
+    exit;
+}
 
-if (!empty($contentdata)) {
-    unset($contentdata['uid']);
-    unset($contentdata['createtime']);
-    echo json_encode($contentdata,JSON_UNESCAPED_UNICODE);
+$conid = $newmyarticleinfo['editconid'];
+
+unset($newmyarticleinfo['editconid']);
+
+if ($articleedit->editContent($newmyarticleinfo,$conid) === 1) {
+    echo 1;
 } else {
     echo 0;
-    exit;
 }
 
 

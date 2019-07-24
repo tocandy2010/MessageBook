@@ -19,9 +19,9 @@ $loginflag = !empty($userinfo);
 
 $page = $_GET;
 
-$allowpostinfo = ['page'];
+$allowinfo = ['page'];
 
-$newpage = $index->auto_filter($page,$allowpostinfo);
+$newpage = $index->auto_filter($page,$allowinfo);
 
 if (!isset($newpage['page']) || is_null($newpage['page']) || !(is_numeric($newpage['page']))){
     $newpage['page'] = 1;
@@ -29,15 +29,19 @@ if (!isset($newpage['page']) || is_null($newpage['page']) || !(is_numeric($newpa
 
 $allcontent = $index->getAllContent('content');
 
-$page = new Pagetool(count($allcontent),1,2);
+$contentlength = 5;
 
-var_dump($page->show());
+$contentdata = $index->showContent($newpage['page'],$contentlength);
 
-$newdata = $index->useTaiwanTime($data,'createtime');
+$contentdata = $index->useTaiwanTime($contentdata,'createTime');
 
-$contentdata = $index->buildindex($newdata); 
+$page = new Pagetool(count($allcontent),$newpage['page'],$contentlength);
+
+$showpage = $page->show();
 
 $smarty->assign('loginflag',$loginflag);
+$smarty->assign('showpage',$showpage);
+$smarty->assign('pagenum',$newpage['page']);
 $smarty->assign('userinfo',$userinfo);
 $smarty->assign('contentdata',$contentdata);
 

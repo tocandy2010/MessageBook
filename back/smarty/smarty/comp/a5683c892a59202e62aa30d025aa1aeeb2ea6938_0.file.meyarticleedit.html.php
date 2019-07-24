@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 03:19:54
+/* Smarty version 3.1.33, created on 2019-07-24 11:40:25
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\meyarticleedit.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3660ba4f5641_80653604',
+  'unifunc' => 'content_5d38278933ecf3_46811791',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a5683c892a59202e62aa30d025aa1aeeb2ea6938' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\meyarticleedit.html',
-      1 => 1563844684,
+      1 => 1563961223,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d38278933ecf3_46811791 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -89,7 +89,8 @@ function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="title">標題</label>
                 <div class="col-md-4">
-                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md">
+                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md" value ='<?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['content'];?>
+'>
                     <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>10</span><span class='lenerror' id="titlelenerror">已到達文字上限</span></span>
                     <span class='errorred' id="titleInfo"></span>
                 </div>
@@ -99,7 +100,8 @@ function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
-                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"></textarea>
+                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"><?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['content'];?>
+</textarea>
                     <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>10</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
                     <span class='errorred' id="contentInfo"></span>
                 </div>
@@ -110,7 +112,7 @@ function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl)
                 <label class="col-md-4 control-label" for=""></label>
                 <div class="col-md-8">
                     <button id="articlesend" type='button' class="btn btn-success">修改</button>
-                    <a href='./index.php'><button id="" type='button' class="btn btn-danger">取消</button></a>
+                    <a href='./myarticle.php'><button id="" type='button' class="btn btn-danger">取消</button></a>
                 </div>
             </div>
         </fieldset>
@@ -118,9 +120,6 @@ function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl)
     </div>
     <?php echo '<script'; ?>
 >
-        let conid = null;
-        let titlemaxlen = 10; //title 最大字數限制
-        let contentmaxlen = 10; //content 最大字數限制  
         $().ready(function() {
             let res = ['title', 'content'];
 
@@ -130,55 +129,21 @@ function content_5d3660ba4f5641_80653604 (Smarty_Internal_Template $_smarty_tpl)
                 if (r != null) return decodeURI(r[2]);
                 return null;
             }
-            let getconid = getUrlParam('conid');
-            if (getconid !== null) {
-                $.ajax({
-                    url: '../../back/controller/myarticleeditback.php?conid='+getconid,
-                    type: "GET",
-                    dataType: "json",
-                    contentType: false,
-                    processData: false,
-                    success: function(result) {
-                        if (typeof(result) == 'object') {
-                            for (error of res) {
-                                $('#'+error+'text').val(result[error]);
-                            }
-                            let titlelength = $("#titletext").val().length;
-                            let contentlength = $("#contenttext").val().length;
-                            let contentnum = contentmaxlen - contentlength;
-                            let titlenum = titlemaxlen - titlelength;
-                            if (contentnum < 0) {
-                                $("#contentlength").html(0)
-                            } else {
-                                $("#contentlength").html(contentnum)
-                            }
-                            if (titlenum < 0) {
-                                $("#titlelength").html(0)
-                            } else {
-                                $("#titlelength").html(titlenum)
-                            }
-                            conid = getconid; //需要修改的id
-                        } else {
-                            $(window).attr('location', './index.php');
-                        }
-                    }
-                });
-            } else {
-                $(window).attr('location', './index.php');
-            }
-        });
+            getconid = getUrlParam('conid');
 
+        });
+        
         $("#articlesend").click(function() {
             let articleeditform = document.getElementById('articleeditform')
             let fd = new FormData(articleeditform);
-            fd.append('editconid', conid);
+            fd.append('editconid', getconid);
             let res = ['title', 'content', 'error'];
             for (error of res) {
                 $('#'+error+'Info').html("");
             }
             $.ajax({
-                url: "../../back/controller/article.php",
-                type: "POST",
+                url: "../../back/controller/myarticleeditback.php",
+                type: "post",
                 dataType: "json",
                 contentType: false,
                 processData: false,

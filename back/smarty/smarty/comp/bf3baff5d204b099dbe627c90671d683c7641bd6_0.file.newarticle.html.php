@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 03:23:13
+/* Smarty version 3.1.33, created on 2019-07-24 12:02:36
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\newarticle.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d366181b1b3b6_69457991',
+  'unifunc' => 'content_5d382cbc002505_34408364',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'bf3baff5d204b099dbe627c90671d683c7641bd6' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\newarticle.html',
-      1 => 1563844953,
+      1 => 1563962555,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d382cbc002505_34408364 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -99,7 +99,7 @@ function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl)
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
                     <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"></textarea>
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>10</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>100</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
                     <span class='errorred' id="contentInfo"></span>
                 </div>
             </div>
@@ -118,7 +118,6 @@ function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
 >
     $("#articlesend").click(function() {
-
             let articleform = document.getElementById('articleform')
             let fd = new FormData(articleform);
             let res = ['title', 'content','error'];
@@ -126,7 +125,7 @@ function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl)
                 $('#'+error+'Info').html("");
             }
             $.ajax({
-                url: "../../back/controller/article.php",
+                url: "../../back/controller/newarticleback.php",
                 type: "POST",
                 dataType: "json",
                 contentType: false,
@@ -140,7 +139,10 @@ function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl)
                     }else if(result == 1){
                         alert('成功發佈');
                         $(window).attr('location','./index.php');
-                    }else{
+                    }else if(result == 2){
+                        alert('請先登入會員');
+                        $(window).attr('location','./index.php');
+                    }else {
                         alert('失敗發佈');
                         $(window).attr('location','./login.php');
                     }
@@ -166,8 +168,8 @@ function content_5d366181b1b3b6_69457991 (Smarty_Internal_Template $_smarty_tpl)
         
         $('#contenttext').keyup(function(){
             let inplen = $('#contenttext').val();
-            if(inplen.length<=10){
-                $('#contentlength').html(10-inplen.length);
+            if(inplen.length<=100){
+                $('#contentlength').html(100-inplen.length);
                 $('#contentlenerror').attr("style", 'display:none');
                 contentflag = true; 
             }else{

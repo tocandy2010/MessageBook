@@ -1,33 +1,50 @@
 <?php
 
-require_once("../model/MyarticleModel.php");
+
 require_once("../smarty/smarty/public/Mysmarty.php");
+require_once("../model/ContentModel.php");
 
+$articleedit  = new ContentModel();
 $smarty = new Mysmarty();
-$myarticle  = new MyarticleModel();
 
-$myarticleinfo = $_GET;
+$articleeditinfo = $_GET;
 
-if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+$allowinfo = ['conid'];
+
+$newarticleeditinfo = $articleedit->auto_filter($articleeditinfo,$allowinfo);
+
+if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $con = $myarticle->getcon();
-
-    $checklogin = $myarticle->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $articleedit->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
+
+if (empty($userinfo)) {
+    header('location: ./login.php');
+    exit;
+}
+
+$contentinfo = $articleedit->getContent($newarticleeditinfo['conid']);
+
+if ($contentinfo === false) {
+    header('location: ./index.php');
+    exit;
+}
+
 
 $loginflag = !empty($userinfo);
 
 $smarty->assign('loginflag',$loginflag);
 
 $smarty->assign('userinfo',$userinfo);
+
+$smarty->assign('contentinfo',$contentinfo);
 
 $smarty->display('./message/meyarticleedit.html');
 

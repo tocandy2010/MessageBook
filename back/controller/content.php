@@ -8,43 +8,39 @@ $content  = new ContentModel();
 
 $contentinfo = $_GET;
 
-$newcontentinfo = $content->auto_filter($contentinfo);
+$allowinfo = ['conid'];
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
+$newcontentinfo = $content->auto_filter($contentinfo,$allowinfo);
+
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
 } else {
-    $con = $content->getcon();
-
-    $checklogin = $content->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $content->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
 $loginflag = !empty($userinfo);
 
-$data = $content->auto_selectOne($contentinfo['article']);
+$getcontent = $content->getContent($newcontentinfo['conid']);
 
-$con = $content->getcon();
+$getmessage = $content->getMessage( $newcontentinfo['conid'] );
 
-$getmessage = $content->getmessage($con,$newcontentinfo['article']);
+$getmessage = $content->useTaiwanTime($getmessage,'createtime');
 
 if (count($getmessage)>=1) {
-    $allmessage = $content->findwhosend($con,$getmessage);
-    $allmessage = $content->totaiwantime($allmessage,'createtime');
+    $allmessage = $getmessage;
 } else {
     $allmessage = [];
 }
 
-$smarty->assign('data',$data);
+$smarty->assign('content',$getcontent);
 
-$smarty->assign('conid',$contentinfo['article']);
-
-$smarty->assign('allmessage',$allmessage);
+$smarty->assign('getmessage',$getmessage);
 
 $smarty->assign('loginflag',$loginflag);
 

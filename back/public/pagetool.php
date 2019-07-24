@@ -18,6 +18,7 @@ class Pagetool{
 	}
 	
 	public function show(){
+
 		$cnt = ceil(($this->total/$this->perpage));  //得到總頁數
 		
 		$uri = $_SERVER["REQUEST_URI"];
@@ -51,7 +52,7 @@ class Pagetool{
 				array_push($nav,$right);
 			}
 		}
-		return implode("",$nav);
+		return $nav;
 		}
 	}
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 09:16:46
+/* Smarty version 3.1.33, created on 2019-07-24 10:23:36
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d365ffe9c2f79_26234192',
+  'unifunc' => 'content_5d37c128e68c45_48696037',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '81fec10df4cf1afc1b48d77271b9b4306526fb00' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\index.html',
-      1 => 1563844497,
+      1 => 1563935016,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d365ffe9c2f79_26234192 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d37c128e68c45_48696037 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -69,6 +69,11 @@ function content_5d365ffe9c2f79_26234192 (Smarty_Internal_Template $_smarty_tpl)
         .nowpage {
             color: red;
         }
+
+        #page {
+            position: absolute;
+            top:85%;
+        }
     </style>
 </head>
 
@@ -109,47 +114,58 @@ function content_5d365ffe9c2f79_26234192 (Smarty_Internal_Template $_smarty_tpl)
                             </tr>
                         </thead>
                         <tbody id='buildindex'>
-                            <?php echo $_smarty_tpl->tpl_vars['contentdata']->value;?>
-
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contentdata']->value, 'v', false, 'k');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
+?> 
+                            <tr>
+                                <td><a href = "../controller/content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+</a></td>
+                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
+</td>
+                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createTime'];?>
+</td>
+                            </tr>
+                            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
-
     <div class="container" id='page'>
-        <ul class="pagination" id='pageul'></ul>
+        <ul class="pagination">
+            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['showpage']->value, 'v', false, 'k');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
+?>
+                <?php if ($_smarty_tpl->tpl_vars['pagenum']->value !== $_smarty_tpl->tpl_vars['v']->value) {?>
+                    <li><a href="../controller/index.php?page=<?php echo $_smarty_tpl->tpl_vars['v']->value;?>
+"><?php echo $_smarty_tpl->tpl_vars['v']->value;?>
+</a></li>
+                <?php } else { ?>
+                    <li class="active"><a href="../controller/index.php?page=<?php echo $_smarty_tpl->tpl_vars['v']->value;?>
+"><?php echo $_smarty_tpl->tpl_vars['v']->value;?>
+</a></li>
+                <?php }?>
+            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        </ul>
     </div>
 
     <?php echo '<script'; ?>
 >
-
-        function showpage(page) {
-            function getUrlParam(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return decodeURI(r[2]);
-                return 1;
-            }
-            let pagenum = getUrlParam('page')
-            $.ajax({
-                url: '../../back/controller/page.php?page=' + pagenum,
-                type: "GET",
-                dataType: "html",
-                success: function (result) {
-                    $('#pageul').append(result)
-                }
-            });
-        }
-        function getUrlParam(name) {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return decodeURI(r[2]);
-            return 1;
-        }
-        showpage(getUrlParam('page'))
     <?php echo '</script'; ?>
 >
 

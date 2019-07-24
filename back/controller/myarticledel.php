@@ -1,39 +1,39 @@
 <?php
 
-require_once("../model/MyarticleModel.php");
+require_once("../model/ContentModel.php");
 
-$myarticle  = new MyarticleModel();
+$articledel  = new ContentModel();
 
-$myarticleinfo = $_GET;
+$articledelinfo = $_GET;
 
-$newmyarticle = $myarticle->auto_filter($myarticleinfo);
+$allowinfo = ['conid'];
+
+$newarticledelinfo = $articledel->auto_filter($articledelinfo,$allowinfo);
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    header("Location:./login.php");
+    $userinfo = [];
 } else {
-    $con = $myarticle->getcon();
-
-    $checklogin = $myarticle->checklogin($con,$_COOKIE['token']);
-
+    $checklogin = $articledel->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
-        $userinfo = $checklogin[0];
+        $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-$myarticleinfo = $myarticle->auto_selectOne($myarticleinfo['conid']);
-
-if ($myarticleinfo['uid'] == $userinfo['uid']) {
-    if ($myarticle->auto_update(array('status'=>$newmyarticle['status']),$myarticleinfo['conid'])==1) {
-        header('Location:./myarticle.php');
-        exit;
-    }
+if (empty($userinfo)) {
+    header('location: ./login.php');
+    exit;
 }
 
-header('Location:./login.php');
-exit;
+if ($articledel->delArticl($newarticledelinfo['conid']) == 1) {
+    echo 1;
+} else {
+    echo 0;
+}
+
+
 
 
 
