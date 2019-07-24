@@ -44,6 +44,12 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
 
 $error = [];
 
+if ($editpassword->checkpassword($editpasswordinfo['password'],$userinfo['password'])) {  //確認舊密碼
+    $error['password'] = '請重新設定新密碼';
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 if (!$editpassword->checkpassword($editpasswordinfo['oldpassword'],$userinfo['password'])) {  //確認舊密碼
     $error['oldpassword'] = '舊密碼錯誤';
 }

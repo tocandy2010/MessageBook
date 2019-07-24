@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 22:28:38
-  from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\index.html' */
+/* Smarty version 3.1.33, created on 2019-07-25 00:39:50
+  from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\myarticle.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d386b16199e30_60352593',
+  'unifunc' => 'content_5d3889d615ec47_87448151',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'bb91ebe74a8064eec883d54a3ad4d320b0483d77' => 
+    '46c79df95ee072508f84d9a4bfae297d622ab6ae' => 
     array (
-      0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\index.html',
-      1 => 1563978439,
+      0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\myarticle.html',
+      1 => 1563986382,
       2 => 'file',
     ),
   ),
@@ -20,12 +20,12 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d386b16199e30_60352593 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3889d615ec47_87448151 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>留言板首頁</title>
+    <title>我的文章</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -44,35 +44,19 @@ function content_5d386b16199e30_60352593 (Smarty_Internal_Template $_smarty_tpl)
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
         .row.content {
-            height: 880px
+            height: 914px
         }
 
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
             background-color: #f1f1f1;
-            height: 104%;
+            height: 100%;
         }
 
         #messagetable {
             padding: 30px;
             font-size: 20px;
-        }
-
-        #page {
-            width: 40%;
-            position: absolute;
-            top: 90%;
-            left: 40%
-        }
-
-        .nowpage {
-            color: red;
-        }
-
-        #page {
-            position: absolute;
-            top:85%;
         }
     </style>
 </head>
@@ -108,67 +92,64 @@ function content_5d386b16199e30_60352593 (Smarty_Internal_Template $_smarty_tpl)
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>標題</th>
-                                <th>發佈者</th>
+                                <th>主題</th>
                                 <th>發佈時間</th>
+                                <th>修改</th>
+                                <th>刪除</th>
                             </tr>
                         </thead>
-                        <tbody id='buildindex'>
+                        <tbody id='buildmyarticle'>
                             <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contentdata']->value, 'v', false, 'k');
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['mycontent']->value, 'v', false, 'k');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
 ?> 
                             <tr>
-                                <td><a href = "../controller/content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+                                <td><a href = "./content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
 "><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
 </a></td>
-                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
+                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
 </td>
-                                <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createTime'];?>
-</td>
+                                <td><a href="./myarticleedit.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><button type="button" class="btn btn-success">編輯</button></a></td>
+                                <td><button type="button" class="btn btn-danger" data-title= "<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+" onclick="del(this,<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+)">刪除</button></td>
                             </tr>
                             <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
-    <div class="container" id='page'>
-        <ul class="pagination">
-            <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['showpage']->value, 'v', false, 'k');
-if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
-?>
-                <?php if ($_smarty_tpl->tpl_vars['pagenum']->value !== $_smarty_tpl->tpl_vars['v']->value) {?>
-                    <li><a href="../controller/index.php?page=<?php echo $_smarty_tpl->tpl_vars['v']->value;?>
-"><?php echo $_smarty_tpl->tpl_vars['v']->value;?>
-</a></li>
-                <?php } else { ?>
-                    <li class="active"><a href="../controller/index.php?page=<?php echo $_smarty_tpl->tpl_vars['v']->value;?>
-"><?php echo $_smarty_tpl->tpl_vars['v']->value;?>
-</a></li>
-                <?php }?>
-            <?php
-}
-}
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-        </ul>
-    </div>
-
     <?php echo '<script'; ?>
 >
+        function del(obj,id){
+            let title = obj.getAttribute('data-title');
+            if(confirm('確認刪除文章['+title+']嗎?')){
+                $.ajax({
+                    url: '../../back/controller/myarticledel.php?conid='+id,
+                    type: "GET",
+                    dataType: "html",
+                    success: function (result) {
+                        if(result == 1){
+                            $(window).attr('location', '../../back/controller/myarticle.php');
+                        }else{
+                            alert('刪除失敗')
+                        }
+                    }
+                });
+            }
+        }
+            
+
     <?php echo '</script'; ?>
 >
-
 </body>
 
 </html><?php }

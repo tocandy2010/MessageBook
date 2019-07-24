@@ -87,9 +87,9 @@
         </div>
     </div>
     <script>
-        function del(obj,id,name){
-            alert(obj.getAttribute('data-title'));
-            if(confirm('確認刪除'+name+'"嗎?')){
+        function del(obj,id){
+            let title = obj.getAttribute('data-title');
+            if(confirm('確認刪除文章['+title+']嗎?')){
                 $.ajax({
                     url: '../../back/controller/myarticledel.php?conid='+id,
                     type: "GET",
@@ -104,6 +104,7 @@
                 });
             }
         }
+            
 
     </script>
 </body>

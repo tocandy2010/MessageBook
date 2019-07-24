@@ -32,7 +32,7 @@ if (empty($userinfo)) {
 
 $contentinfo = $articleedit->getContent($newarticleeditinfo['conid']);
 
-if ($contentinfo === false) {
+if($contentinfo['uid'] !== $userinfo['uid'] || $contentinfo === false || $contentinfo['status'] === 0){
     header('location: ./index.php');
     exit;
 }

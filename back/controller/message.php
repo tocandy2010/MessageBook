@@ -10,7 +10,6 @@ $allowinfo = ['message','conid'];
 
 $newmessageinfo = $message->auto_filter($messageinfo,$allowinfo);
 
-
 $verification = [
     'message'=>array('notempty'=>'0'),
     'message'=>array('length'=>'1,255'),

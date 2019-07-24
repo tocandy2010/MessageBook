@@ -11,10 +11,8 @@ $allowinfo = ['userName','email'];
 $neweditinfinfo = $editinfo->auto_filter($editinfinfo,$allowinfo);
 
 $verification = [
-    'userName'=>array('notempty'=>'0'),
-    'userName'=>array('length'=>'1,100'),
-    'eamil'=>array('notempty'=>'0'),
-    'email'=>array('email'=>'0'),
+    'userName'=>array('notempty'=>'0','length'=>'1,100'),
+    'eamil'=>array('notempty'=>'0','email'=>'0'),
 ];
 
 $editinfo->auto_verification($neweditinfinfo,$verification);
@@ -22,7 +20,7 @@ $editinfo->auto_verification($neweditinfinfo,$verification);
 $errorMessage = [
     'length'=>'資料長度錯誤',
     'notempty'=>'未輸入',
-    'email'=>'未輸入'
+    'email'=>'請輸入正確email格式'
 ];
 
 if(!empty($editinfo->geterrorInfo())){  //檢查資料空白

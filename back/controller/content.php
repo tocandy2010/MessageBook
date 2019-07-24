@@ -12,6 +12,11 @@ $allowinfo = ['conid'];
 
 $newcontentinfo = $content->auto_filter($contentinfo,$allowinfo);
 
+if (is_null($contentinfo['conid']) || !is_numeric($contentinfo['conid'])) {
+    header('location: ./index.php');
+    exit;
+}
+
 if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
 } else {
@@ -27,6 +32,11 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
 $loginflag = !empty($userinfo);
 
 $getcontent = $content->getContent($newcontentinfo['conid']);
+
+if ($getcontent === false) {
+    header('location: ./index.php');
+    exit;
+}
 
 $getmessage = $content->getMessage( $newcontentinfo['conid'] );
 

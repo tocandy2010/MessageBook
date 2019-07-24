@@ -27,6 +27,12 @@ if (empty($userinfo)) {
     exit;
 }
 
+$content = $articledel->getContent($newarticledelinfo['conid']);
+if ($content['uid'] !== $userinfo['uid']) {
+    echo 0;
+    exit;
+}
+
 if ($articledel->delArticl($newarticledelinfo['conid']) == 1) {
     echo 1;
 } else {

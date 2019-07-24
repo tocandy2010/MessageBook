@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 3.1.33, created on 2019-07-24 22:51:45
+  from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d387081b3ba32_95637980',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'e11ccea03b17fd016c115bcd2a49504ec78f4e3c' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
+      1 => 1563979904,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,8 +29,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -73,16 +100,17 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    {if $loginflag}
-                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
+                    <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
                     <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
-                    {else}
+                    <?php } else { ?>
                     <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
                     <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
-                    {/if}
+                    <?php }?>
                 </ul>
             </div>
         </div>
@@ -92,9 +120,11 @@
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2>{$content['title']}</h2>
+                    <h2><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
+</h2>
                     <hr>
-                    <p>{$content['content']}</p>
+                    <p><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
+</p>
                 </div>
                 <hr>
                 <div id='leavemessage'>
@@ -106,7 +136,8 @@
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
                                     <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
-                                    <input type="hidden" name="conid" value="{$content['conid']}">
+                                    <input type="hidden" name="conid" value="<?php echo $_smarty_tpl->tpl_vars['content']->value['conid'];?>
+">
                                     <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
                                     <span id='messageInfo' class='errorred' class="help-block"></span>
                                 </div>
@@ -127,20 +158,32 @@
                 </div>
 
                 <div class="container">
-                    {foreach from=$getmessage key=$k item=$v}
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['getmessage']->value, 'v', false, 'k');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
+?>
                     <div class="panel panel-default">
-                        <div class="panel-heading">{$v['userName']}({$v['account']})<span
-                                class='messagetime'>{$v['createtime']}</span></div>
-                        <div class="panel-body">{$v['message']}</div>
+                        <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
+(<?php echo $_smarty_tpl->tpl_vars['v']->value['account'];?>
+)<span
+                                class='messagetime'><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
+</span></div>
+                        <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['v']->value['message'];?>
+</div>
                     </div>
-                    {/foreach}
+                    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 </div>
 
             </div>
             <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
     </div>
-    <script>
+    <?php echo '<script'; ?>
+>
         $("#messagesend").click(function() {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
@@ -189,7 +232,9 @@
                 $('#messagesend').attr('disabled', true)
             }
         }
-    </script>
+    <?php echo '</script'; ?>
+>
 </body>
 
-</html>
+</html><?php }
+}
