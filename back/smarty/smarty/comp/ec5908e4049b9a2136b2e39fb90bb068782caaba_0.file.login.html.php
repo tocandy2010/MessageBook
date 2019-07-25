@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 19:03:18
+/* Smarty version 3.1.33, created on 2019-07-25 16:48:08
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\login.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d373dd604d165_87871304',
+  'unifunc' => 'content_5d39c1284b8303_78610799',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ec5908e4049b9a2136b2e39fb90bb068782caaba' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\login.html',
-      1 => 1563900860,
+      1 => 1564066083,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d39c1284b8303_78610799 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +40,8 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
         .errorred {
             color: darkred;
         }
+
+
     </style>
 </head>
 
@@ -52,8 +54,6 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -66,7 +66,7 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
             </div>
         </div>
     </nav>
-    <form class="form-horizontal" action='' method='' id='loginform'>
+    <form class="form-horizontal"  id='loginform'>
         <fieldset>
 
             <!-- Form Name -->
@@ -78,10 +78,10 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">帳號</label>
                 <div class="col-md-4">
-                    <input id="" name="account" type="text" placeholder=""
+                    <input id="account" name="account" type="text" placeholder=""
                         value="<?php echo $_smarty_tpl->tpl_vars['account']->value;?>
 " class="form-control input-md">
-                    <span class='errorred' id='accountInfo'></span>
+                    <span class='errorred' id='accountInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -89,8 +89,8 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">密碼</label>
                 <div class="col-md-4">
-                    <input id="" name="password" type="password" placeholder="" class="form-control input-md">
-                    <span class='errorred' id='passwordInfo'></span>
+                    <input id="password" name="password" type="password" placeholder="" class="form-control input-md">
+                    <span class='errorred' id='passwordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -98,9 +98,9 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
                 <label class="col-md-4 control-label" for="appendedtext">驗證碼</label>
                 <div class="col-md-3">
                     <div class="input-group">
-                        <input id="appendedtext" name="vcode" class="form-control" type="text">
-                        <span class="input-group-addon"><img id='vcode' src='../public/vcode.php'></span>
-                        <span class='errorred' id='vcodeInfo'></span>
+                        <input id="vcode" name="vcode" class="form-control" type="text">
+                        <span class="input-group-addon"><img id='vcodeimg' src='../public/vcode.php'></span>
+                        <span class='errorred' id='vcodeInfo'>點擊換圖</span>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="loginsend" type='button' class="btn btn-success">登入</button>
                     <a href='./reg.php'><button id="" type='button' name="" class="btn btn-info">註冊</button></a>
-                    <span class='errorred' id='errorInfo'></span>
+                    <span class='errorred' id='errorInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -133,16 +133,26 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
 >
 
-        $('#vcode').click(function (ev) {
+        $('#vcodeimg').click(function (ev) {
             this.src = '../public/vcode.php?' + Math.random();
         })
 
         $("#loginsend").click(function () {
+
+            let account = $('#account').val();
+            let password = $('#account').val();
+            let vcode = $('#account').val();
+
+            if(account === "" || password === ""|| vcode === ""){
+                $('#errorInfo').html('請填完所有欄位');
+                return false;
+            }
+
             let loginform = document.getElementById('loginform')
             let fd = new FormData(loginform);
             let res = ['error', 'vcode','password','account'];
             for (error of res) {
-                $('#'+error+'Info').html("");
+                $('#'+error+'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/loginback.php",
@@ -158,6 +168,8 @@ function content_5d373dd604d165_87871304 (Smarty_Internal_Template $_smarty_tpl)
                         }
                     } else if (result == 1) {
                         $(window).attr('location', '../../back/controller/index.php');
+                    } else  if (result == 2) {
+                        $(`#errorInfo`).html("目前已登入")
                     } else {
                         $(`#errorInfo`).html("登入失敗");
                     }

@@ -3,6 +3,18 @@
 require_once("../model/ContentModel.php");
 require_once("../public/Filterword.php");
 
+if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
+    echo 2 ;
+    exit;
+} else {
+    $checklogin = $newarticle->getUser($_COOKIE['token']);
+    if (empty($checklogin)) {
+        $userinfo = [];
+    } else {
+        $userinfo = $checklogin;
+        unset($userinfo['token']);
+    }
+}
 
 $newarticle  = new ContentModel();
 
@@ -21,18 +33,7 @@ $verification = [
 
 $newarticle->auto_verification($newarticleinfo,$verification);
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    echo 2 ;
-    exit;
-} else {
-    $checklogin = $newarticle->getUser($_COOKIE['token']);
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin;
-        unset($userinfo['token']);
-    }
-}
+
 
 $errorMessage = [
     'length'=>'資料長度錯誤',

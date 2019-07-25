@@ -8,6 +8,7 @@ $login  = new Member();
 
 $logininfo = $_POST;
 
+
 $allowpostinfo = ['account','password','vcode','remember'];
 
 $newlogininfo = $login->auto_filter($logininfo,$allowpostinfo);

@@ -26,6 +26,15 @@
             display: none;
             color: darkred;
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -34,11 +43,11 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     {if $loginflag}
-                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -83,6 +92,7 @@
                 <div class="col-md-8">
                     <button id="articlesend" type='button' class="btn btn-success">修改</button>
                     <a href='./myarticle.php'><button id="" type='button' class="btn btn-danger">取消</button></a>
+                    <span class='errorred' id="errorInfo">&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -100,8 +110,9 @@
                 return null;
             }
             getconid = getUrlParam('conid');
+
             let titlelen = $('#titletext').val().length;
-            $('#titlelength').html(allowtitlelen - titlelen);
+            $('#titlelength').html(30 - titlelen);
             let contentlen = $('#contenttext').val().length;
             $('#contentlength').html(1000 - contentlen);
 
@@ -124,6 +135,9 @@
             }else{
                 $('#contentInfo').html("&nbsp");
             }
+
+            
+
 
             let articleeditform = document.getElementById('articleeditform')
             let fd = new FormData(articleeditform);

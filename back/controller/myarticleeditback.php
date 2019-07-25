@@ -58,6 +58,12 @@ if ($content['uid'] !== $userinfo['uid'] ) {
 $newmyarticleinfo['title'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['title']);
 $newmyarticleinfo['content'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['content']);
 
+if ($content['title'] === $newmyarticleinfo['title'] && $content['content'] === $newmyarticleinfo['content']) {
+    $error['error'] = "未做任何修改";
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $conid = $newmyarticleinfo['editconid'];
 
 unset($newmyarticleinfo['editconid']);

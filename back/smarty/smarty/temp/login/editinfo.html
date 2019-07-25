@@ -15,6 +15,15 @@
         .errorred {
             color: darkred;
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -23,11 +32,11 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     {if $loginflag}
-                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -95,6 +104,12 @@
 
             if(userName.length>20){
                 $('#userNameInfo').html("超過字數上限");
+                return false;
+            }
+
+            let emailpatt = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            if(email.search(emailpatt) === -1){
+                $('#emailInfo').html("請輸入正確的eamil");
                 return false;
             }
 

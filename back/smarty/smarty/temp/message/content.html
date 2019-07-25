@@ -89,6 +89,15 @@
             top:-10px;
             left:10px
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -97,11 +106,11 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     {if $loginflag}
-                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -170,7 +179,13 @@
     </div>
     <script>
         $("#messagesend").click(function() {
-            let messageform = document.getElementById('messageform')
+            let messageform = document.getElementById('messageform');
+            let messagetext = $('#messagetext').val();
+            if(messagetext === ""){
+                $('#messageInfo').html('請輸入留言');
+                return false;
+            }
+
             let fd = new FormData(messageform);
             let res = ['message'];
             for (error of res) {

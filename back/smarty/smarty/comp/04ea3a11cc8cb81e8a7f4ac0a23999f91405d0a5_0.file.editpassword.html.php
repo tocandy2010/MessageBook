@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 17:05:03
+/* Smarty version 3.1.33, created on 2019-07-25 16:20:13
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editpassword.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d38739f9d3819_50121091',
+  'unifunc' => 'content_5d39ba9d081388_04231212',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '04ea3a11cc8cb81e8a7f4ac0a23999f91405d0a5' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editpassword.html',
-      1 => 1563900860,
+      1 => 1564064412,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d39ba9d081388_04231212 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +40,15 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
         .errorred {
             color: darkred;
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -48,12 +57,12 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -77,10 +86,10 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="textinput">舊密碼</label>
                 <div class="col-md-4">
-                    <input id="textinput" name="oldpassword" type="password" placeholder=""
+                    <input id="oldpassword" name="oldpassword" type="password" placeholder=""
                         class="form-control input-md">
                     <span class="help-block">請輸入舊密碼</span>
-                    <span class='errorred' id='oldpasswordInfo'></span>
+                    <span class='errorred' id='oldpasswordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -88,9 +97,9 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">新密碼</label>
                 <div class="col-md-4">
-                    <input id="" name="password" type="password" placeholder="" class="form-control input-md">
+                    <input id="password" name="password" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">請輸入6~20位數 英文或數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
-                    <span class='errorred' id='passwordInfo'></span>
+                    <span class='errorred' id='passwordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -100,7 +109,7 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-4">
                     <input id="" name="repassword" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">與新密碼相同</span>
-                    <span class='errorred' id='repasswordInfo'></span>
+                    <span class='errorred' id='repasswordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -110,7 +119,7 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="regsend" type='button' class="btn btn-info">確認修改</button>
                     <a href='./editreg.php'><button type='button' class="btn btn-danger">取消</button></a>
-                    <span class='errorred' class id='regerror'></span>
+                    <span class='errorred' class id='regerror'>&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -122,11 +131,20 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
         /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
         必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
+            let oldpassword = $('#oldpassword').val();
+            let password = $('#password').val();
+            let repassword = $('#repassword').val();
             let regform = document.getElementById('regform')
             let fd = new FormData(regform);
             let res = ['oldpassword', 'password', 'repassword'];
+
+            if(oldpassword ==="" || password ==="" || repassword ===""){
+                $('#regerror').html("還有欄位位沒填");
+                return false;
+            }
+
             for (error of res) {
-                $('#'+error+'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/editpasswordback.php",
@@ -138,7 +156,7 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
                 success: function (result) {
                     if (typeof (result) == 'object') {
                         for (error of res) {
-                            $('#'+error+'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result[error]);
                         }
                     } else if (result == '1') {
                         alert('修改成功');
@@ -150,6 +168,25 @@ function content_5d38739f9d3819_50121091 (Smarty_Internal_Template $_smarty_tpl)
                 }
             });
         });
+
+        $('#password').keyup(function () {
+            checksymbol(this);
+        })
+
+        function checksymbol(obj) {
+            let patt = /[^a-zA-Z0-9]/;
+            let strlen = $(obj).val();
+            let flag = patt.test(obj.value);
+            $('#regsend').attr('disabled', flag);
+            if (flag === true) {
+                $(obj).next().attr('style', 'color:darkred')
+            } else {
+                $(obj).next().attr('style', "color:gray")
+            }
+        }
+
+
+
     <?php echo '</script'; ?>
 >
 </body>

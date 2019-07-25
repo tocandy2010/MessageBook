@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 17:05:11
+/* Smarty version 3.1.33, created on 2019-07-25 16:30:43
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editinfo.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3873a712ddb2_22258667',
+  'unifunc' => 'content_5d39bd13c33566_18477449',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7a5574b840476c039592e4aecbbe19917cbef353' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editinfo.html',
-      1 => 1563900860,
+      1 => 1564065042,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d39bd13c33566_18477449 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +40,15 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
         .errorred {
             color: darkred;
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -48,12 +57,12 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -77,11 +86,11 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="textinput">姓名</label>
                 <div class="col-md-4">
-                    <input id="textinput" name="userName" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+                    <input id="userName" name="userName" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
 " placeholder=""
                         class="form-control input-md">
-                    <span class="help-block">請輸入姓名</span>
-                    <span class='errorred' id='userNameInfo'></span>
+                    <span class="help-block">請輸入姓&nbsp&nbsp名最大字數限制20個字</span>
+                    <span class='errorred' id='userNameInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -89,11 +98,11 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">email</label>
                 <div class="col-md-4">
-                    <input id="" name="email" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['email'];?>
+                    <input id="email" name="email" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['email'];?>
 " placeholder=""
                         class="form-control input-md">
                     <span class="help-block">ex:example@com</span>
-                    <span class='errorred' id='emailInfo'></span>
+                    <span class='errorred' id='emailInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -103,7 +112,7 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="regsend" type='button' class="btn btn-info">確認修改</button>
                     <a href='./editreg.php'><button type='button' class="btn btn-danger">取消</button></a>
-                    <span class='errorred' id='errorInfo'></span>
+                    <span class='errorred' id='errorInfo'>&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -115,11 +124,29 @@ function content_5d3873a712ddb2_22258667 (Smarty_Internal_Template $_smarty_tpl)
         /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
         必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
+            let userName = $('#userName').val();
+            let email = $('#email').val();
+            if(userName === "" || email === ""){
+                $('#errorInfo').html("還有欄位未填");
+                return false;
+            }
+
+            if(userName.length>20){
+                $('#userNameInfo').html("超過字數上限");
+                return false;
+            }
+
+            let emailpatt = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+            if(email.search(emailpatt) === -1){
+                $('#emailInfo').html("請輸入正確的eamil");
+                return false;
+            }
+
             let editinfoform = document.getElementById('editinfoform')
             let fd = new FormData(editinfoform);
             let res = ['email', 'userName', 'error'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/editinfoback.php",

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 22:51:45
+/* Smarty version 3.1.33, created on 2019-07-25 22:18:02
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d387081b3ba32_95637980',
+  'unifunc' => 'content_5d39ba1a765617_36629416',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e11ccea03b17fd016c115bcd2a49504ec78f4e3c' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1563979904,
+      1 => 1564064282,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d39ba1a765617_36629416 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -86,8 +86,44 @@ function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl)
 
         .messagetime {
             display: inline-block;
-            width: 90%;
+            width: 100%;
             text-align: right
+        }
+
+        #showcontent {
+            word-wrap: break-word; 
+            word-break: normal;
+            width:100%;
+            font-size: 25px;
+        }
+        #showtitle {
+            text-align: center;
+            width:100%;
+            font-size: 30px;    
+            padding: 20px 0px 0px 0px;         
+        }
+
+        #messagenum {
+            text-align: center;
+            font-family:fantasy;
+            font-size: 18px;
+            padding: 5px;        
+        }
+
+        #reback {
+            width: 90px;
+            position: absolute;
+            top:-10px;
+            left:10px
+        }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
         }
     </style>
 </head>
@@ -97,12 +133,12 @@ function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -120,10 +156,10 @@ function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl)
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
-</h2>
+                    <p id='showtitle' style="font-family:sans-serif;"><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
+</p>
                     <hr>
-                    <p><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
+                    <p id='showcontent'><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
 </p>
                 </div>
                 <hr>
@@ -138,8 +174,8 @@ function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl)
                                     <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
                                     <input type="hidden" name="conid" value="<?php echo $_smarty_tpl->tpl_vars['content']->value['conid'];?>
 ">
-                                    <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
-                                    <span id='messageInfo' class='errorred' class="help-block"></span>
+                                    <span class="help-block">最大字數限制<span id='messagelength'>100</span></span>
+                                    <span id='messageInfo' class='errorred' class="help-block">&nbsp</span>
                                 </div>
                             </div>
 
@@ -156,7 +192,9 @@ function content_5d387081b3ba32_95637980 (Smarty_Internal_Template $_smarty_tpl)
                         </fieldset>
                     </form>
                 </div>
-
+                <p id='messagenum'><?php echo $_smarty_tpl->tpl_vars['messagenum']->value;?>
+則留言</p>
+                <hr/>
                 <div class="container">
                     <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['getmessage']->value, 'v', false, 'k');
@@ -185,11 +223,17 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     <?php echo '<script'; ?>
 >
         $("#messagesend").click(function() {
-            let messageform = document.getElementById('messageform')
+            let messageform = document.getElementById('messageform');
+            let messagetext = $('#messagetext').val();
+            if(messagetext === ""){
+                $('#messageInfo').html('請輸入留言');
+                return false;
+            }
+
             let fd = new FormData(messageform);
             let res = ['message'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/message.php",
@@ -205,33 +249,36 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         }
                     } else if (result == 1) {
                         location.reload();
-                    } else {
+                    } else if (result == 2) {
+                        alert('請登入會員')
+                        $(window).attr('location', '../../back/controller/login.php');
+                    }else{
                         alert('留言失敗');
                     }
                 }
             });
         });
 
-        $('#messagetext').keyup(countmessagelen);
+        $('#messagetext').keyup(function(){
+            let maxmessagelen = 100;
+            let inplen = $('#messagetext').val();
+            if (inplen.length <= maxmessagelen) {
+                $('#messagelength').html(maxmessagelen - inplen.length);
+                $('#messagelenerror').attr("style", 'display:none');
+                $('#messagesend').attr('disabled', false)
+            } else {
+                $('#messagelength').html(maxmessagelen - inplen.length);
+                $('#messagelenerror').attr("style", 'display:inline-block');
+                $('#messagesend').attr('disabled', true)
+            }
+        });
 
         $('#resetmessage').click(function(){
-            $('#messagelength').html(10);
+            $('#messagelength').html(100);
             $('#messagesend').attr('disabled', false);
             $('#messagelenerror').attr("style", 'display:none');
         })
 
-        function countmessagelen() {
-            let inplen = $('#messagetext').val();
-            if (inplen.length <= 10) {
-                $('#messagelength').html(10 - inplen.length);
-                $('#messagelenerror').attr("style", 'display:none');
-                $('#messagesend').attr('disabled', false)
-            } else {
-                $('#messagelength').html(0);
-                $('#messagelenerror').attr("style", 'display:inline-block');
-                $('#messagesend').attr('disabled', true)
-            }
-        }
     <?php echo '</script'; ?>
 >
 </body>

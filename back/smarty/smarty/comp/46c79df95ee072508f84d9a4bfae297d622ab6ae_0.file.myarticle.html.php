@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-25 00:39:50
+/* Smarty version 3.1.33, created on 2019-07-26 00:25:57
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\myarticle.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3889d615ec47_87448151',
+  'unifunc' => 'content_5d39d815e6b2a9_09402711',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '46c79df95ee072508f84d9a4bfae297d622ab6ae' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\myarticle.html',
-      1 => 1563986382,
+      1 => 1564071957,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3889d615ec47_87448151 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d39d815e6b2a9_09402711 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -58,6 +58,28 @@ function content_5d3889d615ec47_87448151 (Smarty_Internal_Template $_smarty_tpl)
             padding: 30px;
             font-size: 20px;
         }
+
+        #showtitle {
+            width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        #user {
+            font-size: 15px;
+            color: white;
+            position: relative;
+            top: 15px;
+            left: 800%;
+            cursor: default;
+        }
+
+        .aaa{
+            background-color: red;
+        }
     </style>
 </head>
 
@@ -66,12 +88,12 @@ function content_5d3889d615ec47_87448151 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id='user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -103,18 +125,20 @@ function content_5d3889d615ec47_87448151 (Smarty_Internal_Template $_smarty_tpl)
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['mycontent']->value, 'v', false, 'k');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
-?> 
+?>
                             <tr>
-                                <td><a href = "./content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
-"><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
-</a></td>
+                                <td style="width:50%"><a href="./content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><span
+                                            id='showtitle'><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+</span></a></td>
                                 <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createtime'];?>
 </td>
                                 <td><a href="./myarticleedit.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
-"><button type="button" class="btn btn-success">編輯</button></a></td>
-                                <td><button type="button" class="btn btn-danger" data-title= "<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
-" onclick="del(this,<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
-)">刪除</button></td>
+"><button type="button"
+                                            class="btn btn-success">編輯</button></a></td>
+                                <td ><span class='aaa' data-title="<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+" data-conid="<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><button type="button" class="btn btn-danger">刪除</button><span></span></td>
                             </tr>
                             <?php
 }
@@ -129,24 +153,31 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     </div>
     <?php echo '<script'; ?>
 >
-        function del(obj,id){
-            let title = obj.getAttribute('data-title');
-            if(confirm('確認刪除文章['+title+']嗎?')){
+
+        $(".aaa").click(function () {
+            let title = this.getAttribute('data-title');
+            let conid = this.getAttribute('data-conid');
+            if (confirm('確認刪除文章[' + title + ']嗎?')) {
                 $.ajax({
-                    url: '../../back/controller/myarticledel.php?conid='+id,
+                    url: '../../back/controller/myarticledel.php?conid=' + conid,
                     type: "GET",
                     dataType: "html",
                     success: function (result) {
-                        if(result == 1){
+                        if (result == 1) {
                             $(window).attr('location', '../../back/controller/myarticle.php');
-                        }else{
+                        } else if (result == 2) {
+                            alert('請先登入')
+                            $(window).attr('location', '../../back/controller/login.php');
+                        } else {
                             alert('刪除失敗')
                         }
                     }
                 });
             }
-        }
-            
+        })
+
+
+
 
     <?php echo '</script'; ?>
 >
