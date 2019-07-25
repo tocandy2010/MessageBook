@@ -31,6 +31,15 @@
             padding: 30px;
             font-size: 20px;
         }
+
+        #showtitle {
+            width:90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
     </style>
 </head>
 
@@ -71,12 +80,15 @@
                             </tr>
                         </thead>
                         <tbody id='buildmyarticle'>
-                            {foreach from=$mycontent key=$k item=$v} 
+                            {foreach from=$mycontent key=$k item=$v}
                             <tr>
-                                <td><a href = "./content.php?conid={$v['conid']}">{$v['title']}</a></td>
+                                <td style="width:50%"><a href="./content.php?conid={$v['conid']}"><span
+                                            id='showtitle'>{$v['title']}</span></a></td>
                                 <td>{$v['createtime']}</td>
-                                <td><a href="./myarticleedit.php?conid={$v['conid']}"><button type="button" class="btn btn-success">編輯</button></a></td>
-                                <td><button type="button" class="btn btn-danger" data-title= "{$v['title']}" onclick="del(this,{$v['conid']})">刪除</button></td>
+                                <td><a href="./myarticleedit.php?conid={$v['conid']}"><button type="button"
+                                            class="btn btn-success">編輯</button></a></td>
+                                <td><button type="button" class="btn btn-danger" data-title="{$v['title']}"
+                                        onclick="del(this,{$v['conid']})">刪除</button></td>
                             </tr>
                             {/foreach}
                         </tbody>
@@ -87,24 +99,27 @@
         </div>
     </div>
     <script>
-        function del(obj,id){
+        function del(obj, id) {
             let title = obj.getAttribute('data-title');
-            if(confirm('確認刪除文章['+title+']嗎?')){
+            if (confirm('確認刪除文章[' + title + ']嗎?')) {
                 $.ajax({
-                    url: '../../back/controller/myarticledel.php?conid='+id,
+                    url: '../../back/controller/myarticledel.php?conid=' + id,
                     type: "GET",
                     dataType: "html",
                     success: function (result) {
-                        if(result == 1){
+                        if (result == 1) {
                             $(window).attr('location', '../../back/controller/myarticle.php');
-                        }else{
+                        } else if (result == 2) {
+                            alert('請先登入')
+                            $(window).attr('location', '../../back/controller/login.php');
+                        } else {
                             alert('刪除失敗')
                         }
                     }
                 });
             }
         }
-            
+
 
     </script>
 </body>

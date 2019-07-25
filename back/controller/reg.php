@@ -1,10 +1,10 @@
 <?php
 
-require_once("../model/RegModel.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
+require_once("../model/Member.php");
 
+$reg  = new Member();
 $smarty = new Mysmarty();
-$reg  = new RegModel();
 
 
 $userinfo = [];

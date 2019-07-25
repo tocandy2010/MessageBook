@@ -23,7 +23,7 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
 }
 
 if (empty($userinfo)) {
-    header('location: ./login.php');
+    echo 2;
     exit;
 }
 

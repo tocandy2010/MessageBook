@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 11:29:08
+/* Smarty version 3.1.33, created on 2019-07-25 12:38:48
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editinfo.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3824e49f2b83_55996168',
+  'unifunc' => 'content_5d3986b8878690_94586985',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'c5eef965c4378ff0631987041cf35c50f335d064' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editinfo.html',
-      1 => 1563960496,
+      1 => 1564051120,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3824e49f2b83_55996168 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3986b8878690_94586985 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -77,11 +77,11 @@ function content_5d3824e49f2b83_55996168 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="textinput">姓名</label>
                 <div class="col-md-4">
-                    <input id="textinput" name="userName" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+                    <input id="userName" name="userName" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
 " placeholder=""
                         class="form-control input-md">
-                    <span class="help-block">請輸入姓名</span>
-                    <span class='errorred' id='userNameInfo'></span>
+                    <span class="help-block">請輸入姓&nbsp&nbsp名最大字數限制20個字</span>
+                    <span class='errorred' id='userNameInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -89,11 +89,11 @@ function content_5d3824e49f2b83_55996168 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">email</label>
                 <div class="col-md-4">
-                    <input id="" name="email" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['email'];?>
+                    <input id="email" name="email" type="text" value="<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['email'];?>
 " placeholder=""
                         class="form-control input-md">
                     <span class="help-block">ex:example@com</span>
-                    <span class='errorred' id='emailInfo'></span>
+                    <span class='errorred' id='emailInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -103,7 +103,7 @@ function content_5d3824e49f2b83_55996168 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="regsend" type='button' class="btn btn-info">確認修改</button>
                     <a href='./editreg.php'><button type='button' class="btn btn-danger">取消</button></a>
-                    <span class='errorred' id='errorInfo'></span>
+                    <span class='errorred' id='errorInfo'>&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -115,11 +115,23 @@ function content_5d3824e49f2b83_55996168 (Smarty_Internal_Template $_smarty_tpl)
         /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
         必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
+            let userName = $('#userName').val();
+            let email = $('#email').val();
+            if(userName === "" || email === ""){
+                $('#errorInfo').html("還有欄位未填");
+                return false;
+            }
+
+            if(userName.length>20){
+                $('#userNameInfo').html("超過字數上限");
+                return false;
+            }
+
             let editinfoform = document.getElementById('editinfoform')
             let fd = new FormData(editinfoform);
             let res = ['email', 'userName', 'error'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/editinfoback.php",

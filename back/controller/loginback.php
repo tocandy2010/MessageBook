@@ -38,6 +38,11 @@ if (!$login->checkSame($vcode,$newlogininfo['vcode'])) {
     exit;
 }
 
+if (isset($_COOKIE['token'])) {
+    echo 2;
+    exit;
+}
+
 $newlogininfo['account'] = $login->useHtmlspecialchars($newlogininfo['account']);
 
 $newlogininfo['password'] = $login->useHtmlspecialchars($newlogininfo['password']);
@@ -60,7 +65,7 @@ $token = $login->createToken($userinfo['uid']);   //獲得token
 
 
 if (isset($logininfo['remember'])&& ($logininfo['remember']==='1')) {   //記住帳號
-    if (!isset($_COOKIE['remember']) || empty($_COOKIE['remember'])) { 
+    if (!isset($_COOKIE['remember']) || empty($_COOKIE['remember']) || $_COOKIE['remember']!==$logininfo['account']) { 
         setcookie("remember",$logininfo['account'], time()+3600*7,'/');
     }
 } else {

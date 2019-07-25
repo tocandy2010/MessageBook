@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 10:23:36
+/* Smarty version 3.1.33, created on 2019-07-25 16:57:19
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\index.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d37c128e68c45_48696037',
+  'unifunc' => 'content_5d396eefb82039_77326159',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '81fec10df4cf1afc1b48d77271b9b4306526fb00' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\index.html',
-      1 => 1563935016,
+      1 => 1564045039,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d37c128e68c45_48696037 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d396eefb82039_77326159 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -74,6 +74,19 @@ function content_5d37c128e68c45_48696037 (Smarty_Internal_Template $_smarty_tpl)
             position: absolute;
             top:85%;
         }
+
+        #showtitle {
+            width:90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        td {
+            width:33%
+        }
     </style>
 </head>
 
@@ -86,15 +99,15 @@ function content_5d37c128e68c45_48696037 (Smarty_Internal_Template $_smarty_tpl)
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
-                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
-                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
-                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
-                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    <li><span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span>發佈文章</span></a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span>已發佈文章</span></a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span>修改會員</span></a></li>;
+                    <li><a href='../../back/controller/logout.php'><span>登出</span></a></li>;
                     <?php } else { ?>
-                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
-                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    <li><a href='../../back/controller/login.php'><span>登入</span></a></li>;
+                    <li><a href='../../back/controller/reg.php'><span>註冊</span></a></li>;
                     <?php }?>
                 </ul>
             </div>
@@ -120,9 +133,9 @@ if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars['v']->value) {
 ?> 
                             <tr>
-                                <td><a href = "../controller/content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+                                <td><span id='showtitle'><a href = "../controller/content.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
 "><?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
-</a></td>
+</span></a></td>
                                 <td><?php echo $_smarty_tpl->tpl_vars['v']->value['userName'];?>
 </td>
                                 <td><?php echo $_smarty_tpl->tpl_vars['v']->value['createTime'];?>

@@ -60,9 +60,9 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="title">標題</label>
                 <div class="col-md-4">
-                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md">
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>10</span><span class='lenerror' id="titlelenerror">已到達文字上限</span></span>
-                    <span class='errorred' id="titleInfo"></span>
+                    <input id="titletext"  name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md">
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>30</span><span class='lenerror' id="titlelenerror">已到達文字上限</span></span>
+                    <span class='errorred' id="titleInfo">&nbsp</span>
                 </div>
             </div>
 
@@ -71,8 +71,8 @@
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
                     <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"></textarea>
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>100</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
-                    <span class='errorred' id="contentInfo"></span>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>1000</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
+                    <span class='errorred' id="contentInfo">&nbsp</span>
                 </div>
             </div>
 
@@ -88,12 +88,31 @@
     </form>
     </div>
     <script>
-    $("#articlesend").click(function() {
+        
+        
+        $("#articlesend").click(function() {
+
+            let title = $('#titletext').val();
+            let content = $('#contenttext').val();
+            if(title =="" ){
+                $('#titleInfo').html("未填");
+                return  false;
+            }else{
+                $('#titleInfo').html("&nbsp");
+            }
+
+            if(content =="" ){
+                $('#contentInfo').html("未填");
+                return  false;
+            }else{
+                $('#contentInfo').html("&nbsp");
+            }
+
             let articleform = document.getElementById('articleform')
             let fd = new FormData(articleform);
             let res = ['title', 'content','error'];
             for (error of res) {
-                $('#'+error+'Info').html("");
+                $('#'+error+'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/newarticleback.php",
@@ -120,17 +139,17 @@
                 }
             });
         });
-        let titleflag = true;
-        let contentflag = true;
+            let titleflag = true;
+            let contentflag = true;
         $('#titletext').keyup(function(){
+            let maxtitlelen = 30;
             let inplen = $('#titletext').val();
-            //let titlelen = $('#titlelength').html();
-            if(inplen.length<=10){
-                $('#titlelength').html(10-inplen.length);
+            if(inplen.length<=maxtitlelen){
+                $('#titlelength').html(maxtitlelen-inplen.length);
                 $('#titlelenerror').attr("style", 'display:none');     
                 titleflag = true;       
             }else{
-                $('#titlelength').html(0);
+                $('#titlelength').html(maxtitlelen-inplen.length);
                 $('#titlelenerror').attr("style", 'display:inline-block');
                 titleflag = false;
             }
@@ -138,13 +157,14 @@
         })
         
         $('#contenttext').keyup(function(){
+            let maxcontentlen = 1000;
             let inplen = $('#contenttext').val();
-            if(inplen.length<=100){
-                $('#contentlength').html(100-inplen.length);
+            if(inplen.length<=maxcontentlen){
+                $('#contentlength').html(maxcontentlen-inplen.length);
                 $('#contentlenerror').attr("style", 'display:none');
                 contentflag = true; 
             }else{
-                $('#contentlength').html(0);
+                $('#contentlength').html(maxcontentlen-inplen.length);
                 $('#contentlenerror').attr("style", 'display:inline-block');
                 contentflag = false;
             }

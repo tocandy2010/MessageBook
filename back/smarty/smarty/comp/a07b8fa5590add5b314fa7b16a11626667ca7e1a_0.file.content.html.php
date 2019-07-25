@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 18:37:46
+/* Smarty version 3.1.33, created on 2019-07-25 17:01:18
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3834fad73c06_81510042',
+  'unifunc' => 'content_5d396fde9b1980_82964042',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1563962815,
+      1 => 1564045278,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d396fde9b1980_82964042 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -86,8 +86,35 @@ function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl)
 
         .messagetime {
             display: inline-block;
-            width: 90%;
+            width: 100%;
             text-align: right
+        }
+
+        #showcontent {
+            word-wrap: break-word; 
+            word-break: normal;
+            width:100%;
+            font-size: 25px;
+        }
+        #showtitle {
+            text-align: center;
+            width:100%;
+            font-size: 30px;    
+            padding: 20px 0px 0px 0px;         
+        }
+
+        #messagenum {
+            text-align: center;
+            font-family:fantasy;
+            font-size: 18px;
+            padding: 5px;        
+        }
+
+        #reback {
+            width: 90px;
+            position: absolute;
+            top:-10px;
+            left:10px
         }
     </style>
 </head>
@@ -120,10 +147,10 @@ function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl)
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
-</h2>
+                    <p id='showtitle' style="font-family:sans-serif;"><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
+</p>
                     <hr>
-                    <p><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
+                    <p id='showcontent'><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
 </p>
                 </div>
                 <hr>
@@ -136,9 +163,10 @@ function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl)
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
                                     <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
-                                    <input type="hidden" name="conid" value="">
-                                    <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
-                                    <span id='messageInfo' class='errorred' class="help-block"></span>
+                                    <input type="hidden" name="conid" value="<?php echo $_smarty_tpl->tpl_vars['content']->value['conid'];?>
+">
+                                    <span class="help-block">最大字數限制<span id='messagelength'>100</span></span>
+                                    <span id='messageInfo' class='errorred' class="help-block">&nbsp</span>
                                 </div>
                             </div>
 
@@ -147,7 +175,7 @@ function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl)
                                 <label class="col-md-4 control-label" for="button1id"></label>
                                 <div class="col-md-8">
                                     <button id="messagesend" type='button' class="btn btn-info">留言</button>
-                                    <input type="reset" class="btn btn-default" value='清除'>
+                                    <input type="reset" id='resetmessage' class="btn btn-default" value='清除'>
                                     <span id='messagelenerror' class='errorred'>超過最大字數限制</span>
                                 </div>
                             </div>
@@ -155,7 +183,9 @@ function content_5d3834fad73c06_81510042 (Smarty_Internal_Template $_smarty_tpl)
                         </fieldset>
                     </form>
                 </div>
-
+                <p id='messagenum'><?php echo $_smarty_tpl->tpl_vars['messagenum']->value;?>
+則留言</p>
+                <hr/>
                 <div class="container">
                     <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['getmessage']->value, 'v', false, 'k');
@@ -183,13 +213,12 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     </div>
     <?php echo '<script'; ?>
 >
-        $("#messagesend").click(function () {
+        $("#messagesend").click(function() {
             let messageform = document.getElementById('messageform')
             let fd = new FormData(messageform);
-            fd.append('conid',);
             let res = ['message'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/message.php",
@@ -205,25 +234,36 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         }
                     } else if (result == 1) {
                         location.reload();
-                    } else {
+                    } else if (result == 2) {
+                        alert('請登入會員')
+                        $(window).attr('location', '../../back/controller/login.php');
+                    }else{
                         alert('留言失敗');
                     }
                 }
             });
         });
 
-        $('#messagetext').keyup(function () {
+        $('#messagetext').keyup(function(){
+            let maxmessagelen = 100;
             let inplen = $('#messagetext').val();
-            if (inplen.length <= 10) {
-                $('#messagelength').html(10 - inplen.length);
+            if (inplen.length <= maxmessagelen) {
+                $('#messagelength').html(maxmessagelen - inplen.length);
                 $('#messagelenerror').attr("style", 'display:none');
                 $('#messagesend').attr('disabled', false)
             } else {
-                $('#messagelength').html(0);
+                $('#messagelength').html(maxmessagelen - inplen.length);
                 $('#messagelenerror').attr("style", 'display:inline-block');
                 $('#messagesend').attr('disabled', true)
             }
+        });
+
+        $('#resetmessage').click(function(){
+            $('#messagelength').html(100);
+            $('#messagesend').attr('disabled', false);
+            $('#messagelenerror').attr("style", 'display:none');
         })
+
     <?php echo '</script'; ?>
 >
 </body>

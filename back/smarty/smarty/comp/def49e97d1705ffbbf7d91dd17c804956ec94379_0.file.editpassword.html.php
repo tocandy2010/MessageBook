@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 03:27:04
+/* Smarty version 3.1.33, created on 2019-07-25 11:38:41
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editpassword.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3662682d8273_94929117',
+  'unifunc' => 'content_5d3978a1648368_82504344',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'def49e97d1705ffbbf7d91dd17c804956ec94379' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editpassword.html',
-      1 => 1563845192,
+      1 => 1564047520,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3978a1648368_82504344 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -77,10 +77,10 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="textinput">舊密碼</label>
                 <div class="col-md-4">
-                    <input id="textinput" name="oldpassword" type="password" placeholder=""
+                    <input id="oldpassword" name="oldpassword" type="password" placeholder=""
                         class="form-control input-md">
                     <span class="help-block">請輸入舊密碼</span>
-                    <span class='errorred' id='oldpasswordInfo'></span>
+                    <span class='errorred' id='oldpasswordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -88,9 +88,9 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">新密碼</label>
                 <div class="col-md-4">
-                    <input id="" name="password" type="password" placeholder="" class="form-control input-md">
+                    <input id="password" name="password" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">請輸入6~20位數 英文或數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
-                    <span class='errorred' id='passwordInfo'></span>
+                    <span class='errorred' id='passwordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -100,7 +100,7 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-4">
                     <input id="" name="repassword" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">與新密碼相同</span>
-                    <span class='errorred' id='repasswordInfo'></span>
+                    <span class='errorred' id='repasswordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -110,7 +110,7 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="regsend" type='button' class="btn btn-info">確認修改</button>
                     <a href='./editreg.php'><button type='button' class="btn btn-danger">取消</button></a>
-                    <span class='errorred' class id='regerror'></span>
+                    <span class='errorred' class id='regerror'>&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -122,11 +122,20 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
         /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
         必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
+            let oldpassword = $('#oldpassword').val();
+            let password = $('#password').val();
+            let repassword = $('#repassword').val();
             let regform = document.getElementById('regform')
             let fd = new FormData(regform);
             let res = ['oldpassword', 'password', 'repassword'];
+
+            if(oldpassword ==="" || password ==="" || repassword ===""){
+                $('#regerror').html("還有欄位未沒填");
+                return false;
+            }
+
             for (error of res) {
-                $('#'+error+'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/editpasswordback.php",
@@ -138,7 +147,7 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
                 success: function (result) {
                     if (typeof (result) == 'object') {
                         for (error of res) {
-                            $('#'+error+'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result[error]);
                         }
                     } else if (result == '1') {
                         alert('修改成功');
@@ -150,6 +159,25 @@ function content_5d3662682d8273_94929117 (Smarty_Internal_Template $_smarty_tpl)
                 }
             });
         });
+
+        $('#password').keyup(function () {
+            checksymbol(this);
+        })
+
+        function checksymbol(obj) {
+            let patt = /[^a-zA-Z0-9]/;
+            let strlen = $(obj).val();
+            let flag = patt.test(obj.value);
+            $('#regsend').attr('disabled', flag);
+            if (flag === true) {
+                $(obj).next().attr('style', 'color:darkred')
+            } else {
+                $(obj).next().attr('style', "color:gray")
+            }
+        }
+
+
+
     <?php echo '</script'; ?>
 >
 </body>

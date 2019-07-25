@@ -12,8 +12,7 @@ $neweditpasswordinfo = $editpassword->auto_filter($editpasswordinfo,$allowpostin
 
 $verification = [
     'oldpassword'=>array('notempty'=>'0'),
-    'password'=>array('notempty'=>'0'),
-    'password'=>array('length'=>'6,12'),
+    'password'=>array('notempty'=>'0','length'=>'6,20'),
     'repassword'=>array('notempty'=>'0'),
 ];
 

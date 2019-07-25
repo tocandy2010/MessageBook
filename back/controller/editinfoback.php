@@ -12,7 +12,7 @@ $neweditinfinfo = $editinfo->auto_filter($editinfinfo,$allowinfo);
 
 $verification = [
     'userName'=>array('notempty'=>'0','length'=>'1,100'),
-    'eamil'=>array('notempty'=>'0','email'=>'0'),
+    'email'=>array('notempty'=>'0','email'=>'0'),
 ];
 
 $editinfo->auto_verification($neweditinfinfo,$verification);
@@ -28,7 +28,6 @@ if(!empty($editinfo->geterrorInfo())){  //檢查資料空白
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 
 if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];

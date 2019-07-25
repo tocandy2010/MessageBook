@@ -9,7 +9,6 @@ $Member  = new Member();
 $userinfo = [];
 $loginflag = !empty($userinfo);
 
-
 if (isset($_COOKIE['remember'])&&!empty($_COOKIE['remember'])) {
     $remember = "checked";
     $account = $_COOKIE['remember'];

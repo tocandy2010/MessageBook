@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 09:52:12
+/* Smarty version 3.1.33, created on 2019-07-25 05:02:25
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\login.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d36bcac93a9a0_51447557',
+  'unifunc' => 'content_5d391bc12b8031_09347316',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a7e06cbd94a24511e81ff3eb0859945078f911bc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\login.html',
-      1 => 1563868328,
+      1 => 1564023740,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d36bcac93a9a0_51447557 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d391bc12b8031_09347316 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -158,6 +158,8 @@ function content_5d36bcac93a9a0_51447557 (Smarty_Internal_Template $_smarty_tpl)
                         }
                     } else if (result == 1) {
                         $(window).attr('location', '../../back/controller/index.php');
+                    } else  if (result == 2) {
+                        $(`#errorInfo`).html("目前已登入")
                     } else {
                         $(`#errorInfo`).html("登入失敗");
                     }

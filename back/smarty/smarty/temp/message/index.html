@@ -47,6 +47,19 @@
             position: absolute;
             top:85%;
         }
+
+        #showtitle {
+            width:90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        td {
+            width:33%
+        }
     </style>
 </head>
 
@@ -59,14 +72,14 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     {if $loginflag}
-                    <li><a href=''><span></span>歡迎登入&nbsp{$userinfo['userName']}</a></li>;
-                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
-                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
-                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
-                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
+                    <li><span>歡迎登入&nbsp{$userinfo['userName']}</span></li>;
+                    <li><a href='../../back/controller/newarticle.php'><span>發佈文章</span></a></li>;
+                    <li><a href='../../back/controller/myarticle.php'><span>已發佈文章</span></a></li>;
+                    <li><a href='../../back/controller/editreg.php'><span>修改會員</span></a></li>;
+                    <li><a href='../../back/controller/logout.php'><span>登出</span></a></li>;
                     {else}
-                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
-                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
+                    <li><a href='../../back/controller/login.php'><span>登入</span></a></li>;
+                    <li><a href='../../back/controller/reg.php'><span>註冊</span></a></li>;
                     {/if}
                 </ul>
             </div>
@@ -88,7 +101,7 @@
                         <tbody id='buildindex'>
                             {foreach from=$contentdata key=$k item=$v} 
                             <tr>
-                                <td><a href = "../controller/content.php?conid={$v['conid']}">{$v['title']}</a></td>
+                                <td><span id='showtitle'><a href = "../controller/content.php?conid={$v['conid']}">{$v['title']}</span></a></td>
                                 <td>{$v['userName']}</td>
                                 <td>{$v['createTime']}</td>
                             </tr>

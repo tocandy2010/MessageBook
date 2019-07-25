@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-23 08:48:18
+/* Smarty version 3.1.33, created on 2019-07-25 06:37:43
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\reg.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d36adb2e077c6_13333269',
+  'unifunc' => 'content_5d3932170104b9_39574084',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4ec4fceecc129a9b8cdc6e05ada7f13beb9232e7' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\reg.html',
-      1 => 1563864497,
+      1 => 1564029462,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3932170104b9_39574084 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -78,9 +78,9 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">帳號</label>
                 <div class="col-md-4">
-                    <input id="" name="account" type="text" placeholder="" class="form-control input-md">
+                    <input id="account" name="account" type="text" placeholder="" class="form-control input-md">
                     <span class="help-block">請輸入6~20位數 英文+數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
-                    <span class='errorred' id='accountInfo'></span>
+                    <span class='errorred' id='accountInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -88,9 +88,9 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="">密碼</label>
                 <div class="col-md-4">
-                    <input id="" name="password" type="password" placeholder="" class="form-control input-md">
+                    <input id="password" name="password" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">請輸入6~20位數 英文+數字&nbsp&nbsp&nbsp禁止輸入任何符號</span>
-                    <span class='errorred' id='passwordInfo'></span>
+                    <span class='errorred' id='passwordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -100,7 +100,7 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-4">
                     <input id="" name="repassword" type="password" placeholder="" class="form-control input-md">
                     <span class="help-block">與密碼相同</span>
-                    <span class='errorred' id='repasswordInfo'></span>
+                    <span class='errorred' id='repasswordInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -109,8 +109,8 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
                 <label class="col-md-4 control-label" for="textinput">姓名</label>
                 <div class="col-md-4">
                     <input id="textinput" name="userName" type="text" placeholder="" class="form-control input-md">
-                    <span class="help-block">請輸入姓名</span>
-                    <span class='errorred' id='userNameInfo'></span>
+                    <span class="help-block">請輸入姓名 最大字數限制20個字</span>
+                    <span class='errorred' id='userNameInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -120,7 +120,7 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-4">
                     <input id="" name="email" type="text" placeholder="" class="form-control input-md">
                     <span class="help-block">ex:example@com</span>
-                    <span class='errorred' id='emailInfo'></span>
+                    <span class='errorred' id='emailInfo'>&nbsp</span>
                 </div>
             </div>
 
@@ -138,14 +138,14 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
 
     <?php echo '<script'; ?>
 >
-        /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
+        /*必須將contentType選項設置為false，強制jQuery不Content-Type加標題，否則，邊界字符串將丟失。
         必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
             let regform = document.getElementById('regform')
             let fd = new FormData(regform);
             let res = ['account', 'password', 'repassword', 'email', 'userName'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/regback.php",
@@ -167,6 +167,25 @@ function content_5d36adb2e077c6_13333269 (Smarty_Internal_Template $_smarty_tpl)
                 }
             });
         });
+
+        $('#account').keyup(function(){
+            checksymbol(this);
+        })
+        $('#password').keyup(function(){
+            checksymbol(this);
+        })
+
+        function checksymbol(obj){
+            let patt = /[^a-zA-Z0-9]/;            
+            let strlen = $(obj).val().length;
+            let flag = patt.test(obj.value) || !(strlen<=20);
+            $('#regsend').attr('disabled', flag);
+            if(flag === true){
+                $(obj).next().attr('style', 'color:darkred')
+            }else{
+                $(obj).next().attr('style',"color:gray")
+            }
+        }
     <?php echo '</script'; ?>
 >
 </body>

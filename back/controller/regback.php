@@ -13,7 +13,7 @@ $newreginfo = $reg->auto_filter($reginfo,$allowpostinfo);
 $verification = [
     'account'=>array('length'=>'6,20','notempty'=>'0'),
     'password'=>array('length'=>'6,20','notempty'=>'0'),
-    'userName'=>array('length'=>'1,100','notempty'=>'0'),
+    'userName'=>array('length'=>'1,20','notempty'=>'0'),
     'email'=>array('email'=>'0','notempty'=>'0'),
 ];
 

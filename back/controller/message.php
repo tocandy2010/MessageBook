@@ -11,14 +11,13 @@ $allowinfo = ['message','conid'];
 $newmessageinfo = $message->auto_filter($messageinfo,$allowinfo);
 
 $verification = [
-    'message'=>array('notempty'=>'0'),
-    'message'=>array('length'=>'1,255'),
+    'message'=>array('notempty'=>'0','length'=>'1,100'),
 ];
 
 $message->auto_verification($newmessageinfo,$verification);
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    header("Location: ./login.php");
+    echo 2;
     exit;
 } else {
     $checklogin = $message->getUser($_COOKIE['token']);

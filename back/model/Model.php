@@ -38,9 +38,7 @@ class Model extends Mysql
             if (array_key_exists($key, $arr)) {
                 foreach ($value as $k => $v) {
                     if (!$this->check_verification($k, $arr[$key], $v)) {
-                        if (array_key_exists($key, $this->errorInfo)) {
-                            $this->errorInfo[$key] .= ",{$k}";
-                        } else {
+                        if (!array_key_exists($key, $this->errorInfo)) {
                             $this->errorInfo[$key] = "{$k}";
                         }
                     }

@@ -14,7 +14,7 @@ $verification = [
     'title'=>array('notempty'=>'0'),
     'content'=>array('notempty'=>'0'),
     'content'=>array('length'=>'1,1000'),
-    'title'=>array('length'=>'1,100 '),
+    'title'=>array('length'=>'1,30 '),
 ];
 
 $articleedit->auto_verification($newmyarticleinfo,$verification);
@@ -42,10 +42,21 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-if ($userinfo === false) {
+
+if (empty($userinfo) ) {
+    echo 2;
+    exit;
+}
+
+$content = $articleedit->getContent($newmyarticleinfo['editconid']);
+
+if ($content['uid'] !== $userinfo['uid'] ) {
     header('location: ./login.php');
     exit;
 }
+
+$newmyarticleinfo['title'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['title']);
+$newmyarticleinfo['content'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['content']);
 
 $conid = $newmyarticleinfo['editconid'];
 

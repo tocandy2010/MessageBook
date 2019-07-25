@@ -2,6 +2,7 @@
 
 require_once("../model/ContentModel.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
+require_once("../public/Filterword.php");
 
 $smarty = new Mysmarty();
 $content  = new ContentModel();
@@ -38,6 +39,12 @@ if ($getcontent === false) {
     exit;
 }
 
+$filterword = new Filterword("../public/filterword.txt");
+
+$getcontent['title'] = $filterword->usefilter($getcontent['title']);
+
+$getcontent['content'] = $filterword->usefilter($getcontent['content']);
+
 $getmessage = $content->getMessage( $newcontentinfo['conid'] );
 
 $getmessage = $content->useTaiwanTime($getmessage,'createtime');
@@ -47,6 +54,8 @@ if (count($getmessage)>=1) {
 } else {
     $allmessage = [];
 }
+
+$smarty->assign('messagenum',count($allmessage));
 
 $smarty->assign('content',$getcontent);
 

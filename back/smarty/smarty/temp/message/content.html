@@ -59,8 +59,35 @@
 
         .messagetime {
             display: inline-block;
-            width: 90%;
+            width: 100%;
             text-align: right
+        }
+
+        #showcontent {
+            word-wrap: break-word; 
+            word-break: normal;
+            width:100%;
+            font-size: 25px;
+        }
+        #showtitle {
+            text-align: center;
+            width:100%;
+            font-size: 30px;    
+            padding: 20px 0px 0px 0px;         
+        }
+
+        #messagenum {
+            text-align: center;
+            font-family:fantasy;
+            font-size: 18px;
+            padding: 5px;        
+        }
+
+        #reback {
+            width: 90px;
+            position: absolute;
+            top:-10px;
+            left:10px
         }
     </style>
 </head>
@@ -92,9 +119,9 @@
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
             <div class="col-sm-8 text-left">
                 <div id='message'>
-                    <h2>{$content['title']}</h2>
+                    <p id='showtitle' style="font-family:sans-serif;">{$content['title']}</p>
                     <hr>
-                    <p>{$content['content']}</p>
+                    <p id='showcontent'>{$content['content']}</p>
                 </div>
                 <hr>
                 <div id='leavemessage'>
@@ -107,8 +134,8 @@
                                 <div class="col-md-4">
                                     <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
                                     <input type="hidden" name="conid" value="{$content['conid']}">
-                                    <span class="help-block">最大字數限制<span id='messagelength'>10</span></span>
-                                    <span id='messageInfo' class='errorred' class="help-block"></span>
+                                    <span class="help-block">最大字數限制<span id='messagelength'>100</span></span>
+                                    <span id='messageInfo' class='errorred' class="help-block">&nbsp</span>
                                 </div>
                             </div>
 
@@ -125,7 +152,8 @@
                         </fieldset>
                     </form>
                 </div>
-
+                <p id='messagenum'>{$messagenum}則留言</p>
+                <hr/>
                 <div class="container">
                     {foreach from=$getmessage key=$k item=$v}
                     <div class="panel panel-default">
@@ -146,7 +174,7 @@
             let fd = new FormData(messageform);
             let res = ['message'];
             for (error of res) {
-                $('#' + error + 'Info').html("");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/message.php",
@@ -162,33 +190,36 @@
                         }
                     } else if (result == 1) {
                         location.reload();
-                    } else {
+                    } else if (result == 2) {
+                        alert('請登入會員')
+                        $(window).attr('location', '../../back/controller/login.php');
+                    }else{
                         alert('留言失敗');
                     }
                 }
             });
         });
 
-        $('#messagetext').keyup(countmessagelen);
+        $('#messagetext').keyup(function(){
+            let maxmessagelen = 100;
+            let inplen = $('#messagetext').val();
+            if (inplen.length <= maxmessagelen) {
+                $('#messagelength').html(maxmessagelen - inplen.length);
+                $('#messagelenerror').attr("style", 'display:none');
+                $('#messagesend').attr('disabled', false)
+            } else {
+                $('#messagelength').html(maxmessagelen - inplen.length);
+                $('#messagelenerror').attr("style", 'display:inline-block');
+                $('#messagesend').attr('disabled', true)
+            }
+        });
 
         $('#resetmessage').click(function(){
-            $('#messagelength').html(10);
+            $('#messagelength').html(100);
             $('#messagesend').attr('disabled', false);
             $('#messagelenerror').attr("style", 'display:none');
         })
 
-        function countmessagelen() {
-            let inplen = $('#messagetext').val();
-            if (inplen.length <= 10) {
-                $('#messagelength').html(10 - inplen.length);
-                $('#messagelenerror').attr("style", 'display:none');
-                $('#messagesend').attr('disabled', false)
-            } else {
-                $('#messagelength').html(0);
-                $('#messagelenerror').attr("style", 'display:inline-block');
-                $('#messagesend').attr('disabled', true)
-            }
-        }
     </script>
 </body>
 
