@@ -27,5 +27,3 @@ $smarty->assign('loginflag',$loginflag);
 $smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./login/editpassword.html');
-
-?>

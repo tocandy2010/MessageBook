@@ -2,7 +2,22 @@
 
 require_once("../model/Member.php");
 
+
 $editpassword = new Member();
+
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+    echo 2;
+    exit;
+} else {
+    $checklogin = $editpassword->getUser($_COOKIE['token']);
+    if (empty($checklogin)) {
+        echo 2;
+        exit;
+    } else {
+        $userinfo = $checklogin;
+        unset($userinfo['token']);
+    }
+}
 
 $editpasswordinfo = $_POST;
 
@@ -27,18 +42,6 @@ if(!empty($editpassword->geterrorInfo())){  //檢查資料空白
     $error = $editpassword->changeErrormessage($editpassword->geterrorInfo(),$errorMessage);
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
-}
-
-if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
-    $userinfo = [];
-} else {
-    $checklogin = $editpassword->getUser($_COOKIE['token']);
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin;
-        unset($userinfo['token']);
-    }
 }
 
 $error = [];
@@ -76,6 +79,3 @@ if ($editpassword->resetPassword(['password'=>$newpassword],$userinfo['uid']) ==
 } else {
     echo 0;
 }
-
-
-?>

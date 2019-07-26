@@ -4,6 +4,20 @@ require_once("../model/Member.php");
 
 $editinfo = new Member();
 
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+    echo 2;
+    exit;
+} else {
+    $checklogin = $editinfo->getUser($_COOKIE['token']);
+    if (empty($checklogin)) {
+        echo 2;
+        exit;
+    } else {
+        $userinfo = $checklogin;
+        unset($userinfo['token']);
+    }
+}
+
 $editinfinfo = $_POST;
 
 $allowinfo = ['userName','email'];
@@ -29,17 +43,7 @@ if(!empty($editinfo->geterrorInfo())){  //檢查資料空白
     exit;
 }
 
-if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
-    $userinfo = [];
-} else {
-    $checklogin = $editinfo->getUser($_COOKIE['token']);
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin;
-        unset($userinfo['token']);
-    }
-}
+
 
 if ($neweditinfinfo['userName'] === $userinfo['userName'] && $neweditinfinfo['email'] === $userinfo['email']) {
     $error['error'] = '未作任何修改';
@@ -54,5 +58,3 @@ if ($editinfo->editUserInfo($neweditinfinfo,$userinfo['uid']) == 1) {
 }else {
     echo 0;
 }
-
-?>

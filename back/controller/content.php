@@ -7,16 +7,8 @@ require_once("../public/Filterword.php");
 $smarty = new Mysmarty();
 $content  = new ContentModel();
 
-$contentinfo = $_GET;
 
-$allowinfo = ['conid'];
 
-$newcontentinfo = $content->auto_filter($contentinfo,$allowinfo);
-
-if (is_null($contentinfo['conid']) || !is_numeric($contentinfo['conid'])) {
-    header('location: ./index.php');
-    exit;
-}
 
 if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
@@ -30,12 +22,20 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     }
 }
 
+
+$contentinfo['conid'] = $_GET['conid'];
+
+if (is_null($contentinfo['conid']) || !is_numeric($contentinfo['conid'])) {
+    header('location: ./index.php');
+    exit;
+}
+
 $loginflag = !empty($userinfo);
 
-$getcontent = $content->getContent($newcontentinfo['conid']);
+$getcontent = $content->getContent($contentinfo['conid']);
 
 if ($getcontent === false) {
-    header('location: ./index.php');
+    header('location:./index.php');
     exit;
 }
 
@@ -45,11 +45,11 @@ $getcontent['title'] = $filterword->usefilter($getcontent['title']);
 
 $getcontent['content'] = $filterword->usefilter($getcontent['content']);
 
-$getmessage = $content->getMessage( $newcontentinfo['conid'] );
+$getmessage = $content->getMessage( $contentinfo['conid'] );
 
 $getmessage = $content->useTaiwanTime($getmessage,'createtime');
 
-if (count($getmessage)>=1) {
+if (count($getmessage) >= 1) {
     $allmessage = $getmessage;
 } else {
     $allmessage = [];
@@ -66,7 +66,3 @@ $smarty->assign('loginflag',$loginflag);
 $smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./message/content.html');
-
-
-
-?>

@@ -52,5 +52,3 @@ $smarty->assign('contentdata',$contentdata);
 
 $smarty->display('./message/index.html');
 
-
-?>

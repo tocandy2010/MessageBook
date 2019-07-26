@@ -154,19 +154,22 @@
                 processData: false,
                 data: fd,
                 success: function(result) {
-                    if (typeof(result) == 'object') {
+                    if (result) {                       
+                        if(result.notanyedit){
+                            alert(result.notanyedit)
+                            $(window).attr('location', '../../back/controller/index.php');
+                        } else if(result.success) {
+                            alert('修改成功');
+                            $(window).attr('location', '../../back/controller/myarticle.php');
+                        } else if(result.notlogin) {
+                            alert('請先登入會員');
+                            $(window).attr('location', '../../back/controller/login.php');
+                        }
                         for (error of res) {
                            $('#'+error+'Info').html(result[error]);
                         }
-                    } else if (result == 1) {
-                        alert('修改成功');
-                        $(window).attr('location', '../../back/controller/myarticle.php');
-                    } else if (result == 2) {
-                        alert('請登入會員');
-                        $(window).attr('location', '../../back/controller/login.php');
                     } else {
-                        alert('修改失敗');
-                        $(window).attr('location', '../../back/controller/index.php');
+                        alert('錯誤');
                     }
                 }
             });

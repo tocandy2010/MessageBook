@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-24 10:35:08
+/* Smarty version 3.1.33, created on 2019-07-26 12:40:55
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editreg.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d38183c6970f3_98150532',
+  'unifunc' => 'content_5d3ad8b72c5080_26663060',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'fd25c0e254455c7f2cf04ac62e15a2e9e657f2d1' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editreg.html',
-      1 => 1563957305,
+      1 => 1564137626,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d38183c6970f3_98150532 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3ad8b72c5080_26663060 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +32,47 @@ function content_5d38183c6970f3_98150532 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
 >
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 915px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+
         #edit {
             position: relative;
             left: 30%;
@@ -73,6 +113,15 @@ function content_5d38183c6970f3_98150532 (Smarty_Internal_Template $_smarty_tpl)
             border-radius: 15px;
             color: steelblue
         }
+
+        #user {
+            font-size: 15px;
+            color: white;
+            position: relative;
+            top: 15px;
+            left: 500%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -80,13 +129,16 @@ function content_5d38183c6970f3_98150532 (Smarty_Internal_Template $_smarty_tpl)
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -99,14 +151,27 @@ function content_5d38183c6970f3_98150532 (Smarty_Internal_Template $_smarty_tpl)
             </div>
         </div>
     </nav>
-    <div id='edit'>
-        <a href='./editinfo.php'>
-            <div id='info' class='mouseover'>註冊資訊</div>
-        </a>
-        <a href='./editpassword.php'>
-            <div id='password' class='mouseover'>修改密碼</div>
-        </a>
+    <div class="container-fluid text-center">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
 
+            </div>
+            <div class="col-sm-8 text-left">
+                <div id='edit'>
+                    <a href='./editinfo.php'>
+                        <div id='info' class='mouseover'>註冊資訊</div>
+                    </a>
+                    <a href='./editpassword.php'>
+                        <div id='password' class='mouseover'>修改密碼</div>
+                    </a>
+
+                </div>
+            </div>
+            <div class="col-sm-2 sidenav">
+
+            </div>
+
+        </div>
     </div>
 </body>
 

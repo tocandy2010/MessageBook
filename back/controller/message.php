@@ -4,6 +4,8 @@
 require_once("../model/ContentModel.php");
 require_once("../public/Filterword.php");
 
+$message  = new ContentModel();
+
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     echo 2;
     exit;
@@ -16,8 +18,6 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
         unset($userinfo['token']);
     }
 }
-
-$message  = new ContentModel();
 
 $messageinfo = $_POST;
 
@@ -52,7 +52,3 @@ if($message->setMessage($newmessageinfo) == 1){
 } else {
     echo 0;
 }
-
-
-
-?>

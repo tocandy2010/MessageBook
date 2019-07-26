@@ -24,7 +24,3 @@ $smarty->assign('account',$account);
 $smarty->assign('loginflag',$loginflag);
 
 $smarty->display('./login/login.html');
-
-
-
-?>

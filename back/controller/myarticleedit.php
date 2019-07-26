@@ -7,28 +7,27 @@ require_once("../model/ContentModel.php");
 $articleedit  = new ContentModel();
 $smarty = new Mysmarty();
 
-$articleeditinfo = $_GET;
-
-$allowinfo = ['conid'];
-
-$newarticleeditinfo = $articleedit->auto_filter($articleeditinfo,$allowinfo);
-
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    $userinfo = [];
+    header('location: ./login.php');
+    exit;
 } else {
     $checklogin = $articleedit->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        $userinfo = [];
+        header('location: ./login.php');
+        exit;
     } else {
         $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-if (empty($userinfo)) {
-    header('location: ./login.php');
-    exit;
-}
+$articleeditinfo = $_GET;
+
+$allowinfo = ['conid'];
+
+$newarticleeditinfo = $articleedit->auto_filter($articleeditinfo,$allowinfo);
+
+
 
 $contentinfo = $articleedit->getContent($newarticleeditinfo['conid']);
 
@@ -47,6 +46,3 @@ $smarty->assign('userinfo',$userinfo);
 $smarty->assign('contentinfo',$contentinfo);
 
 $smarty->display('./message/meyarticleedit.html');
-
-
-?>

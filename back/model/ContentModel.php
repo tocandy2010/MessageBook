@@ -118,7 +118,7 @@ class ContentModel extends Model
         return $this->auto_insert('message',$arr);
     }
 
-    public function createArticle($arr)
+    public function addArticle($arr)
     {
         return $this->auto_insert('content',$arr);
     }
@@ -134,5 +134,3 @@ class ContentModel extends Model
     }
 }
 
-
-?>

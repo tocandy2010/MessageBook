@@ -4,14 +4,18 @@ require_once("../model/Member.php");
 
 session_start();
 
+if (isset($_COOKIE['token'])) {
+    $error['error'] = '目前已登入中，返回首頁';
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $login  = new Member();
 
-$logininfo = $_POST;
-
-
-$allowpostinfo = ['account','password','vcode','remember'];
-
-$newlogininfo = $login->auto_filter($logininfo,$allowpostinfo);
+$logininfo['account'] = $_POST['account'];
+$logininfo['password'] = $_POST['password'];
+$logininfo['vcode'] = $_POST['vcode'];
+$logininfo['remember'] = $_POST['remember'];
 
 $verification = [
     'account'=>array('notempty'=>'0'),
@@ -19,40 +23,36 @@ $verification = [
     'vcode'=>array('notempty'=>'0'),
 ];
 
-$login->auto_verification($newlogininfo,$verification);
+$login->auto_verification($logininfo,$verification);
 
 $errorMessage = [
     'length'=>'資料長度錯誤',
     'notempty'=>'未輸入'
 ];
 
-if(!empty($login->geterrorInfo())){  //檢查資料空白
+if (!empty($login->geterrorInfo())) {
     $error = $login->changeErrormessage($login->geterrorInfo(),$errorMessage);
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 $vcode = $login->getVcode();
-if (!$login->checkSame($vcode,$newlogininfo['vcode'])) {
-    $error['error'] = '驗證碼錯誤 點選圖片更換驗證碼';
+if ($vcode !== $logininfo['vcode']) {
+    $error['error'] = '驗證碼錯誤';
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-if (isset($_COOKIE['token'])) {
-    echo 2;
-    exit;
-}
+$logininfo['account'] = $login->useHtmlspecialchars($logininfo['account']);
 
-$newlogininfo['account'] = $login->useHtmlspecialchars($newlogininfo['account']);
+$logininfo['password'] = $login->useHtmlspecialchars($logininfo['password']);
 
-$newlogininfo['password'] = $login->useHtmlspecialchars($newlogininfo['password']);
+$userinfo = $login->getAccount($logininfo['account']);
 
-$userinfo = $login->getAccount($newlogininfo['account']);
 if ($userinfo === false) {
     $error['error'] = '帳號密碼錯誤';
 }
-if ($login->checkPassword($newlogininfo['password'],$userinfo['password']) === false) {
+if ($login->checkPassword($logininfo['password'],$userinfo['password']) === false) {
     $error['error'] = '帳號密碼錯誤';
 }
 
@@ -63,14 +63,12 @@ if (!empty($error)) {
 
 $token = $login->createToken($userinfo['uid']);   //獲得token
 
-
-
-if (isset($logininfo['remember'])&& ($logininfo['remember']==='1')) {   //記住帳號
+if (isset($logininfo['remember']) && ($logininfo['remember'] === '1')) {   //記住帳號
     if (!isset($_COOKIE['remember']) || empty($_COOKIE['remember']) || $_COOKIE['remember']!==$logininfo['account']) { 
         setcookie("remember",$logininfo['account'], time()+3600*7,'/');
     }
 } else {
-    setcookie("remember",'', time()-100,'/');
+    setcookie("remember" ,'', time()-100, '/');
 }
 
 if ($login->setToken('users',array('token'=>$token),'uid',$userinfo['uid']) === 1) {  //設定 cookie token
@@ -79,10 +77,3 @@ if ($login->setToken('users',array('token'=>$token),'uid',$userinfo['uid']) === 
 } else {
     echo 0;
 }
-
-
-
-
-
-
-?>

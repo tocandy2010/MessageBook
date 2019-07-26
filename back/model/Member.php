@@ -81,7 +81,6 @@ class Member extends Model
 
     public function addUser($table,$userinfo) //註冊用戶
     {
-        return $userinfo;
         return $this->auto_insert($table,$userinfo);
     }
 
@@ -104,10 +103,10 @@ class Member extends Model
         }
     }
 
-    public function checkSame($a, $b)  //全等於比對 返回 true or false
-    {
-        return $a === $b;
-    }
+    // public function checkSame($a, $b)  //全等於比對 返回 true or false
+    // {
+    //     return $a === $b;
+    // }
 
     public function checkLogin($token)   //cookie判斷是否登入
     {
@@ -135,4 +134,3 @@ class Member extends Model
 }
 
 
-?>

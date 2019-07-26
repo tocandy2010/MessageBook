@@ -38,11 +38,3 @@ if ($articledel->delArticl($newarticledelinfo['conid']) == 1) {
 } else {
     echo 0;
 }
-
-
-
-
-
-
-
-?>

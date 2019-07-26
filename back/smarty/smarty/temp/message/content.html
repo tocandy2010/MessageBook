@@ -105,7 +105,7 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
                 <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
@@ -130,7 +130,7 @@
                 <div id='message'>
                     <p id='showtitle' style="font-family:sans-serif;">{$content['title']}</p>
                     <hr>
-                    <p id='showcontent'>{$content['content']}</p>
+                    <pre id='showcontent'>{$content['content']}</pre>
                 </div>
                 <hr>
                 <div id='leavemessage'>
@@ -199,7 +199,8 @@
                 processData: false,
                 data: fd,
                 success: function (result) {
-                    if (typeof (result) == 'object') {
+                    if (result) {
+                        console.log(result)
                         for (error of res) {
                             $('#' + error + 'Info').html(result[error]);
                         }

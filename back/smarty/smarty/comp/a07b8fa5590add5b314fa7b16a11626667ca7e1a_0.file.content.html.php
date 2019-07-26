@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-25 17:01:18
+/* Smarty version 3.1.33, created on 2019-07-26 17:57:52
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d396fde9b1980_82964042',
+  'unifunc' => 'content_5d3acea0e53648_27007603',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1564045278,
+      1 => 1564135037,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d396fde9b1980_82964042 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3acea0e53648_27007603 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -116,6 +116,15 @@ function content_5d396fde9b1980_82964042 (Smarty_Internal_Template $_smarty_tpl)
             top:-10px;
             left:10px
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -123,13 +132,13 @@ function content_5d396fde9b1980_82964042 (Smarty_Internal_Template $_smarty_tpl)
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
+                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -150,8 +159,8 @@ function content_5d396fde9b1980_82964042 (Smarty_Internal_Template $_smarty_tpl)
                     <p id='showtitle' style="font-family:sans-serif;"><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
 </p>
                     <hr>
-                    <p id='showcontent'><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
-</p>
+                    <pre id='showcontent'><?php echo $_smarty_tpl->tpl_vars['content']->value['content'];?>
+</pre>
                 </div>
                 <hr>
                 <div id='leavemessage'>
@@ -214,7 +223,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     <?php echo '<script'; ?>
 >
         $("#messagesend").click(function() {
-            let messageform = document.getElementById('messageform')
+            let messageform = document.getElementById('messageform');
+            let messagetext = $('#messagetext').val();
+            if(messagetext === ""){
+                $('#messageInfo').html('請輸入留言');
+                return false;
+            }
+
             let fd = new FormData(messageform);
             let res = ['message'];
             for (error of res) {
@@ -228,7 +243,8 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 processData: false,
                 data: fd,
                 success: function (result) {
-                    if (typeof (result) == 'object') {
+                    if (result) {
+                        console.log(result)
                         for (error of res) {
                             $('#' + error + 'Info').html(result[error]);
                         }

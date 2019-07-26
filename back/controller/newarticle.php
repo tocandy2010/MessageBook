@@ -6,6 +6,7 @@ require_once("../model/ContentModel.php");
 $newarticle  = new ContentModel();
 $smarty = new Mysmarty();
 
+
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
@@ -30,7 +31,3 @@ $smarty->assign('loginflag',$loginflag);
 $smarty->assign('userinfo',$userinfo);
 
 $smarty->display('./message/newarticle.html');
-
-
-
-?>

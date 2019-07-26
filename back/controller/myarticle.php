@@ -37,15 +37,3 @@ $smarty->assign('userinfo',$userinfo);
 $smarty->assign('mycontent',$mycontent);
 
 $smarty->display('./message/myarticle.html');
-    
-
-
-
-
-
-
-
-
-
-
-?>

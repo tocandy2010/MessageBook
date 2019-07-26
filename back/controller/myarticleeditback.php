@@ -4,20 +4,33 @@ require_once("../model/ContentModel.php");
 
 $articleedit  = new ContentModel();
 
-$myarticleinfo = $_POST;
+if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
+    $error['notlogin'] = "123";
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    exit;
+} else {
+    $checklogin = $articleedit->getUser($_COOKIE['token']);
+    if (empty($checklogin)) {
+        $error['notlogin'] = "未做任何修改";
+        echo json_encode($error,JSON_UNESCAPED_UNICODE);
+        exit;
+    } else {
+        $userinfo = $checklogin;
+        unset($userinfo['token']);
+    }
+}
 
-$allowinfo = ['editconid','title','content'];
+$myarticleinfo['editconid'] = $_POST['editconid'];
+$myarticleinfo['title'] = $_POST['title'];
+$myarticleinfo['content'] = $_POST['content'];
 
-$newmyarticleinfo = $articleedit->auto_filter($myarticleinfo,$allowinfo);
 
 $verification = [
-    'title'=>array('notempty'=>'0'),
-    'content'=>array('notempty'=>'0'),
-    'content'=>array('length'=>'1,1000'),
-    'title'=>array('length'=>'1,30 '),
+    'title'=>array('notempty'=>'0','length'=>'1,30'),
+    'content'=>array('notempty'=>'0','length'=>'1,1000'),
 ];
 
-$articleedit->auto_verification($newmyarticleinfo,$verification);
+$articleedit->auto_verification($myarticleinfo,$verification);
 
 $errorMessage = [
     'length'=>'資料長度錯誤',
@@ -30,50 +43,28 @@ if(!empty($articleedit->geterrorInfo())){  //檢查資料空白
     exit;
 }
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    $userinfo = [];
-} else {
-    $checklogin = $articleedit->getUser($_COOKIE['token']);
-    if (empty($checklogin)) {
-        $userinfo = [];
-    } else {
-        $userinfo = $checklogin;
-        unset($userinfo['token']);
-    }
-}
-
-
-if (empty($userinfo) ) {
-    echo 2;
-    exit;
-}
-
-$content = $articleedit->getContent($newmyarticleinfo['editconid']);
+$content = $articleedit->getContent($myarticleinfo['editconid']);
 
 if ($content['uid'] !== $userinfo['uid'] ) {
     header('location: ./login.php');
     exit;
 }
 
-$newmyarticleinfo['title'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['title']);
-$newmyarticleinfo['content'] = $articleedit->useHtmlspecialchars($newmyarticleinfo['content']);
+$myarticleinfo['title'] = $articleedit->useHtmlspecialchars($myarticleinfo['title']);
+$myarticleinfo['content'] = $articleedit->useHtmlspecialchars($myarticleinfo['content']);
 
-if ($content['title'] === $newmyarticleinfo['title'] && $content['content'] === $newmyarticleinfo['content']) {
-    $error['error'] = "未做任何修改";
+if ($content['title'] === $myarticleinfo['title'] && $content['content'] === $myarticleinfo['content']) {
+    $error['notanyedit'] = "未做任何修改";
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$conid = $newmyarticleinfo['editconid'];
+$conid = $myarticleinfo['editconid'];
 
-unset($newmyarticleinfo['editconid']);
+unset($myarticleinfo['editconid']);
 
-if ($articleedit->editContent($newmyarticleinfo,$conid) === 1) {
+if ($articleedit->editContent($myarticleinfo,$conid) === 1) {
     echo 1;
 } else {
     echo 0;
 }
-
-
-
-?>

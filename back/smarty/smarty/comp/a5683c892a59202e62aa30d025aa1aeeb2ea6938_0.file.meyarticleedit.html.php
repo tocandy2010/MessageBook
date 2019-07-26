@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-25 11:17:02
+/* Smarty version 3.1.33, created on 2019-07-26 13:13:28
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\meyarticleedit.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d39738ebf2412_48558960',
+  'unifunc' => 'content_5d3ae05878e2f1_56965715',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a5683c892a59202e62aa30d025aa1aeeb2ea6938' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\meyarticleedit.html',
-      1 => 1564046221,
+      1 => 1564139598,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3ae05878e2f1_56965715 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +53,15 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
             display: none;
             color: darkred;
         }
+
+        #user {
+            font-size: 15px;
+            color:white;
+            position: relative;
+            top:15px;
+            left:800%;
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -61,12 +70,12 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -113,6 +122,7 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="col-md-8">
                     <button id="articlesend" type='button' class="btn btn-success">修改</button>
                     <a href='./myarticle.php'><button id="" type='button' class="btn btn-danger">取消</button></a>
+                    <span class='errorred' id="errorInfo">&nbsp</span>
                 </div>
             </div>
         </fieldset>
@@ -131,8 +141,9 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
                 return null;
             }
             getconid = getUrlParam('conid');
+
             let titlelen = $('#titletext').val().length;
-            $('#titlelength').html(allowtitlelen - titlelen);
+            $('#titlelength').html(30 - titlelen);
             let contentlen = $('#contenttext').val().length;
             $('#contentlength').html(1000 - contentlen);
 
@@ -156,6 +167,9 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
                 $('#contentInfo').html("&nbsp");
             }
 
+            
+
+
             let articleeditform = document.getElementById('articleeditform')
             let fd = new FormData(articleeditform);
             fd.append('editconid', getconid);
@@ -171,19 +185,22 @@ function content_5d39738ebf2412_48558960 (Smarty_Internal_Template $_smarty_tpl)
                 processData: false,
                 data: fd,
                 success: function(result) {
-                    if (typeof(result) == 'object') {
+                    if (result) {                       
+                        if(result.notanyedit){
+                            alert(result.notanyedit)
+                            $(window).attr('location', '../../back/controller/index.php');
+                        } else if(result.success) {
+                            alert('修改成功');
+                            $(window).attr('location', '../../back/controller/myarticle.php');
+                        } else if(result.notlogin) {
+                            alert('請先登入會員');
+                            $(window).attr('location', '../../back/controller/login.php');
+                        }
                         for (error of res) {
                            $('#'+error+'Info').html(result[error]);
                         }
-                    } else if (result == 1) {
-                        alert('修改成功');
-                        $(window).attr('location', '../../back/controller/myarticle.php');
-                    } else if (result == 2) {
-                        alert('請登入會員');
-                        $(window).attr('location', '../../back/controller/login.php');
                     } else {
-                        alert('修改失敗');
-                        $(window).attr('location', '../../back/controller/index.php');
+                        alert('錯誤');
                     }
                 }
             });

@@ -33,18 +33,3 @@ $newdata = $myarticle->totaiwantime($data,'createtime');
 
 $con = $myarticle->getcon();
 echo $myarticle->buildindex($con,$newdata);
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-?>

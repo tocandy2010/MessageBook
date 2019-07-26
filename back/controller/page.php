@@ -15,5 +15,4 @@ $allcontentnum = $page->auto_selectAll('content',$condition);
 
 $pagelen = $page->contentpage(count($allcontentnum));
 echo $page->bulidpage($pagelen,$newpageinfo['page']);
-exit;
-?>
+

@@ -3,11 +3,14 @@
 require_once("../model/ContentModel.php");
 require_once("../public/Filterword.php");
 
+$article  = new ContentModel();
+
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    echo 2 ;
+    $error['notlogin'] = '請登入會員';
+    echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 } else {
-    $checklogin = $newarticle->getUser($_COOKIE['token']);
+    $checklogin = $article->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
@@ -16,13 +19,9 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$newarticle  = new ContentModel();
+$articleinfo['title'] = $_POST['title'];
+$articleinfo['content'] = $_POST['content'];
 
-$articleinfo = $_POST;
-
-$allowinfo = ['title','content'];
-
-$newarticleinfo = $newarticle->auto_filter($articleinfo,$allowinfo);
 
 $verification = [
     'title'=>array('notempty'=>'0'),
@@ -31,7 +30,7 @@ $verification = [
     'content'=>array('length'=>'1,1000'),
 ];
 
-$newarticle->auto_verification($newarticleinfo,$verification);
+$article->auto_verification($articleinfo,$verification);
 
 
 
@@ -40,29 +39,27 @@ $errorMessage = [
     'notempty'=>'未輸入'
 ];
 
-if (!empty($newarticle->geterrorInfo())) {  //檢查資料空白
-    $error = $newarticle->changeErrormessage($newarticle->geterrorInfo(),$errorMessage);
+if (!empty($article->geterrorInfo())) {  //檢查資料空白
+    $error = $article->changeErrormessage($article->geterrorInfo(), $errorMessage);
     echo json_encode($error,JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 
-$newarticleinfo['title'] = $newarticle->useHtmlspecialchars($newarticleinfo['title']);
-$newarticleinfo['content'] = $newarticle->useHtmlspecialchars($newarticleinfo['content']);
+$articleinfo['title'] = $article->useHtmlspecialchars($articleinfo['title']);
+$articleinfo['content'] = $article->useHtmlspecialchars($articleinfo['content']);
 
 $filterword = new Filterword("../public/filterword.txt");
 
-$newarticleinfo['title'] = $filterword->usefilter($newarticleinfo['title']);
-$newarticleinfo['content'] = $filterword->usefilter($newarticleinfo['content']);
+$articleinfo['title'] = $filterword->usefilter($articleinfo['title']);
+$articleinfo['content'] = $filterword->usefilter($articleinfo['content']);
 
 
-$newarticleinfo['createtime'] = time();
-$newarticleinfo['uid'] = $userinfo['uid'];
+$articleinfo['createtime'] = time();
+$articleinfo['uid'] = $userinfo['uid'];
 
-if ($newarticle->createArticle($newarticleinfo)==1) {
-    echo 1;
+if ($article->addArticle($articleinfo) === 1) {
+    echo json_encode(['success'=>'發佈成功'],JSON_UNESCAPED_UNICODE);
 } else {
-    echo 2;
+    echo json_encode(['success'=>'inserfail'],JSON_UNESCAPED_UNICODE);
 }
-
-?>

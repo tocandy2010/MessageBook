@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-25 13:50:46
+/* Smarty version 3.1.33, created on 2019-07-26 14:35:59
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\myarticle.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d394336970ee1_20941852',
+  'unifunc' => 'content_5d3a9f4f7f4c75_92000299',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0c6ad9e6be05b0d202d6d027520e2785507923e2' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\myarticle.html',
-      1 => 1564033845,
+      1 => 1564122958,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3a9f4f7f4c75_92000299 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html lang="en">
 
@@ -37,6 +37,7 @@ function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl)
 >
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
+        /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
             margin-bottom: 0;
             border-radius: 0;
@@ -44,7 +45,7 @@ function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl)
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
         .row.content {
-            height: 914px
+            height: 915px
         }
 
         /* Set gray background color and 100% height */
@@ -54,18 +55,50 @@ function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl)
             height: 100%;
         }
 
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+
         #messagetable {
             padding: 30px;
             font-size: 20px;
         }
 
         #showtitle {
-            width:90%;
+            width: 90%;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
+        }
+
+        #user {
+            font-size: 15px;
+            color: white;
+            position: relative;
+            top: 15px;
+            left: 800%;
+            cursor: default;
+        }
+
+        .aaa {
+            background-color: red;
         }
     </style>
 </head>
@@ -74,13 +107,16 @@ function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl)
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
-                    <li><a href=''><span></span>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
-</a></li>;
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
@@ -94,10 +130,9 @@ function content_5d394336970ee1_20941852 (Smarty_Internal_Template $_smarty_tpl)
         </div>
     </nav>
     <div class="container-fluid text-center">
-        <div class="row content">
-            <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
-            <div class="col-sm-8 text-left">
-                <div class="container" id='messagetable'>
+            <div class="row content">
+                <div class="col-sm-2 sidenav"></div>
+                <div class="col-sm-8 text-left">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -123,10 +158,11 @@ foreach ($_from as $_smarty_tpl->tpl_vars['k']->value => $_smarty_tpl->tpl_vars[
                                 <td><a href="./myarticleedit.php?conid=<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
 "><button type="button"
                                             class="btn btn-success">編輯</button></a></td>
-                                <td><button type="button" class="btn btn-danger" data-title="<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
+                                <td><span class='delcontnet' data-title="<?php echo $_smarty_tpl->tpl_vars['v']->value['title'];?>
 "
-                                        onclick="del(this,<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
-)">刪除</button></td>
+                                        data-conid="<?php echo $_smarty_tpl->tpl_vars['v']->value['conid'];?>
+"><button type="button"
+                                            class="btn btn-danger">刪除</button><span></span></td>
                             </tr>
                             <?php
 }
@@ -135,22 +171,24 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </tbody>
                     </table>
                 </div>
+                <div class="col-sm-2 sidenav"></div>
             </div>
-            <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
         </div>
-    </div>
     <?php echo '<script'; ?>
 >
-        function del(obj, id) {
-            let title = obj.getAttribute('data-title');
+
+        $(".delcontnet").click(function () {
+            let title = this.getAttribute('data-title');
+            let conid = this.getAttribute('data-conid');
+            let _this = this;
             if (confirm('確認刪除文章[' + title + ']嗎?')) {
                 $.ajax({
-                    url: '../../back/controller/myarticledel.php?conid=' + id,
+                    url: '../../back/controller/myarticledel.php?conid=' + conid,
                     type: "GET",
                     dataType: "html",
                     success: function (result) {
                         if (result == 1) {
-                            $(window).attr('location', '../../back/controller/myarticle.php');
+                            $(_this).parent().parent().remove();
                         } else if (result == 2) {
                             alert('請先登入')
                             $(window).attr('location', '../../back/controller/login.php');
@@ -160,7 +198,9 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                     }
                 });
             }
-        }
+        })
+
+
 
 
     <?php echo '</script'; ?>

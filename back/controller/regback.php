@@ -81,5 +81,3 @@ if ($reg->addUser('users',$newreginfo) == 1) {
 } else {
     echo 0;
 }
-
-?>
