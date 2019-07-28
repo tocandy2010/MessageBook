@@ -1,16 +1,18 @@
 <?php
 
 require_once("../model/Member.php");
+require_once("../public/Commontool.php");
 
+$commontool = new Commontool();
 $editinfo = new Member();
 
 if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
-    echo 2;
+    echo json_encode(['notlogin' => "請先登入會員"], JSON_UNESCAPED_UNICODE);
     exit;
 } else {
     $checklogin = $editinfo->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        echo 2;
+        echo json_encode(['notlogin' => "請先登入會員"], JSON_UNESCAPED_UNICODE);
         exit;
     } else {
         $userinfo = $checklogin;
@@ -18,43 +20,36 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     }
 }
 
-$editinfinfo = $_POST;
-
-$allowinfo = ['userName','email'];
-
-$neweditinfinfo = $editinfo->auto_filter($editinfinfo,$allowinfo);
+$editinfinfo['userName'] = $_POST['userName'];
+$editinfinfo['email'] = $_POST['email'];
 
 $verification = [
-    'userName'=>array('notempty'=>'0','length'=>'1,100'),
-    'email'=>array('notempty'=>'0','email'=>'0'),
+    'userName'=>array('notempty' => '0'),
+    'userName'=>array('length' => '1,20'),
+    'email'=>array('notempty' => '0'),
+    'email'=>array('email' => '0'),
 ];
 
-$editinfo->auto_verification($neweditinfinfo,$verification);
+$commontool->auto_verification($editinfinfo, $verification);
+$errirMessage = $commontool->getErrorInfo();
 
-$errorMessage = [
-    'length'=>'資料長度錯誤',
-    'notempty'=>'未輸入',
-    'email'=>'請輸入正確email格式'
-];
-
-if(!empty($editinfo->geterrorInfo())){  //檢查資料空白
-    $error = $editinfo->changeErrormessage($editinfo->geterrorInfo(),$errorMessage);
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+if (!empty($errirMessage)) {
+    echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+$editinfinfo['userName'] =  trim($editinfinfo['userName']);
+$editinfinfo['userName'] = htmlspecialchars($editinfinfo['userName'], ENT_QUOTES);
+$editinfinfo['userName'] = str_replace(" ", "", $editinfinfo['userName']);
 
-
-if ($neweditinfinfo['userName'] === $userinfo['userName'] && $neweditinfinfo['email'] === $userinfo['email']) {
+if ($editinfinfo['userName'] === $userinfo['userName'] && $editinfinfo['email'] === $userinfo['email']) {
     $error['error'] = '未作任何修改';
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$neweditinfinfo['userName'] = $editinfo->useHtmlspecialchars($neweditinfinfo['userName']);   //將使用者名稱轉義
-
-if ($editinfo->editUserInfo($neweditinfinfo,$userinfo['uid']) == 1) {
-    echo 1;
+if ($editinfo->editUserInfo($editinfinfo,$userinfo['uid']) === 1) {
+    echo json_encode(['success' => "修改成功"], JSON_UNESCAPED_UNICODE);
 }else {
-    echo 0;
+    echo json_encode(['fail' => "修改失敗"], JSON_UNESCAPED_UNICODE);
 }

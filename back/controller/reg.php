@@ -10,8 +10,8 @@ $smarty = new Mysmarty();
 $userinfo = [];
 $loginflag = !empty($userinfo);
 
-$smarty->assign('loginflag',$loginflag);
+$smarty->assign('loginflag', $loginflag);
 
-$smarty->assign('userinfo',$userinfo);
+$smarty->assign('userinfo', $userinfo);
 
 $smarty->display('./login/reg.html');

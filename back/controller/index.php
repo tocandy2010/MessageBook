@@ -3,52 +3,55 @@
 require_once("../smarty/smarty/public/Mysmarty.php");
 require_once("../model/ContentModel.php");
 require_once("../public/Pagetool.php");
+require_once("../model/Member.php");
+require_once("../public/Commontool.php");
 
-$index  = new ContentModel();
+$commontool = new Commontool();
+$content = new ContentModel();
 $smarty = new Mysmarty();
+$member  = new Member();
 
-
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
 } else {
-    $userinfo = $index->getUserInfo('users',$_COOKIE['token']);
+    $userinfo = $member->getUser($_COOKIE['token']);
     $userinfo = empty($userinfo) ? [] : $userinfo;
+}
+
+if (!isset($_GET['page']) || is_null($_GET['page']) || !(is_numeric($_GET['page'])) || $_GET['page'] < 1) {
+    $page = 1;
+} else {
+    $page = $_GET['page'];
 }
 
 $loginflag = !empty($userinfo);
 
-$page = $_GET;
-
-$allowinfo = ['page'];
-
-$newpage = $index->auto_filter($page, $allowinfo);
-
-if (!isset($newpage['page']) || is_null($newpage['page']) || !(is_numeric($newpage['page'])) || $newpage['page'] < 1) {
-    $newpage['page'] = 1;
-}
-
-
-$allcontent = $index->getAllContent('content');
-
 $contentlength = 5;
 
-if ($newpage['page'] > ceil(count($allcontent)/$contentlength)) {
-    $newpage['page'] = 1;
+if (isset($_GET['search']) && !empty($_GET['search'])) { 
+    $search = $_GET['search'];
+    $allcontent = $content->getSearch($search);
+    $contentdata = $content->showSearch($search , $page, $contentlength);
+    $contentdata = $commontool->useTaiwanTime($contentdata, 'createtime');
+
+} else {
+    $search = "";
+    $allcontent = $content->getAllContent();
+    $contentdata = $content->showContent($page, $contentlength);
+    $contentdata = $commontool->useTaiwanTime($contentdata, 'createtime');
 }
 
-$contentdata = $index->showContent($newpage['page'],$contentlength);
+if ($page > ceil(count($allcontent) / $contentlength)) {
+    $page = 1;
+}
 
-$contentdata = $index->useTaiwanTime($contentdata,'createTime');
+$pagetool = new Pagetool(count($allcontent), $page, $contentlength);
+$showpage = $pagetool->show();
 
-$page = new Pagetool(count($allcontent), $newpage['page'], $contentlength);
-
-$showpage = $page->show();
-
-$smarty->assign('loginflag',$loginflag);
-$smarty->assign('showpage',$showpage);
-$smarty->assign('pagenum',$newpage['page']);
-$smarty->assign('userinfo',$userinfo);
-$smarty->assign('contentdata',$contentdata);
-
+$smarty->assign('search', $search);
+$smarty->assign('loginflag', $loginflag);
+$smarty->assign('showpage', $showpage);
+$smarty->assign('pagenum', $page);
+$smarty->assign('userinfo', $userinfo);
+$smarty->assign('contentdata', $contentdata);
 $smarty->display('./message/index.html');
-

@@ -1,63 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <title>留言版註冊</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
+{include file='D:\xampp\htdocs\MessageBook\back\public\header.html' title='留言版註冊'}
 
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {
-            height: 915px
-        }
-
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
-            height: 100%;
-        }
-
-        /* Set black background color, white text and some padding */
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-
-            .row.content {
-                height: auto;
-            }
-        }
-
-        #title {
-            text-align: center
-        }
-
-        .errorred {
-            color: darkred;
-        }
-    </style>
-</head>
-
-<body>
-    <nav class="navbar navbar-inverse">
+    <!-- <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -81,7 +25,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div>
@@ -160,14 +104,11 @@
                 </form>
             </div>
             <div class="col-sm-2 sidenav">
-                <div class="well"></div>
             </div>
         </div>
     </div>
 
     <script>
-        /*必須將contentType選項設置為false，強制jQuery不Content-Type加標題，否則，邊界字符串將丟失。
-        必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
         $("#regsend").click(function () {
             let account = $('#account').val();
             let password = $('#password').val();
@@ -175,7 +116,8 @@
             let userName = $('#userName').val();
             let email = $('#email').val();
 
-            if (account === "" || password === "" || repassword === "" || userName === "" || email === "") {
+            if (account.trim() === "" || password.trim() === "" || repassword.trim() === "" 
+            || userName.trim() === "" || email.trim() === "") {
                 $('#regerror').html("還有欄位未填妥");
                 return false;
             } else {
@@ -197,21 +139,26 @@
                 $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
-                url: "../../back/controller/regback.php",
+                url: "./regback.php",
                 type: "POST",
                 dataType: "json",
-                contentType: false,
-                processData: false,
-                data: fd,
+                data: {
+                    account: $('#account').val(),
+                    password: $('#password').val(),
+                    repassword: $('#repassword').val(),
+                    email: $('#email').val(),
+                    userName: $('#userName').val(),
+                },
                 success: function (result) {
-                    if (typeof (result) == 'object') {
+                    if (result.success) {
+                        alert(result.success)
+                        $(window).attr('location', './login.php');
+                    } else if (result.fail) {
+                        alert(result.fail)
+                    } else if(result) {
                         for (error of res) {
                             $('#' + error + 'Info').html(result[error]);
                         }
-                    } else if (result == '1') {
-                        $(window).attr('location', '../../back/controller/login.php');
-                    } else {
-                        $(`#regerror`).html("註冊失敗");
                     }
                 }
             });
@@ -256,7 +203,7 @@
             let strlen = $(this).val().length;
             if (patt.test(this.value) || !(strlen < 20) || !(strlen > 5)) {
                 passwordflag = false;
-                
+
                 $(this).next().attr('style', 'color:darkred')
             } else {
                 passwordflag = true;
@@ -267,7 +214,7 @@
 
 
         function LuckButton(accountflag, passwordflag) {
-            if ( accountflag && passwordflag) {
+            if (accountflag && passwordflag) {
                 $('#regsend').attr('disabled', false);
             } else {
                 $('#regsend').attr('disabled', true);

@@ -1,16 +1,16 @@
 <?php
 
 require_once("../smarty/smarty/public/Mysmarty.php");
-require_once("../model/ContentModel.php");
+require_once("../model/Member.php");
 
-$newarticle  = new ContentModel();
+$member = new Member();
 $smarty = new Mysmarty();
 
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $checklogin = $newarticle->getUser($_COOKIE['token']);
+    $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
@@ -26,8 +26,8 @@ if (empty($userinfo)) {
 
 $loginflag = !empty($userinfo);
 
-$smarty->assign('loginflag',$loginflag);
+$smarty->assign('loginflag', $loginflag);
 
-$smarty->assign('userinfo',$userinfo);
+$smarty->assign('userinfo', $userinfo);
 
 $smarty->display('./message/newarticle.html');

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -28,22 +28,56 @@
         }
 
         #user {
-            font-size: 15px;
-            color:white;
-            position: relative;
-            top:15px;
-            left:800%;
+            font-size: 20px;
+            color: white;
             cursor: default;
+            position: absolute;
+            top: 20%
         }
     </style>
-</head>
+</head> -->
+{include file='D:\xampp\htdocs\MessageBook\back\public\header.html' title='修改文章'}
 
-<body>
-    <nav class="navbar navbar-inverse">
+<header>
+    <style>
+
+        .errorred {
+            color: darkred;
+        }
+
+        #contenttext {
+            resize: none;
+            overflow-Y: scroll;
+        }
+
+        .lenerror {
+            display: none;
+            color: darkred;
+        }
+
+        #user {
+            font-size: 20px;
+            color: white;
+            cursor: default;
+            position: absolute;
+            top: 10px;
+        }
+    </style>
+</header>
+
+
+    <!-- <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
-                <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
+                {if $loginflag}
+                <span  id='user'>歡迎登入&nbsp&nbsp&nbsp{$userinfo['userName']}</span>
+                {/if}
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -59,7 +93,7 @@
                 </ul>
             </div>
         </div>
-    </nav> 
+    </nav> -->
     <form class="form-horizontal" action='' method='' id='articleeditform'>
         <fieldset>
             <!-- Form Name -->
@@ -70,8 +104,10 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="title">標題</label>
                 <div class="col-md-4">
-                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md" value ="{$contentinfo['title']}">
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>30</span><span class='lenerror' id="titlelenerror">已到達文字上限</span></span>
+                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder=""
+                        class="form-control input-md" value="{$contentinfo['title']}">
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>30</span><span class='lenerror'
+                            id="titlelenerror">已到達文字上限</span></span>
                     <span class='errorred' id="titleInfo">&nbsp</span>
                 </div>
             </div>
@@ -80,8 +116,10 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
-                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content">{$contentinfo['content']}</textarea>
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>1000</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
+                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25"
+                        name="content">{$contentinfo['content']}</textarea>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>1000</span><span class='lenerror'
+                            id="contentlenerror">已到達文字上限</span></span>
                     <span class='errorred' id="contentInfo">&nbsp</span>
                 </div>
             </div>
@@ -100,8 +138,8 @@
     </div>
     <script>
         let getconid;
-        
-        $().ready(function() {
+
+        $().ready(function () {
             let res = ['title', 'content'];
             function getUrlParam(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -117,66 +155,61 @@
             $('#contentlength').html(1000 - contentlen);
 
         });
-        
-        $("#articlesend").click(function() {
+
+        $("#articlesend").click(function () {
 
             let title = $('#titletext').val();
             let content = $('#contenttext').val();
-            if(title =="" ){
+            if (title.trim() == "") {
                 $('#titleInfo').html("未填");
-                return  false;
-            }else{
+                return false;
+            } else {
                 $('#titleInfo').html("&nbsp");
             }
 
-            if(content =="" ){
+            if (content.trim() == "") {
                 $('#contentInfo').html("未填");
-                return  false;
-            }else{
+                return false;
+            } else {
                 $('#contentInfo').html("&nbsp");
             }
 
-            
-
-
-            let articleeditform = document.getElementById('articleeditform')
-            let fd = new FormData(articleeditform);
-            fd.append('editconid', getconid);
             let res = ['title', 'content', 'error'];
             for (error of res) {
-                $('#'+error+'Info').html("&nbsp");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/myarticleeditback.php",
                 type: "post",
                 dataType: "json",
-                contentType: false,
-                processData: false,
-                data: fd,
-                success: function(result) {
-                    if (result) {                       
-                        if(result.notanyedit){
-                            alert(result.notanyedit)
-                            $(window).attr('location', '../../back/controller/index.php');
-                        } else if(result.success) {
-                            alert('修改成功');
-                            $(window).attr('location', '../../back/controller/myarticle.php');
-                        } else if(result.notlogin) {
-                            alert('請先登入會員');
-                            $(window).attr('location', '../../back/controller/login.php');
-                        }
+                data: {
+                    title: $('#titletext').val(),
+                    content: $('#contenttext').val(),
+                    editconid: getconid
+                },
+                success: function (result) {
+                    if (result.notanyedit) {
+                        alert(result.notanyedit)
+                        $(window).attr('location', './myarticle.php');
+                    } else if (result.success) {
+                        alert(result.success);
+                        $(window).attr('location', './myarticle.php');
+                    } else if (result.notlogin) {
+                        alert('請先登入會員');
+                        $(window).attr('location', './login.php');
+                    } else if (result) {
                         for (error of res) {
-                           $('#'+error+'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result[error]);
                         }
                     } else {
-                        alert('錯誤');
+                        alert('修改失敗');
                     }
                 }
             });
         });
         let titleflag = true;
         let contentflag = true;
-        $('#titletext').keyup(function() {
+        $('#titletext').keyup(function () {
             let maxtitlelen = 30;
             let inplen = $('#titletext').val();
             if (inplen.length <= maxtitlelen) {
@@ -191,7 +224,7 @@
             checkwordlen(titleflag, contentflag);
         })
 
-        $('#contenttext').keyup(function() {
+        $('#contenttext').keyup(function () {
             let maxcontentlen = 1000;
             let inplen = $('#contenttext').val();
             if (inplen.length <= maxcontentlen) {
@@ -206,7 +239,7 @@
             checkwordlen(titleflag, contentflag);
         })
 
-        function checkwordlen(a,b) {
+        function checkwordlen(a, b) {
             if ((titleflag === true) && (contentflag === true)) {
                 $('#articlesend').attr("disabled", false);
             } else {

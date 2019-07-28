@@ -21,8 +21,8 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
 
 $loginflag = !empty($userinfo);
 
-$smarty->assign('loginflag',$loginflag);
+$smarty->assign('loginflag', $loginflag);
 
-$smarty->assign('userinfo',$userinfo);
+$smarty->assign('userinfo', $userinfo);
 
 $smarty->display('./login/editreg.html');

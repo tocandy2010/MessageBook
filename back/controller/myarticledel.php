@@ -1,40 +1,37 @@
 <?php
 
 require_once("../model/ContentModel.php");
+require_once("../model/Member.php");
 
-$articledel  = new ContentModel();
+$member  = new Member();
+$content  = new ContentModel();
 
-$articledelinfo = $_GET;
 
-$allowinfo = ['conid'];
-
-$newarticledelinfo = $articledel->auto_filter($articledelinfo,$allowinfo);
+$articledelinfo['conid'] = $_GET['conid'];
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $userinfo = [];
 } else {
-    $checklogin = $articledel->getUser($_COOKIE['token']);
+    $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        $userinfo = [];
+        echo json_encode(['notlogin'=>'請登入會員'] , JSON_UNESCAPED_UNICODE);
+        exit;
     } else {
         $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-if (empty($userinfo)) {
-    echo 2;
+$contentdata = $content->getContent($articledelinfo['conid']);
+
+if ($contentdata['uid'] !== $userinfo['uid']) {
+    echo json_encode(['erroruser'=>'無法刪除'] , JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$content = $articledel->getContent($newarticledelinfo['conid']);
-if ($content['uid'] !== $userinfo['uid']) {
-    echo 0;
+if ($content->delArticl($articledelinfo['conid']) == 1) {
+    echo json_encode(['delsuccess'=>'刪除成功'] , JSON_UNESCAPED_UNICODE);
     exit;
-}
-
-if ($articledel->delArticl($newarticledelinfo['conid']) == 1) {
-    echo 1;
 } else {
-    echo 0;
+    echo json_encode(['delfail'=>'刪除失敗'] , JSON_UNESCAPED_UNICODE);
 }

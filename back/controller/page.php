@@ -1,18 +1,16 @@
 <?php
 
-require_once("../model/PageModel.php");
+// require_once("../model/PageModel.php");
 
-$page = new PageModel();
+// $page = new PageModel();
 
-$pageinfo = $_GET;
+// $pageinfo['page'] = $_GET['page'];
 
-$allowpostinfo = ['page'];
+// $condition = 'status = 1';
 
-$newpage = $page->auto_filter($page,$allowpostinfo);
+// $allcontentnum = $page->auto_selectAll('content',$condition);
 
-$condition = 'status = 1';
-$allcontentnum = $page->auto_selectAll('content',$condition);
+// $pagelen = $page->contentpage(count($allcontentnum));
 
-$pagelen = $page->contentpage(count($allcontentnum));
-echo $page->bulidpage($pagelen,$newpageinfo['page']);
+// echo $page->bulidpage($pagelen,$newpageinfo['page']);
 

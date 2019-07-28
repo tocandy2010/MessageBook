@@ -9,7 +9,7 @@ $Member  = new Member();
 $userinfo = [];
 $loginflag = !empty($userinfo);
 
-if (isset($_COOKIE['remember'])&&!empty($_COOKIE['remember'])) {
+if (isset($_COOKIE['remember']) && !empty($_COOKIE['remember'])) {
     $remember = "checked";
     $account = $_COOKIE['remember'];
 } else {
@@ -17,10 +17,10 @@ if (isset($_COOKIE['remember'])&&!empty($_COOKIE['remember'])) {
     $account = '';
 }
 
-$smarty->assign('remember',$remember);
+$smarty->assign('remember', $remember);
 
-$smarty->assign('account',$account);
+$smarty->assign('account', $account);
 
-$smarty->assign('loginflag',$loginflag);
+$smarty->assign('loginflag', $loginflag);
 
 $smarty->display('./login/login.html');

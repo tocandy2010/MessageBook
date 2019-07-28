@@ -1,27 +1,28 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-25 18:33:36
+/* Smarty version 3.1.33, created on 2019-07-27 20:04:41
   from 'D:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\meyarticleedit.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d39d9e0b2a956_52238791',
+  'unifunc' => 'content_5d3c923965bbe5_94203359',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd16a0e64f7b7ef43baed7b311456d51d6ebc289a' => 
     array (
       0 => 'D:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\meyarticleedit.html',
-      1 => 1564072416,
+      1 => 1564250657,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:D:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl) {
-?><!DOCTYPE html>
+function content_5d3c923965bbe5_94203359 (Smarty_Internal_Template $_smarty_tpl) {
+?><!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -55,23 +56,61 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
         }
 
         #user {
-            font-size: 15px;
-            color:white;
-            position: relative;
-            top:15px;
-            left:800%;
+            font-size: 20px;
+            color: white;
             cursor: default;
+            position: absolute;
+            top: 20%
         }
     </style>
-</head>
+</head> -->
+<?php $_smarty_tpl->_subTemplateRender('file:D:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'發佈文章'), 0, false);
+?>
 
-<body>
-    <nav class="navbar navbar-inverse">
+<header>
+    <style>
+        #title {
+            text-align: center
+        }
+
+        .errorred {
+            color: darkred;
+        }
+
+        #contenttext {
+            resize: none;
+            overflow-Y: scroll;
+        }
+
+        .lenerror {
+            display: none;
+            color: darkred;
+        }
+
+        #user {
+            font-size: 20px;
+            color: white;
+            cursor: default;
+            position: absolute;
+            top: 10px;
+        }
+    </style>
+</header>
+
+
+    <!-- <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="../../back/controller/index.php">首頁</a>
-                <span id= 'user'>歡迎登入&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
+                <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                <span  id='user'>歡迎登入&nbsp&nbsp&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
 </span>
+                <?php }?>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -87,7 +126,8 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
                 </ul>
             </div>
         </div>
-    </nav> 
+    </nav> -->
+<body>
     <form class="form-horizontal" action='' method='' id='articleeditform'>
         <fieldset>
             <!-- Form Name -->
@@ -98,9 +138,11 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="title">標題</label>
                 <div class="col-md-4">
-                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder="" class="form-control input-md" value ="<?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['title'];?>
+                    <input id="titletext" name="title" spellcheck="false" type="text" placeholder=""
+                        class="form-control input-md" value="<?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['title'];?>
 ">
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>30</span><span class='lenerror' id="titlelenerror">已到達文字上限</span></span>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='titlelength'>30</span><span class='lenerror'
+                            id="titlelenerror">已到達文字上限</span></span>
                     <span class='errorred' id="titleInfo">&nbsp</span>
                 </div>
             </div>
@@ -109,9 +151,11 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
             <div class="form-group">
                 <label class="col-md-4 control-label" for="content">文章內容</label>
                 <div class="col-md-4">
-                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25" name="content"><?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['content'];?>
+                    <textarea class="form-control" spellcheck="false" id="contenttext" rows="25"
+                        name="content"><?php echo $_smarty_tpl->tpl_vars['contentinfo']->value['content'];?>
 </textarea>
-                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>1000</span><span class='lenerror' id="contentlenerror">已到達文字上限</span></span>
+                    <span class="help-block">文字上限&nbsp:&nbsp<span id='contentlength'>1000</span><span class='lenerror'
+                            id="contentlenerror">已到達文字上限</span></span>
                     <span class='errorred' id="contentInfo">&nbsp</span>
                 </div>
             </div>
@@ -131,8 +175,8 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
     <?php echo '<script'; ?>
 >
         let getconid;
-        
-        $().ready(function() {
+
+        $().ready(function () {
             let res = ['title', 'content'];
             function getUrlParam(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -148,63 +192,61 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
             $('#contentlength').html(1000 - contentlen);
 
         });
-        
-        $("#articlesend").click(function() {
+
+        $("#articlesend").click(function () {
 
             let title = $('#titletext').val();
             let content = $('#contenttext').val();
-            if(title =="" ){
+            if (title.trim() == "") {
                 $('#titleInfo').html("未填");
-                return  false;
-            }else{
+                return false;
+            } else {
                 $('#titleInfo').html("&nbsp");
             }
 
-            if(content =="" ){
+            if (content.trim() == "") {
                 $('#contentInfo').html("未填");
-                return  false;
-            }else{
+                return false;
+            } else {
                 $('#contentInfo').html("&nbsp");
             }
 
-            
-
-
-            let articleeditform = document.getElementById('articleeditform')
-            let fd = new FormData(articleeditform);
-            fd.append('editconid', getconid);
             let res = ['title', 'content', 'error'];
             for (error of res) {
-                $('#'+error+'Info').html("&nbsp");
+                $('#' + error + 'Info').html("&nbsp");
             }
             $.ajax({
                 url: "../../back/controller/myarticleeditback.php",
                 type: "post",
                 dataType: "json",
-                contentType: false,
-                processData: false,
-                data: fd,
-                success: function(result) {
-                    if (typeof(result) == 'object') {
+                data: {
+                    title: $('#titletext').val(),
+                    content: $('#contenttext').val(),
+                    editconid: getconid
+                },
+                success: function (result) {
+                    if (result.notanyedit) {
+                        alert(result.notanyedit)
+                        $(window).attr('location', './myarticle.php');
+                    } else if (result.success) {
+                        alert(result.success);
+                        $(window).attr('location', './myarticle.php');
+                    } else if (result.notlogin) {
+                        alert('請先登入會員');
+                        $(window).attr('location', './login.php');
+                    } else if (result) {
                         for (error of res) {
-                           $('#'+error+'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result[error]);
                         }
-                    } else if (result == 1) {
-                        alert('修改成功');
-                        $(window).attr('location', '../../back/controller/myarticle.php');
-                    } else if (result == 2) {
-                        alert('請登入會員');
-                        $(window).attr('location', '../../back/controller/login.php');
                     } else {
                         alert('修改失敗');
-                        $(window).attr('location', '../../back/controller/index.php');
                     }
                 }
             });
         });
         let titleflag = true;
         let contentflag = true;
-        $('#titletext').keyup(function() {
+        $('#titletext').keyup(function () {
             let maxtitlelen = 30;
             let inplen = $('#titletext').val();
             if (inplen.length <= maxtitlelen) {
@@ -219,7 +261,7 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
             checkwordlen(titleflag, contentflag);
         })
 
-        $('#contenttext').keyup(function() {
+        $('#contenttext').keyup(function () {
             let maxcontentlen = 1000;
             let inplen = $('#contenttext').val();
             if (inplen.length <= maxcontentlen) {
@@ -234,7 +276,7 @@ function content_5d39d9e0b2a956_52238791 (Smarty_Internal_Template $_smarty_tpl)
             checkwordlen(titleflag, contentflag);
         })
 
-        function checkwordlen(a,b) {
+        function checkwordlen(a, b) {
             if ((titleflag === true) && (contentflag === true)) {
                 $('#articlesend').attr("disabled", false);
             } else {

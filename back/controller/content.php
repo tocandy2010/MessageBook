@@ -1,19 +1,22 @@
 <?php
 
 require_once("../model/ContentModel.php");
+require_once("../model/Member.php");
 require_once("../smarty/smarty/public/Mysmarty.php");
 require_once("../public/Filterword.php");
+require_once("../public/Commontool.php");
+require_once("../public/Commontool.php");
 
+$commontool = new Commontool();
+$member  = new Member();
 $smarty = new Mysmarty();
 $content  = new ContentModel();
-
-
 
 
 if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
     $userinfo = [];
 } else {
-    $checklogin = $content->getUser($_COOKIE['token']);
+    $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         $userinfo = [];
     } else {
@@ -21,7 +24,6 @@ if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
         unset($userinfo['token']);
     }
 }
-
 
 $contentinfo['conid'] = $_GET['conid'];
 
@@ -45,9 +47,9 @@ $getcontent['title'] = $filterword->usefilter($getcontent['title']);
 
 $getcontent['content'] = $filterword->usefilter($getcontent['content']);
 
-$getmessage = $content->getMessage( $contentinfo['conid'] );
+$getmessage = $content->getMessage( $contentinfo['conid']);
 
-$getmessage = $content->useTaiwanTime($getmessage,'createtime');
+$getmessage = $commontool->useTaiwanTime($getmessage, 'createtime');
 
 if (count($getmessage) >= 1) {
     $allmessage = $getmessage;
@@ -55,14 +57,9 @@ if (count($getmessage) >= 1) {
     $allmessage = [];
 }
 
-$smarty->assign('messagenum',count($allmessage));
-
-$smarty->assign('content',$getcontent);
-
-$smarty->assign('getmessage',$getmessage);
-
-$smarty->assign('loginflag',$loginflag);
-
-$smarty->assign('userinfo',$userinfo);
-
+$smarty->assign('messagenum', count($allmessage));
+$smarty->assign('content', $getcontent);
+$smarty->assign('getmessage', $getmessage);
+$smarty->assign('loginflag', $loginflag);
+$smarty->assign('userinfo', $userinfo);
 $smarty->display('./message/content.html');

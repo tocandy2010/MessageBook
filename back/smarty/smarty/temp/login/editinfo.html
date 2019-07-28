@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -45,8 +45,10 @@
             .row.content {
                 height: auto;
             }
-        }
-
+        } -->
+{include file='D:\xampp\htdocs\MessageBook\back\public\header.html' title='會員資訊修改'}
+<head>
+    <style>
         #title {
             text-align: center
         }
@@ -56,18 +58,17 @@
         }
 
         #user {
-            font-size: 15px;
+            font-size: 20px;
             color: white;
-            position: relative;
-            top: 15px;
-            left: 800%;
             cursor: default;
+            position: absolute;
+            top: 20%
         }
     </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-inverse">
+
+    <!-- <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -76,6 +77,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
+                {if $loginflag}
+                <span id='user'>歡迎登入&nbsp&nbsp&nbsp{$userinfo['userName']}</span>
+                {/if}
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -91,7 +95,8 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
+<body>
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div>
@@ -142,12 +147,10 @@
         </div>
 
         <script>
-            /*必須將contentType選項設置為false，強制jQuery不Content-Type為您添加標題，否則，邊界字符串將丟失。
-            必須將processData標誌設置為false，否則，jQuery將嘗試將FormData轉換為字符串，將失敗。*/
             $("#regsend").click(function () {
                 let userName = $('#userName').val();
                 let email = $('#email').val();
-                if (userName === "" || email === "") {
+                if (userName.trim() === "" || email.trim() === "") {
                     $('#errorInfo').html("還有欄位未填");
                     return false;
                 }
@@ -163,31 +166,30 @@
                     return false;
                 }
 
-                let editinfoform = document.getElementById('editinfoform')
-                let fd = new FormData(editinfoform);
                 let res = ['email', 'userName', 'error'];
                 for (error of res) {
                     $('#' + error + 'Info').html("&nbsp");
                 }
                 $.ajax({
-                    url: "../../back/controller/editinfoback.php",
+                    url: "./editinfoback.php",
                     type: "POST",
                     dataType: "json",
-                    contentType: false,
-                    processData: false,
-                    data: fd,
+                    data: {
+                        userName : userName,
+                        email : email
+                    },
                     success: function (result) {
-                        if (typeof (result) == 'object') {
+                        if (result.success) {
+                            alert(result.success);
+                            $(window).attr('location', './editreg.php');
+                        } else if (result.notlogin) {
+                            alert(result.notlogin);
+                            $(window).attr('location', './login.php');
+                        } else if(result) {
                             for (error of res) {
                                 $('#' + error + 'Info').html(result[error]);
                             }
-                        } else if (result == 1) {
-                            alert('修改成功');
-                            $(window).attr('location', './editreg.php');
-                        } else if (result == 2) {
-                            alert('請先登入會員');
-                            $(window).attr('location', './login.php');
-                        } else {
+                        }else {
                             alert('修改失敗');
                         }
                     }

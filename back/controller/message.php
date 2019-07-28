@@ -1,54 +1,64 @@
 <?php
 
-
 require_once("../model/ContentModel.php");
 require_once("../public/Filterword.php");
+require_once("../model/Member.php");
+require_once("../public/Commontool.php");
 
-$message  = new ContentModel();
+$commontool = new Commontool();
+$member = new Member();
+$content  = new ContentModel();
 
-if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    echo 2;
+if (!isset($_COOKIE['token']) || empty($_COOKIE['token'])) {
+    echo json_encode(['notlogin'=>'請登入會員'] , JSON_UNESCAPED_UNICODE);
     exit;
 } else {
-    $checklogin = $message->getUser($_COOKIE['token']);
+    $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        $userinfo = [];
+        echo json_encode(['notlogin'=>'請登入會員'], JSON_UNESCAPED_UNICODE);
+        exit;
     } else {
         $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-$messageinfo = $_POST;
+if (isset($_COOKIE['tofast']) || !empty($_COOKIE['tofast'])) {
+    echo json_encode(['tofast' => "留言速度過快，請收後再試"], JSON_UNESCAPED_UNICODE);
+    exit;
+} else {
+    setcookie("tofast" ,time() , time()+5, '/');
+}
 
-$allowinfo = ['message','conid'];
-
-$newmessageinfo = $message->auto_filter($messageinfo,$allowinfo);
+$messageinfo['conid'] = $_POST['conid'];
+$messageinfo['message'] = $_POST['message'];
 
 $verification = [
-    'message'=>array('notempty'=>'0','length'=>'1,100'),
+    'message'=>array('notempty' => '0'),
+    'message'=>array('length' => '1,100'),
 ];
 
-$message->auto_verification($newmessageinfo,$verification);
+$commontool->auto_verification($messageinfo, $verification);
+$errirMessage = $commontool->getErrorInfo();
 
-$errorMessage = [
-    'length'=>'資料長度錯誤',
-    'notempty'=>'未輸入'
-];
-
-if(!empty($message->geterrorInfo())){  //檢查資料空白
-    $error = $message->changeErrormessage($message->geterrorInfo(),$errorMessage);
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+if (!empty($errirMessage)) {
+    echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
     exit;
 }
-$filterword = new Filterword("../public/filterword.txt");
-$newmessageinfo['message'] = $filterword->usefilter($message->useHtmlspecialchars($newmessageinfo['message']));
-$newmessageinfo['uid'] = $userinfo['uid'];
-$newmessageinfo['conid'] = $newmessageinfo['conid'];
-$newmessageinfo['createtime'] = time();
 
-if($message->setMessage($newmessageinfo) == 1){
-    echo 1;
+$filterword = new Filterword("../public/filterword.txt");
+$messageinfo['message'] = $filterword->usefilter(htmlspecialchars($messageinfo['message'], ENT_QUOTES));
+$messageinfo['uid'] = $userinfo['uid'];
+$messageinfo['conid'] = $messageinfo['conid'];
+$messageinfo['createtime'] = time();
+
+
+if ($content->setMessage($messageinfo) == 1) {
+    unset($messageinfo['uid']);
+    $messageinfo['userName'] = $userinfo['userName'];
+    date_default_timezone_set("Asia/Taipei");
+    $messageinfo['createtime'] = date("Y-m-d H:i:s", $messageinfo['createtime']);
+    echo json_encode(['success' => "留言成功"], JSON_UNESCAPED_UNICODE);
 } else {
-    echo 0;
+    echo json_encode(['fail' => "留言失敗"], JSON_UNESCAPED_UNICODE);
 }

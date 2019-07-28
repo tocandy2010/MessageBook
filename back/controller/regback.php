@@ -1,83 +1,86 @@
 <?php
 
 require_once("../model/Member.php");
+require_once("../public/Commontool.php");
 
-$reg  = new Member();
+$commontool = new Commontool();
+$member  = new Member();
 
-$reginfo = $_POST;
-
-$allowpostinfo = ['account','password','repassword','userName','email'];
-
-$newreginfo = $reg->auto_filter($reginfo,$allowpostinfo);
+$reginfo['account'] = $_POST['account'];
+$reginfo['password'] = $_POST['password'];
+$reginfo['repassword'] = $_POST['repassword'];
+$reginfo['userName'] = $_POST['userName'];
+$reginfo['email'] = $_POST['email'];
 
 $verification = [
-    'account'=>array('length'=>'6,20','notempty'=>'0'),
-    'password'=>array('length'=>'6,20','notempty'=>'0'),
-    'userName'=>array('length'=>'1,20','notempty'=>'0'),
-    'email'=>array('email'=>'0','notempty'=>'0'),
+    'account'=>array('length' => '6,20'),
+    'account'=>array('notempty' => '0'),
+    'password'=>array('notempty' => '0'),
+    'password'=>array('notempty' => '0'),
+    'userName'=>array('length' =>' 1,20'),
+    'userName'=>array('notempty' => '0'),
+    'email'=>array('email' => '0'),
+    'email'=>array('notempty' => '0'),
 ];
 
-$reg->auto_verification($newreginfo,$verification);
+$commontool->auto_verification($reginfo, $verification);
 
-$errorMessage = [
-    'length'=>'資料長度錯誤',
-    'email'=>'請輸入正eamil',
-    'notempty'=>'尚未輸入'
-];
+$errirMessage = $commontool->getErrorInfo();
 
-if (!empty($reg->geterrorInfo())) {  //檢查資料空白
-    $error = $reg->changeErrormessage($reg->geterrorInfo(),$errorMessage);
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+if (!empty($errirMessage)) {
+    echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 $error = [];
 
-if (!$reg->checkSame($newreginfo['password'],$newreginfo['repassword'])) {
+if ($reginfo['password'] !== $reginfo['repassword']) {
     $error['repassword'] = "確認密碼與密碼不相同";
-    //echo json_encode($error,JSON_UNESCAPED_UNICODE);
 } else {
-    unset($newreginfo['repassword']);
+    unset($reginfo['repassword']);
 }
 
-if ($reg->onlynumandeng($newreginfo['account'])==0) {
+if (!preg_match_all("/^[A-Za-z0-9]*$/", $reginfo['account'])) {
     $error['account'] = "帳號不可輸入任何符號";
 }
 
-if ($reg->onlynumandeng($newreginfo['password'])==0) {
+if (!preg_match_all("/^[A-Za-z0-9]*$/", $reginfo['password'])) {
     $error['password'] = "密碼不可輸入任何符號";
 }
 
 if (!empty($error)) {   
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-if ((!empty($reg->checkreged('account',$newreginfo['account'])))) {
+if ((!empty($member->checkreged('account', $reginfo['account'])))) {
     $error['account'] = "帳號已被註冊";
 }
 
-if ((!empty($reg->checkreged('email',$newreginfo['email'])))) {
+if ((!empty($member->checkreged('email', $reginfo['email'])))) {
     $error['email'] = "email已被註冊";
 }
 if (!empty($error)) {   
-    echo json_encode($error,JSON_UNESCAPED_UNICODE);
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$newreginfo['userName'] = $reg->useHtmlspecialchars($newreginfo['userName']);
+$reginfo['userName'] = htmlspecialchars($reginfo['userName'], ENT_QUOTES);
+$reginfo['userName'] =  trim($reginfo['userName']);
+$reginfo['userName'] = str_replace(" ", "", $reginfo['userName']);
 
-$newpassword = $reg->encryptionPassword($newreginfo['password']);  //密碼加密
-if ($newpassword !== false) {     //將使用者名稱轉義
-    $newreginfo['password'] = $newpassword;
+$newpassword = password_hash($reginfo['password'], PASSWORD_DEFAULT);
+
+if ($newpassword !== false) {
+    $reginfo['password'] = $newpassword;
 } else {
-    echo 0;
+    echo json_encode(['fail'=>'未知錯誤'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$newreginfo['regTime'] = time();
-if ($reg->addUser('users',$newreginfo) == 1) {
-    echo 1;
+$reginfo['regTime'] = time();
+if ($member->addUser('users',$reginfo) == 1) {
+    echo json_encode(['success' => '註冊成功 請重新登入'], JSON_UNESCAPED_UNICODE);
 } else {
-    echo 0;
+    echo json_encode(['fail'=>'註冊失敗'], JSON_UNESCAPED_UNICODE);
 }

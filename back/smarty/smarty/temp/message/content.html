@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,16 +17,37 @@
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
         .row.content {
-            height: 914px
+            height: 100%;
         }
 
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
-            background-color: #f1f1f1;
+            background-color: white;
             height: 100%;
         }
 
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        } -->
+{include file='D:\xampp\htdocs\MessageBook\back\public\header.html' title='發佈文章'}
+<header>
+    <style>
         #message {
             padding: 0px 50px 0px 50px;
         }
@@ -64,49 +85,57 @@
         }
 
         #showcontent {
-            word-wrap: break-word; 
-            word-break: normal;
-            width:100%;
+            width: 100%;
+            height: 500px;
+            padding: 10px 30px 10px 30px;
             font-size: 25px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            white-space: pre-wrap;
         }
+
         #showtitle {
             text-align: center;
-            width:100%;
-            font-size: 30px;    
-            padding: 20px 0px 0px 0px;         
+            width: 100%;
+            font-size: 30px;
+            padding: 20px 0px 0px 0px;
         }
 
         #messagenum {
             text-align: center;
-            font-family:fantasy;
+            font-family: fantasy;
             font-size: 18px;
-            padding: 5px;        
+            padding: 5px;
         }
 
         #reback {
             width: 90px;
             position: absolute;
-            top:-10px;
-            left:10px
+            top: -10px;
+            left: 10px
         }
 
         #user {
-            font-size: 15px;
-            color:white;
-            position: relative;
-            top:15px;
-            left:800%;
+            font-size: 20px;
+            color: white;
             cursor: default;
+            position: absolute;
+            top: 20%
         }
     </style>
 </head>
-
-<body>
-    <nav class="navbar navbar-inverse">
+    <!-- <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
-                <span id= 'user'>歡迎登入&nbsp{$userinfo['userName']}</span>
+                {if $loginflag}
+                <span id='user'>歡迎登入&nbsp&nbsp&nbsp{$userinfo['userName']}</span>
+                {/if}
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -122,7 +151,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div><!-- 右邊灰色區 -->
@@ -141,8 +170,9 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="textarea">留言</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" spellcheck="false" id="messagetext"name="message"></textarea>
-                                    <input type="hidden" name="conid" value="{$content['conid']}">
+                                    <textarea class="form-control" spellcheck="false" id="messagetext"
+                                        name="message"></textarea>
+                                    <input type="hidden" id="conid" value="{$content['conid']}">
                                     <span class="help-block">最大字數限制<span id='messagelength'>100</span></span>
                                     <span id='messageInfo' class='errorred' class="help-block">&nbsp</span>
                                 </div>
@@ -162,81 +192,93 @@
                     </form>
                 </div>
                 <p id='messagenum'>{$messagenum}則留言</p>
-                <hr/>
-                <div class="container">
-                    {foreach from=$getmessage key=$k item=$v}
+                <hr />
+                <div class="container" id='messageregion'>
+                    {foreach from=$getmessage item=$messageinfo}
                     <div class="panel panel-default">
-                        <div class="panel-heading">{$v['userName']}({$v['account']})<span
-                                class='messagetime'>{$v['createtime']}</span></div>
-                        <div class="panel-body">{$v['message']}</div>
+                        <div class="panel-heading">{$messageinfo['userName']}({$messageinfo['account']})<span
+                                class='messagetime'>{$messageinfo['createtime']}</span></div>
+                        <div class="panel-body">{$messageinfo['message']}</div>
                     </div>
                     {/foreach}
                 </div>
-
             </div>
-            <div class="col-sm-2 sidenav"></div><!-- 左邊灰色區 -->
+            <div class="col-sm-2 sidenav">
+            </div>
         </div>
-    </div>
-    <script>
-        $("#messagesend").click(function() {
-            let messageform = document.getElementById('messageform');
-            let messagetext = $('#messagetext').val();
-            if(messagetext === ""){
-                $('#messageInfo').html('請輸入留言');
-                return false;
-            }
 
-            let fd = new FormData(messageform);
-            let res = ['message'];
-            for (error of res) {
-                $('#' + error + 'Info').html("&nbsp");
-            }
-            $.ajax({
-                url: "../../back/controller/message.php",
-                type: "POST",
-                dataType: "json",
-                contentType: false,
-                processData: false,
-                data: fd,
-                success: function (result) {
-                    if (result) {
-                        console.log(result)
-                        for (error of res) {
-                            $('#' + error + 'Info').html(result[error]);
+        <script>
+            $("#messagesend").click(function () {
+                let messageform = document.getElementById('messageform');
+                let messagetext = $('#messagetext').val();
+                let conid = $('#conid').val();
+                if (messagetext === "") {
+                    $('#messageInfo').html('請輸入留言');
+                    return false;
+                }
+
+                let res = ['message'];
+                for (error of res) {
+                    $('#' + error + 'Info').html("&nbsp");
+                }
+                $.ajax({
+                    url: "./message.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        message: messagetext,
+                        conid: conid,
+                    },
+                    success: function (result) {
+                        if (result.notlogin) {
+                            alert(result.notlogin)
+                            $(window).attr('location', './login.php');
+                        } else if (result.success) {
+                            // let mesinfo = result.success;
+                            // let str = '';
+                            // str += "<div class=\'panel panel-default\'>";
+                            // str += "<div class=\'panel-heading\'>" + mesinfo.userName + "(" + mesinfo.userName + ")<span ";
+                            // str += "class=\'messagetime\'>" + mesinfo.createtime + "</span></div>";
+                            // str += "<div class=\'panel-body\'>" + mesinfo.message + "</div>";
+                            // str += "</div>"
+                            // $('#messageregion').prepend(str);
+                            // $('#messagetext').val("");
+                            // $('#messagelength').html(100);
+                            location.reload();
+                        } else if (result.tofast) {
+                            alert(result.tofast);
+                        }else if (result) {
+                            for (error of res) {
+                                $('#' + error + 'Info').html(result[error]);
+                            }
+                        } else {
+                            alert('留言失敗');
                         }
-                    } else if (result == 1) {
-                        location.reload();
-                    } else if (result == 2) {
-                        alert('請登入會員')
-                        $(window).attr('location', '../../back/controller/login.php');
-                    }else{
-                        alert('留言失敗');
                     }
+                });
+            });
+
+            $('#messagetext').keyup(function () {
+                let maxmessagelen = 100;
+                let inplen = $('#messagetext').val();
+                if (inplen.length <= maxmessagelen) {
+                    $('#messagelength').html(maxmessagelen - inplen.length);
+                    $('#messagelenerror').attr("style", 'display:none');
+                    $('#messagesend').attr('disabled', false)
+                } else {
+                    $('#messagelength').html(maxmessagelen - inplen.length);
+                    $('#messagelenerror').attr("style", 'display:inline-block');
+                    $('#messagesend').attr('disabled', true)
                 }
             });
-        });
 
-        $('#messagetext').keyup(function(){
-            let maxmessagelen = 100;
-            let inplen = $('#messagetext').val();
-            if (inplen.length <= maxmessagelen) {
-                $('#messagelength').html(maxmessagelen - inplen.length);
+            $('#resetmessage').click(function () {
+                $('#messagelength').html(100);
+                $('#messagesend').attr('disabled', false);
                 $('#messagelenerror').attr("style", 'display:none');
-                $('#messagesend').attr('disabled', false)
-            } else {
-                $('#messagelength').html(maxmessagelen - inplen.length);
-                $('#messagelenerror').attr("style", 'display:inline-block');
-                $('#messagesend').attr('disabled', true)
-            }
-        });
+            })
 
-        $('#resetmessage').click(function(){
-            $('#messagelength').html(100);
-            $('#messagesend').attr('disabled', false);
-            $('#messagelenerror').attr("style", 'display:none');
-        })
-
-    </script>
+        </script>
 </body>
 
 </html>

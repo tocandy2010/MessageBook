@@ -3,15 +3,17 @@
 
 require_once("../smarty/smarty/public/Mysmarty.php");
 require_once("../model/ContentModel.php");
+require_once("../model/Member.php");
 
-$articleedit  = new ContentModel();
+$member  = new Member();
+$content = new ContentModel();
 $smarty = new Mysmarty();
 
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     header('location: ./login.php');
     exit;
 } else {
-    $checklogin = $articleedit->getUser($_COOKIE['token']);
+    $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
         header('location: ./login.php');
         exit;
@@ -21,28 +23,21 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     }
 }
 
-$articleeditinfo = $_GET;
+$articleeditinfo['conid'] = $_GET['conid'];
 
-$allowinfo = ['conid'];
+$contentinfo = $content->getContent($articleeditinfo['conid']);
 
-$newarticleeditinfo = $articleedit->auto_filter($articleeditinfo,$allowinfo);
-
-
-
-$contentinfo = $articleedit->getContent($newarticleeditinfo['conid']);
-
-if($contentinfo['uid'] !== $userinfo['uid'] || $contentinfo === false || $contentinfo['status'] === 0){
+if ($contentinfo['uid'] !== $userinfo['uid'] || $contentinfo === false || $contentinfo['status'] === 0) {
     header('location: ./index.php');
     exit;
 }
 
-
 $loginflag = !empty($userinfo);
 
-$smarty->assign('loginflag',$loginflag);
+$smarty->assign('loginflag', $loginflag);
 
-$smarty->assign('userinfo',$userinfo);
+$smarty->assign('userinfo', $userinfo);
 
-$smarty->assign('contentinfo',$contentinfo);
+$smarty->assign('contentinfo', $contentinfo);
 
 $smarty->display('./message/meyarticleedit.html');
