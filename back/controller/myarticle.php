@@ -10,25 +10,23 @@ $content  = new ContentModel();
 $member  = new Member();
 $smarty = new Mysmarty();
 
+## 判斷使用者是否登入
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
-    $userinfo = [];
+    header("Location: login.php");
+    exit;
 } else {
     $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        $userinfo = [];
+        header("Location: login.php");
+        exit;
     } else {
         $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-if (empty($userinfo)) {
-    header('location: ./login.php');
-    exit;
-}
-
+## 根據用戶取得狀態為 1 的所有文章
 $mycontent = $content->getMyContent($userinfo['uid']);
-
 $mycontent = $commontool->useTaiwanTime($mycontent, 'createtime');
 
 $loginflag = !empty($userinfo);

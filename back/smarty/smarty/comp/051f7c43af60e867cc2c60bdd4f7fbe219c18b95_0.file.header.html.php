@@ -1,13 +1,41 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 3.1.33, created on 2019-07-29 11:11:44
+  from 'C:\xampp\htdocs\MessageBook\back\public\header.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d3eb850f2c746_41154951',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '051f7c43af60e867cc2c60bdd4f7fbe219c18b95' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html',
+      1 => 1564391495,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5d3eb850f2c746_41154951 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>{$title}</title>
+    <title><?php echo $_smarty_tpl->tpl_vars['title']->value;?>
+</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
@@ -74,22 +102,25 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
-                {if $loginflag}
-                <span id='user'>歡迎登入&nbsp&nbsp&nbsp{$userinfo['userName']}</span>
-                {/if}
+                <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
+                <span id='user'>歡迎登入&nbsp&nbsp&nbsp<?php echo $_smarty_tpl->tpl_vars['userinfo']->value['userName'];?>
+</span>
+                <?php }?>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    {if $loginflag}
+                    <?php if ($_smarty_tpl->tpl_vars['loginflag']->value) {?>
                     <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
                     <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
                     <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
                     <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
-                    {else}
+                    <?php } else { ?>
                     <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
                     <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
-                    {/if}
+                    <?php }?>
                 </ul>
             </div>
         </div>
     </nav>
+<?php }
+}

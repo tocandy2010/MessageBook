@@ -5,10 +5,10 @@ require_once("../public/Filterword.php");
 require_once("../model/Member.php");
 require_once("../public/Commontool.php");
 
-$commontool = new Commontool();
-$member  = new Member();
-$content = new ContentModel();
 
+$member  = new Member();
+
+## 判斷使用者是否登入
 if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
     $error['notlogin'] = '請登入會員';
     echo json_encode($error, JSON_UNESCAPED_UNICODE);
@@ -16,17 +16,22 @@ if(!isset($_COOKIE['token']) || empty($_COOKIE['token'])){
 } else {
     $checklogin = $member->getUser($_COOKIE['token']);
     if (empty($checklogin)) {
-        $userinfo = [];
+        $error['notlogin'] = '請登入會員';
+        echo json_encode($error, JSON_UNESCAPED_UNICODE);
+        exit;
     } else {
         $userinfo = $checklogin;
         unset($userinfo['token']);
     }
 }
 
-$articleinfo['title'] = $_POST['title'];
-$articleinfo['content'] = $_POST['content'];
+$content = new ContentModel();
+$commontool = new Commontool();
 
+$articleinfo['title'] = trim($_POST['title']);
+$articleinfo['content'] = trim($_POST['content']);
 
+## 設定傳入資料格式
 $verification = [
     'title'=>array('notempty' => '0'),
     'title'=>array('length' => '1,30'),
@@ -34,25 +39,27 @@ $verification = [
     'content'=>array('length' => '1,1000'),
 ];
 
+## 傳入的資料檢查
 $commontool->auto_verification($articleinfo, $verification);
 $errirMessage = $commontool->getErrorInfo();
-
 if (!empty($errirMessage)) {
     echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+
+## 過濾不雅文字及轉義
+$filterword = new Filterword("../public/filterword.txt");
+$articleinfo['title'] = $filterword->useFilter($articleinfo['title']);
+$articleinfo['content'] = $filterword->useFilter($articleinfo['content']);
 $articleinfo['title'] = htmlspecialchars($articleinfo['title'], ENT_QUOTES);
 $articleinfo['content'] = htmlspecialchars($articleinfo['content'], ENT_QUOTES);
 
-$filterword = new Filterword("../public/filterword.txt");
-
-$articleinfo['title'] = $filterword->usefilter($articleinfo['title']);
-$articleinfo['content'] = $filterword->usefilter($articleinfo['content']);
 
 $articleinfo['createtime'] = time();
 $articleinfo['uid'] = $userinfo['uid'];
 
+## 寫入資料庫
 if ($content->addArticle($articleinfo) === 1) {
     echo json_encode(['success' => '發佈成功'], JSON_UNESCAPED_UNICODE);
 } else {

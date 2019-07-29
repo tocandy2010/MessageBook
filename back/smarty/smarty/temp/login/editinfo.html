@@ -1,107 +1,9 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>留言版註冊</title>
-    <meta charset="utf-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
-
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {
-            height: 915px
-        }
-
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
-            height: 100%;
-        }
-
-        /* Set black background color, white text and some padding */
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-
-            .row.content {
-                height: auto;
-            }
-        } -->
-{include file='D:\xampp\htdocs\MessageBook\back\public\header.html' title='會員資訊修改'}
-<head>
-    <style>
-        #title {
-            text-align: center
-        }
-
-        .errorred {
-            color: darkred;
-        }
-
-        #user {
-            font-size: 20px;
-            color: white;
-            cursor: default;
-            position: absolute;
-            top: 20%
-        }
-    </style>
-</head>
-
-
-    <!-- <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="../../back/controller/index.php">Home</a>
-                {if $loginflag}
-                <span id='user'>歡迎登入&nbsp&nbsp&nbsp{$userinfo['userName']}</span>
-                {/if}
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    {if $loginflag}
-                    <li><a href='../../back/controller/newarticle.php'><span></span>發佈文章</a></li>;
-                    <li><a href='../../back/controller/myarticle.php'><span></span>已發佈文章</a></li>;
-                    <li><a href='../../back/controller/editreg.php'><span></span>修改會員</a></li>;
-                    <li><a href='../../back/controller/logout.php'><span></span>登出</a></li>;
-                    {else}
-                    <li><a href='../../back/controller/login.php'><span></span>登入</a></li>;
-                    <li><a href='../../back/controller/reg.php'><span></span>註冊</a></li>;
-                    {/if}
-                </ul>
-            </div>
-        </div>
-    </nav> -->
-<body>
+{include file='\xampp\htdocs\MessageBook\back\public\header.html' title='會員資訊修改'}
     <div class="container-fluid text-center">
         <div class="row content">
             <div class="col-sm-2 sidenav"></div>
             <div class="col-sm-8 text-left">
-                <form class="form-horizontal" action='../../back/controller/reg.php' method='post' id='editinfoform'>
+                <form class="form-horizontal"  id='editinfoform'>
                     <fieldset>
                         <!-- Form Name -->
                         <legend id='title'>
@@ -112,9 +14,9 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="textinput">姓名</label>
                             <div class="col-md-4">
-                                <input id="userName" name="userName" type="text" value="{$userinfo['userName']}"
-                                    placeholder="" class="form-control input-md">
-                                <span class="help-block">請輸入姓&nbsp&nbsp名最大字數限制20個字</span>
+                                <input id="userName" name="userName" type="text" value="{$userinfo['userName']|default:''}"
+                                autocomplete="off" class="form-control input-md">
+                                <span class="help-block">請輸入姓&nbsp&nbsp名最大字數限制20個字&nbsp&nbsp不可輸入空白</span>
                                 <span class='errorred' id='userNameInfo'>&nbsp</span>
                             </div>
                         </div>
@@ -123,7 +25,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="">email</label>
                             <div class="col-md-4">
-                                <input id="email" name="email" type="text" value="{$userinfo['email']}" placeholder=""
+                                <input id="email" name="email" type="text" value="{$userinfo['email']|default:''}" placeholder=""
                                     class="form-control input-md">
                                 <span class="help-block">ex:example@com</span>
                                 <span class='errorred' id='emailInfo'>&nbsp</span>
@@ -145,18 +47,13 @@
             <div class="col-sm-2 sidenav">
             </div>
         </div>
-
+    </div>
         <script>
             $("#regsend").click(function () {
                 let userName = $('#userName').val();
                 let email = $('#email').val();
                 if (userName.trim() === "" || email.trim() === "") {
                     $('#errorInfo').html("還有欄位未填");
-                    return false;
-                }
-
-                if (userName.length > 20) {
-                    $('#userNameInfo').html("超過字數上限");
                     return false;
                 }
 
@@ -181,11 +78,14 @@
                     success: function (result) {
                         if (result.success) {
                             alert(result.success);
-                            $(window).attr('location', './editreg.php');
+                            //$(window).attr('location', './editreg.php');
                         } else if (result.notlogin) {
                             alert(result.notlogin);
-                            $(window).attr('location', './login.php');
-                        } else if(result) {
+                            //$(window).attr('location', './login.php');
+                        } else if (result.notanyedit) {
+                            alert(result.notanyedit)
+                           // $(window).attr('location', './editreg.php');
+                        }else if(result) {
                             for (error of res) {
                                 $('#' + error + 'Info').html(result[error]);
                             }
@@ -195,6 +95,20 @@
                     }
                 });
             });
+
+            $('#userName').keyup(function() {
+                let strlen = $(this).val().length;
+                let str = $(this).val();
+                for(let i = 0; i < strlen; i++) {
+                    if (str.substring(i,i+1) === " " || strlen>20) {
+                        $(this).next().attr('style', 'color:darkred')
+                        $('#regsend').attr('disabled', true);
+                        break;
+                    }
+                    $(this).next().attr('style', 'color:gray')
+                    $('#regsend').attr('disabled', false);
+                }
+            })
         </script>
 </body>
 

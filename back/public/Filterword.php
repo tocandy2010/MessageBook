@@ -15,7 +15,7 @@ class Filterword {
         }
     }
 
-    public function usefilter($str)
+    public function useFilter($str)
     {
         if (empty($this->keyword)) {
             return $str;

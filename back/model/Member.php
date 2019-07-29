@@ -1,11 +1,13 @@
 <?php
-require_once("../model/Model.php");
-class Member extends Model
+
+require_once("../databases/Mysql.php");
+
+class Member extends Mysql
 {
     /*
-     * 傳入table 字段名稱
+     * 查詢 table 內的標題和值是否已存在
      */
-    public function checkReged($name, $value, $show = PDO::FETCH_ASSOC)   //檢查是否已被註冊 key和vlue
+    public function checkReged($name, $value, $show = PDO::FETCH_ASSOC)
     {    
         $sql = "select * from users where {$name} = ?";
         $res = $this->con->prepare($sql);
@@ -19,10 +21,10 @@ class Member extends Model
     }
 
     /*
-     * 帳號獲得使用者資訊
+     * 傳入帳號取得使用者資訊
      */
     public function getAccount($account, $show = PDO::FETCH_ASSOC)  
-    {    ##取得帳號是否存在
+    {
         $sql = "select * from users where account = ?";
         $res = $this->con->prepare($sql);
         $res->bindParam(1, $account);

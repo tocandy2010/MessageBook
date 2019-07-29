@@ -1,22 +1,15 @@
 <?php
 
-require_once("../model/Model.php");
-class ContentModel extends Model 
-{
-    // public function findarticler($pdo,$uid)
-    // {
-    //     $sql = "select * from users where uid = {$uid}";
-    //     $res = $pdo->prepare($sql);
-    //     $res->execute();
-    //     return $res->fetch(PDO::FETCH_ASSOC);
-    // }
+require_once("../databases/Mysql.php");
 
+class ContentModel extends Mysql 
+{
     /*
      * 傳入文章 id 回傳 content表和users表
      */
     public function getMessage($conid)  //找索此文章的所有留言
     {
-        $sql = "select * from message as m 
+        $sql = "select u.userName,u.account,m.createtime,m.message from message as m 
         left join content as c on c.conid = m.conid 
         left join users as u on u.uid = m.uid
         where c.conid = {$conid} order by m.createTime desc";
@@ -24,11 +17,6 @@ class ContentModel extends Model
         $res->execute();
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    // public function getUserInfo($table, $token)
-    // {
-    //     return $this->auto_selectOne($table, 'token', $token);
-    // }
 
     /*
      * 回傳開放的文章
@@ -102,6 +90,9 @@ class ContentModel extends Model
         return $this->auto_update('content', $arr, 'conid', $conid);
     }
 
+    /*
+     * 查尋所有符合首頁搜尋提交的內容
+     */
     public function getSearch($search)
     {
         $sql = "select * from users as u 
@@ -113,6 +104,9 @@ class ContentModel extends Model
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /*
+     * 依照首頁搜索內容並傳入分頁的number
+     */
     public function showSearch( $search, $page, $showlen)
     {
         $offset = ceil(($page-1) * $showlen);

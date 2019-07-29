@@ -2,4 +2,5 @@
 
 setcookie('token', '', time()-10, '/');
 
-header('Location: ./login.php');
+header("Location: login.php");
+

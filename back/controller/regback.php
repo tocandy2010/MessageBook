@@ -12,6 +12,7 @@ $reginfo['repassword'] = $_POST['repassword'];
 $reginfo['userName'] = $_POST['userName'];
 $reginfo['email'] = $_POST['email'];
 
+## 設定傳入資料格式
 $verification = [
     'account'=>array('length' => '6,20'),
     'account'=>array('notempty' => '0'),
@@ -22,41 +23,34 @@ $verification = [
     'email'=>array('email' => '0'),
     'email'=>array('notempty' => '0'),
 ];
-
+## 檢查傳入的資料格式
 $commontool->auto_verification($reginfo, $verification);
-
 $errirMessage = $commontool->getErrorInfo();
-
 if (!empty($errirMessage)) {
     echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+## 驗證註冊資訊合法
 $error = [];
-
 if ($reginfo['password'] !== $reginfo['repassword']) {
     $error['repassword'] = "確認密碼與密碼不相同";
 } else {
     unset($reginfo['repassword']);
 }
-
 if (!preg_match_all("/^[A-Za-z0-9]*$/", $reginfo['account'])) {
     $error['account'] = "帳號不可輸入任何符號";
 }
-
 if (!preg_match_all("/^[A-Za-z0-9]*$/", $reginfo['password'])) {
     $error['password'] = "密碼不可輸入任何符號";
 }
-
 if (!empty($error)) {   
     echo json_encode($error, JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 if ((!empty($member->checkreged('account', $reginfo['account'])))) {
     $error['account'] = "帳號已被註冊";
 }
-
 if ((!empty($member->checkreged('email', $reginfo['email'])))) {
     $error['email'] = "email已被註冊";
 }
@@ -65,11 +59,14 @@ if (!empty($error)) {
     exit;
 }
 
+## 使用者名稱轉義 去除前後空白
 $reginfo['userName'] = htmlspecialchars($reginfo['userName'], ENT_QUOTES);
 $reginfo['userName'] =  trim($reginfo['userName']);
 $reginfo['userName'] = str_replace(" ", "", $reginfo['userName']);
 
+
 $newpassword = password_hash($reginfo['password'], PASSWORD_DEFAULT);
+
 
 if ($newpassword !== false) {
     $reginfo['password'] = $newpassword;
