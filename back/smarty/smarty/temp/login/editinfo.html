@@ -26,7 +26,7 @@
                             <label class="col-md-4 control-label" for="">email</label>
                             <div class="col-md-4">
                                 <input id="email" name="email" type="text" value="{$userinfo['email']|default:''}" placeholder=""
-                                    class="form-control input-md">
+                                autocomplete="off" class="form-control input-md">
                                 <span class="help-block">ex:example@com</span>
                                 <span class='errorred' id='emailInfo'>&nbsp</span>
                             </div>
@@ -49,24 +49,35 @@
         </div>
     </div>
         <script>
+
             $("#regsend").click(function () {
                 let userName = $('#userName').val();
                 let email = $('#email').val();
+                let res = [ 'userName', 'error','email'];
+
+                // 循環檢查所有欄位
+                res.every((item) => {
+                if ($("#" + item).val() === '') {
+                        alert(item)
+                        $("#" + item).focus();
+                        return false;
+                    } else {
+                        return true
+                    }
+                })
+
                 if (userName.trim() === "" || email.trim() === "") {
                     $('#errorInfo').html("還有欄位未填");
                     return false;
                 }
 
+                //檢查email
                 let emailpatt = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
                 if (email.search(emailpatt) === -1) {
                     $('#emailInfo').html("請輸入正確的eamil");
                     return false;
                 }
 
-                let res = ['email', 'userName', 'error'];
-                for (error of res) {
-                    $('#' + error + 'Info').html("&nbsp");
-                }
                 $.ajax({
                     url: "./editinfoback.php",
                     type: "POST",
@@ -78,13 +89,13 @@
                     success: function (result) {
                         if (result.success) {
                             alert(result.success);
-                            //$(window).attr('location', './editreg.php');
+                            $(window).attr('location', './editreg.php');
                         } else if (result.notlogin) {
                             alert(result.notlogin);
-                            //$(window).attr('location', './login.php');
+                            $(window).attr('location', './login.php');
                         } else if (result.notanyedit) {
                             alert(result.notanyedit)
-                           // $(window).attr('location', './editreg.php');
+                            $(window).attr('location', './editreg.php');
                         }else if(result) {
                             for (error of res) {
                                 $('#' + error + 'Info').html(result[error]);
@@ -97,6 +108,7 @@
             });
 
             $('#userName').keyup(function() {
+                $('#errorInfo').html("&nbsp");
                 let strlen = $(this).val().length;
                 let str = $(this).val();
                 for(let i = 0; i < strlen; i++) {
@@ -108,6 +120,10 @@
                     $(this).next().attr('style', 'color:gray')
                     $('#regsend').attr('disabled', false);
                 }
+            })
+
+            $('#email').keyup(function() {
+                $('#errorInfo').html("&nbsp");
             })
         </script>
 </body>

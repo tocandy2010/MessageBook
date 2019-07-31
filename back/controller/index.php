@@ -6,7 +6,6 @@ require_once("../public/Pagetool.php");
 require_once("../model/Member.php");
 require_once("../public/Commontool.php");
 
-
 $member  = new Member();
 $commontool = new Commontool();
 $content = new ContentModel();

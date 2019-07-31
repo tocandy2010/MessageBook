@@ -76,7 +76,7 @@ if ($newpassword !== false) {
 }
 
 $reginfo['regTime'] = time();
-if ($member->addUser('users',$reginfo) == 1) {
+if ($member->addUser('users',$reginfo) === 1) {
     echo json_encode(['success' => '註冊成功 請重新登入'], JSON_UNESCAPED_UNICODE);
 } else {
     echo json_encode(['fail'=>'註冊失敗'], JSON_UNESCAPED_UNICODE);

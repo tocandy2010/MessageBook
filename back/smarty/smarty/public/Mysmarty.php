@@ -1,8 +1,8 @@
 <?php
 
-$pathstrpos = strpos(__DIR__,'back');
-$path = substr(__DIR__,0,$pathstrpos+4);
-require_once($path."\\smarty\\smraty3\\smarty-3.1.33\\libs\\Smarty.class.php");
+$pathstrpos = strpos(__DIR__, 'back');
+$path = substr(__DIR__, 0, $pathstrpos + 4);
+require_once($path . "\\smarty\\smraty3\\smarty-3.1.33\\libs\\Smarty.class.php");
 
 /*
 簡化模板
@@ -19,8 +19,8 @@ setcompileDir
 
 class Mysmarty extends Smarty {
     public function __construct(){
-        $pathstrpos = strpos(__DIR__,'back');
-        $path = substr(__DIR__,0,$pathstrpos+4);
+        $pathstrpos = strpos(__DIR__, 'back');
+        $path = substr(__DIR__, 0, $pathstrpos + 4);
         parent::__construct();
         $this->settemplateDir("{$path}\\smarty\\smarty\\temp");
         $this->setcompileDir("{$path}\\smarty\\smarty\\comp");

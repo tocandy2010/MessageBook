@@ -60,7 +60,12 @@ $messageinfo['createtime'] = time();
 
 ## 寫入資料庫
 if ($content->setMessage($messageinfo) === 1) {
-    echo json_encode(['success' => "留言成功"], JSON_UNESCAPED_UNICODE);
+    $messagedata['account'] = $userinfo['account'];
+    $messagedata['userName'] = $userinfo['userName'];
+    $messagedata['message'] = $messageinfo['message'];
+    $createtime = $commontool->useTaiwanTime([['createtime' => $messageinfo['createtime']]], 'createtime')[0]['createtime'];
+    $messagedata['createtime'] = $createtime;
+    echo json_encode(['success' => $messagedata], JSON_UNESCAPED_UNICODE);
 } else {
     echo json_encode(['fail' => "留言失敗"], JSON_UNESCAPED_UNICODE);
 }

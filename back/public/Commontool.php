@@ -70,6 +70,9 @@ class Commontool {
         return $errordata;
     }
 
+    /*
+     * 傳入2維陣列陣列  找到對應的欄位名稱修改其時間為台灣時間格式 Y-M-D H:i:s
+     */
     public function useTaiwanTime($arr,$name)  //傳入陣列  找到對應的欄位名稱修改其時間為台灣時間格式 Y-M-D H:i:s
     {
         date_default_timezone_set("Asia/Taipei");

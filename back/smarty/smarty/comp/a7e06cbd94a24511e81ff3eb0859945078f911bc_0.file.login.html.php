@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-29 05:57:04
+/* Smarty version 3.1.33, created on 2019-07-30 09:51:09
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\login.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3e6e9031a257_12542474',
+  'unifunc' => 'content_5d3ff6ed998ed5_84330216',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a7e06cbd94a24511e81ff3eb0859945078f911bc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\login.html',
-      1 => 1564372621,
+      1 => 1564471883,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d3e6e9031a257_12542474 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3ff6ed998ed5_84330216 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'留言版登入'), 0, false);
 ?>
     <div class="container-fluid text-center">
@@ -136,13 +136,17 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                     remember: $('#remember').val(),
                 },
                 success: function (result) {
-                    if (result.login) {
+                    if (result.logininfo === 'success') {
                         $(window).attr('location', '../../back/controller/index.php');
-                    } else if (result.logined) {
+                    } else if (result.logininfo === 'islogined') {
                         $(`#errorInfo`).html("目前已登入狀態");
-                    } else if (result) {
+                    } else if (result.logininfo === 'fail') {
+                        $(`#errorInfo`).html("帳號或密碼錯誤");
+                    } else if (result.logininfo === 'errorvcode') {
+                        $(`#errorInfo`).html("帳號或密碼錯誤");
+                    } else if (result.errorinfo) {
                         for (error of res) {
-                            $('#' + error + 'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result.loginfo[error]);
                         }
                     } else {
                         $(`#errorInfo`).html("登入失敗");

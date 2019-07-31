@@ -36,26 +36,26 @@ class Member extends Mysql
         return $res->fetch($show);
     }
 
-    /*
-     * 產生token 100個字
-     */
-    public function createToken($uid)  
-    {
-        $str = "abcdefghijklmnopqrstuvwxyz";
-        $str .= strtoupper($str);
-        $str .= "0123456789";
-        $str .= "+-*/$.?:";
-        $str = str_repeat($str, 10);
-        $str = str_shuffle($str);
-        $token = substr($str, 0, 100).$uid;
-        return $token;
-    }
+    // /*
+    //  * 產生token 100個字
+    //  */
+    // public function createToken($uid)  
+    // {
+    //     $str = "abcdefghijklmnopqrstuvwxyz";
+    //     $str .= strtoupper($str);
+    //     $str .= "0123456789";
+    //     $str .= "+-*/$.?:";
+    //     $str = str_repeat($str, 10);
+    //     $str = str_shuffle($str);
+    //     $token = substr($str, 0, 100).$uid;
+    //     return $token;
+    // }
 
     /*
      * 設定資料庫token
      */
-    public function setToken($table, $arr, $pk, $id){  
-        return $this->auto_update($table, $arr, $pk, $id);
+    public function setToken($token, $id){  
+        return $this->auto_update('users', ['token' => $token], 'uid', $id);
     }
 
     /*

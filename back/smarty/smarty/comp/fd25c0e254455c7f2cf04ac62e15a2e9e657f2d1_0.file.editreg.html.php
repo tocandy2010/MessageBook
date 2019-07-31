@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-29 06:02:13
+/* Smarty version 3.1.33, created on 2019-07-30 07:40:55
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editreg.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3e6fc57a0c54_74763161',
+  'unifunc' => 'content_5d3fd867662dc2_03939202',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'fd25c0e254455c7f2cf04ac62e15a2e9e657f2d1' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editreg.html',
-      1 => 1564372893,
+      1 => 1564465251,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d3e6fc57a0c54_74763161 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3fd867662dc2_03939202 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'留言版登入'), 0, false);
 ?>
 <header>
@@ -33,6 +33,7 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             width: 40%;
             height: 40%;
             position: fixed;
+            font-weight:bold;
         }
 
         #info {
@@ -43,7 +44,7 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             height: 30%;
             text-align: center;
             line-height: 100px;
-            font-size: 30px;
+            font-size: auto;
             border-radius: 15px;
             color: steelblue
         }
@@ -62,9 +63,10 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             height: 30%;
             text-align: center;
             line-height: 100px;
-            font-size: 30px;
+            font-size: auto;
             border-radius: 15px;
-            color: steelblue
+            color: steelblue;
+            word-break: break-all
         }
     </style>
 </head>
@@ -81,11 +83,9 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                     <a href='./editpassword.php'>
                         <div id='password' class='mouseover'>修改密碼</div>
                     </a>
-
                 </div>
             </div>
             <div class="col-sm-2 sidenav">
-
             </div>
 
         </div>

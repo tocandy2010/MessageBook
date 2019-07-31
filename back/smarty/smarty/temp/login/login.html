@@ -108,13 +108,17 @@
                     remember: $('#remember').val(),
                 },
                 success: function (result) {
-                    if (result.login) {
+                    if (result.logininfo === 'success') {
                         $(window).attr('location', '../../back/controller/index.php');
-                    } else if (result.logined) {
+                    } else if (result.logininfo === 'islogined') {
                         $(`#errorInfo`).html("目前已登入狀態");
-                    } else if (result) {
+                    } else if (result.logininfo === 'fail') {
+                        $(`#errorInfo`).html("帳號或密碼錯誤");
+                    } else if (result.logininfo === 'errorvcode') {
+                        $(`#errorInfo`).html("帳號或密碼錯誤");
+                    } else if (result.errorinfo) {
                         for (error of res) {
-                            $('#' + error + 'Info').html(result[error]);
+                            $('#' + error + 'Info').html(result.loginfo[error]);
                         }
                     } else {
                         $(`#errorInfo`).html("登入失敗");

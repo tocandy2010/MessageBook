@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-29 12:22:13
+/* Smarty version 3.1.33, created on 2019-07-30 08:41:33
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\editpassword.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3ec8d50a6233_15186878',
+  'unifunc' => 'content_5d3fe69df2b583_28543475',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'def49e97d1705ffbbf7d91dd17c804956ec94379' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\editpassword.html',
-      1 => 1564395708,
+      1 => 1564468892,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d3ec8d50a6233_15186878 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3fe69df2b583_28543475 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'會員密碼修改'), 0, false);
 ?>
     <div class="container-fluid text-center">
@@ -86,22 +86,49 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
 
     <?php echo '<script'; ?>
 >
+
+        $().ready(function () {
+            $('#oldpassword').focus();
+        })
         
-        $("#regsend").click(function () {
+        $("#regsend").click(function (event) {
             let oldpassword = $('#oldpassword').val();
             let password = $('#password').val();
             let repassword = $('#repassword').val();
             let res = ['oldpassword', 'password', 'repassword'];
+            // let sendajax = true;
+
+            res.every((item) => {
+                if ($("#" + item).val() === '') {
+                    $("#" + item).focus();
+                    return false;
+                } else {
+                    return true
+                }
+            })
 
             if (oldpassword === "" || password === "" || repassword === "") {
-                $('#regerror').html("還有欄位位沒填");
-                return false;
-            } else {
-                $('#regerror').html("&nbsp");
+                $('#regerror').html("還有欄位沒填");
+                return false
             } 
-            for (error of res) {
-                $('#' + error + 'Info').html("&nbsp");
-            }
+
+            // 循環檢查所有欄位
+            // res.forEach((item) => {
+            //     if ($("#" + item).val() === '') {
+            //         $("#" + item).focus();
+            //         sendajax = false;
+            //         alert(item)
+            //         return false
+            //     }
+            // })
+
+
+
+            // 有欄位為空則阻止ajax請求
+            // if(sendajax === false) {
+            //     return false;
+            // }
+
             $.ajax({
                 url: "./editpasswordback.php",
                 type: "POST",
@@ -129,31 +156,62 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             });
         });
 
-        $('#password').keyup(function () {
-            checksymbol(this);
+        let oldpasswordflag = true;
+        let passwordflag = true;
+        let repasswordflag = true;
+
+        $('#oldpassword').blur(function () {
+            
+            let str = $(this).val();
+            if (str === '') {
+                oldpasswordflag = false;
+                $(this).next().attr('style', 'color:darkred')
+            } else {
+                oldpasswordflag = true;
+                $(this).next().attr('style', "color:gray")
+            }
+            luckButton(oldpasswordflag, passwordflag, repasswordflag);
         })
 
-        function checksymbol(obj) {
-            let patt = /[^a-zA-Z0-9]/;
-            let strlen = $(obj).val();
-            let flag = patt.test(obj.value);
-            $('#regsend').attr('disabled', flag);
-            if (flag === true) {
-                $(obj).next().attr('style', 'color:darkred')
-            } else {
-                $(obj).next().attr('style', "color:gray")
-            }
-        }
+        $('#oldpassword').keyup(function() {
+            $('#oldpasswordInfo').html('&nbsp');
+            $('#regsend').attr('disabled', false);
+        })
 
-        $('#repassword').blur(function(){
+        $('#password').keyup(function () {
+            let patt = /[^a-zA-Z0-9]/;
+            let str = $(this).val();
+            if (patt.test(str) || !(str.length >= 6) || !(str.length <= 20)) {
+                passwordflag = false;
+                $(this).next().attr('style', 'color:darkred')
+            } else {
+                passwordflag = true;
+                $(this).next().attr('style', "color:gray")
+            }
+            luckButton(oldpasswordflag, passwordflag, repasswordflag);
+        })
+
+        $('#repassword').keyup(function(){
             let password = $('#password').val();
             let repassword = $('#repassword').val();
             if (password !== repassword) {
-                $('#repasswordInfo').html("確認密碼錯誤");
+                repasswordflag = false;
+                $('#repasswordInfo').html("確認密碼與密碼不相同");
             } else {
+                repasswordflag = true;
                 $('#repasswordInfo').html("&nbsp");
             }
+            luckButton(oldpasswordflag, passwordflag, repasswordflag);
         })
+
+        function luckButton(oldpasswordflag, passwordflag, repasswordflag) {
+            $('#regerror').html("&nbsp");
+            if (oldpasswordflag && passwordflag && repasswordflag) {
+                $('#regsend').attr('disabled', false);
+            } else {
+                $('#regsend').attr('disabled', true);
+            }
+        }
 
 
     <?php echo '</script'; ?>

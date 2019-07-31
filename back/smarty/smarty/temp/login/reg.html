@@ -89,13 +89,21 @@
             let repassword = $('#repassword').val();
             let userName = $('#userName').val();
             let email = $('#email').val();
+            let field = ['email', 'userName', 'repassword', 'password' ,'account'];
+
+            field.forEach((item) => {
+                if ($("#" + item).val() === '') {
+                    $("#" + item).focus();
+                    return false;
+                } else {
+                    return true;
+                }
+            })
 
             if (account.trim() === "" || password.trim() === "" || repassword.trim() === "" 
             || userName.trim() === "" || email.trim() === "") {
                 $('#regerror').html("還有欄位未填");
                 return false;
-            } else {
-                $('#regerror').html("&nbsp");
             }
 
             let emailpatt = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
@@ -106,8 +114,6 @@
                 $('#emailInfo').html("&nbsp");
             }
 
-            let regform = document.getElementById('regform')
-            let fd = new FormData(regform);
             let res = ['account', 'password', 'repassword', 'email', 'userName'];
             for (error of res) {
                 $('#' + error + 'Info').html("&nbsp");
@@ -117,11 +123,11 @@
                 type: "POST",
                 dataType: "json",
                 data: {
-                    account: $('#account').val(),
-                    password: $('#password').val(),
-                    repassword: $('#repassword').val(),
-                    email: $('#email').val(),
-                    userName: $('#userName').val(),
+                    account: account,
+                    password: password,
+                    repassword: repassword,
+                    email: email,
+                    userName: userName,
                 },
                 success: function (result) {
                     if (result.success) {
@@ -162,7 +168,7 @@
                 accountflag = true;
                 $(this).next().attr('style', "color:gray");
             }
-            LuckButton(accountflag, passwordflag);
+            luckButton(accountflag, passwordflag);
         });
 
         $('#password').keyup(function () {
@@ -175,7 +181,7 @@
                 passwordflag = true;
                 $(this).next().attr('style', "color:gray");
             }
-            LuckButton(accountflag, passwordflag);
+            luckButton(accountflag, passwordflag);
         });
 
         $('#userName').keyup(function() {
@@ -190,10 +196,11 @@
                         userName = true;
                         $(this).next().attr('style', "color:gray");
                 }
-                LuckButton(accountflag, passwordflag, userName);
+                luckButton(accountflag, passwordflag, userName);
             })
 
-        function LuckButton(accountflag, passwordflag) {
+        function luckButton(accountflag, passwordflag) {
+            $('#regerror').html("&nbsp");
             if (accountflag && passwordflag && userName) {
                 $('#regsend').attr('disabled', false);
             } else {

@@ -4,7 +4,7 @@ session_start();
 
 if (isset($_COOKIE['token'])) {
     
-    echo json_encode(['logined'=>'目前已登入中，返回首頁'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['logininfo'=>'islogined'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 require_once("../model/Member.php");
@@ -28,14 +28,13 @@ $verification = [
 $commontool->auto_verification($logininfo,$verification);
 $errirMessage = $commontool->getErrorInfo();
 if (!empty($errirMessage)) {
-    echo json_encode($errirMessage, JSON_UNESCAPED_UNICODE);
+    echo json_encode(['errinfo' => $errirMessage], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 ## 檢查驗證碼
 if (!(isset($_SESSION['vcode'])) && ($vcode !== $logininfo['vcode'])) {
-    $error['error'] = '驗證碼錯誤';
-    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+    echo json_encode(['logininfo'=>'errorvcode'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -45,8 +44,8 @@ $logininfo['password'] = htmlspecialchars($logininfo['password'], ENT_QUOTES);
 
 ## 判斷帳號是否存在
 $userinfo = $member->getAccount($logininfo['account']);
-if (password_verify($logininfo['password'], $userinfo['password']) && $userinfo === false) {
-    echo json_encode(['error'=>'帳號密碼錯誤'], JSON_UNESCAPED_UNICODE);
+if (!password_verify($logininfo['password'], $userinfo['password']) || $userinfo === false) {
+    echo json_encode(['logininfo'=>'fail'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -60,10 +59,17 @@ if (isset($logininfo['remember']) && ($logininfo['remember'] === '1')) {
 }
 
 ## 產生token並存入登入的使用者
-$token = $member->createToken($userinfo['uid']);
-if ($member->setToken('users', ['token' => $token], 'uid', $userinfo['uid']) === 1) {  //設定 cookie token
+$str = "abcdefghijklmnopqrstuvwxyz";
+$str .= strtoupper($str);
+$str .= "0123456789";
+$str .= "+-*/$.?:";
+$str = str_repeat($str, 10);
+$str = str_shuffle($str);
+$token = substr($str, 0, 100).$userinfo['uid'];
+
+if ($member->setToken($token, $userinfo['uid']) === 1) {  //設定 cookie token
     setcookie("token", $token, time() + 3600, '/');
-    echo json_encode(['login'=>'success'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['logininfo'=>'success'], JSON_UNESCAPED_UNICODE);
 } else {
-    echo 0;
+    echo json_encode(['logininfo'=>'fail'], JSON_UNESCAPED_UNICODE);
 }

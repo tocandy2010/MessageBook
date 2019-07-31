@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-29 17:20:08
+/* Smarty version 3.1.33, created on 2019-07-30 15:36:59
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\message\content.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3eba4808ec45_24888357',
+  'unifunc' => 'content_5d3ff39b760a88_22587279',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a07b8fa5590add5b314fa7b16a11626667ca7e1a' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\message\\content.html',
-      1 => 1564391970,
+      1 => 1564472219,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d3eba4808ec45_24888357 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3ff39b760a88_22587279 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'發佈文章'), 0, false);
 ?>
 <header>
@@ -42,11 +42,13 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
         .messagetime {
             display: inline-block;
             width: 100%;
-            text-align: right
+            text-align: right;
+            position: relative;
+            
         }
 
         #showcontent {
-            width: 100%;
+            width:  100%;
             height: 500px;
             padding: 10px 30px 10px 30px;
             font-size: 25px;
@@ -75,11 +77,31 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             top: -10px;
             left: 10px
         }
+
+        .messagebody {
+            word-break: break-all;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .messagename {
+            font-size: 16px;
+            font-weight:bold;
+            text-align: left;
+
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp:2 ;
+            -webkit-box-orient: vertical;
+        }
+
     </style>
     </head>
     <div class="container-fluid text-center">
         <div class="row content">
-            <div class="col-sm-2"></div>
+            <div class="col-sm-2 sidenav"></div>
             <div class="col-sm-8 text-left">
                 <div id='message'>
                     <p id='showtitle' style="font-family:sans-serif;"><?php echo $_smarty_tpl->tpl_vars['content']->value['title'];?>
@@ -117,23 +139,25 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
 
                     </fieldset>
                 </form>
-                <p id='messagenum'><?php echo $_smarty_tpl->tpl_vars['messagenum']->value;?>
-則留言</p>
-                <hr />
-                <div class="container" id='messageregion'>
+                <p id='messagenum'><span id='msgnum' ><?php echo $_smarty_tpl->tpl_vars['messagenum']->value;?>
+</span>則留言</p>
+                <hr/>
+                <div class="container-fluid text-center" id='messageregion'>
                     <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['getmessage']->value, 'messageinfo');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['messageinfo']->value) {
 ?>
                     <div class="panel panel-default">
-                        <div class="panel-heading"><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['userName'];?>
+                        <div class="panel-heading">
+                            <p class='messagename'><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['userName'];?>
 (<?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['account'];?>
-)<span
-                                class='messagetime'><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['createtime'];?>
-</span></div>
-                        <div class="panel-body"><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['message'];?>
-</div>
+)</p>
+                            <span class='messagetime'><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['createtime'];?>
+</span>
+                        </div>
+                        <div class="panel-body" ><p class='messagebody'><?php echo $_smarty_tpl->tpl_vars['messageinfo']->value['message'];?>
+</p></div>
                     </div>
                     <?php
 }
@@ -141,14 +165,19 @@ foreach ($_from as $_smarty_tpl->tpl_vars['messageinfo']->value) {
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2  sidenav"></div>
             </div>
         </div>
 
         <?php echo '<script'; ?>
 >
+
+            $().ready(function() {
+                let height = document.body.offsetHeight;
+                $('.row.content').attr('style','height:' + height + 'px');
+            })
+
             $("#messagesend").click(function () {
-                let messageform = document.getElementById('messageform');
                 let messagetext = $('#messagetext').val();
                 let conid = $('#conid').val();
                 if ((messagetext.trim()) === "") {
@@ -173,7 +202,19 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                             alert(result.notlogin)
                             $(window).attr('location', './login.php');
                         } else if (result.success) {
-                            location.reload();
+                            let mesinfo = result.success;
+                            let str = '';
+                                str += "<div class='panel panel-default'>";
+                                str += "<div class='panel-heading'>" + mesinfo['userName'] + "(" + mesinfo['account'] + ")";
+                                str += "<span class='messagetime'>" + mesinfo['createtime'] + "</span></div>";
+                                str += "<div class='panel-body'><p class='messagebody'>" + mesinfo['message'] + "</p></div>";
+                                str += "</div>";
+                            $("#messageregion").prepend(str);
+                            $("#resetmessage").click();
+                            let msgnum = parseInt($("#msgnum").html())+1;
+                            $("#msgnum").html(msgnum);
+                            let height = document.body.offsetHeight;
+                            $('.row.content').attr('style','height:' + height + 'px');
                         } else if (result.tofast) {
                             alert(result.tofast);
                         } else if (result) {

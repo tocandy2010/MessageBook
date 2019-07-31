@@ -17,11 +17,13 @@
         .messagetime {
             display: inline-block;
             width: 100%;
-            text-align: right
+            text-align: right;
+            position: relative;
+            
         }
 
         #showcontent {
-            width: 100%;
+            width:  100%;
             height: 500px;
             padding: 10px 30px 10px 30px;
             font-size: 25px;
@@ -50,11 +52,31 @@
             top: -10px;
             left: 10px
         }
+
+        .messagebody {
+            word-break: break-all;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .messagename {
+            font-size: 16px;
+            font-weight:bold;
+            text-align: left;
+
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp:2 ;
+            -webkit-box-orient: vertical;
+        }
+
     </style>
     </head>
     <div class="container-fluid text-center">
         <div class="row content">
-            <div class="col-sm-2"></div>
+            <div class="col-sm-2 sidenav"></div>
             <div class="col-sm-8 text-left">
                 <div id='message'>
                     <p id='showtitle' style="font-family:sans-serif;">{$content['title']}</p>
@@ -89,25 +111,32 @@
 
                     </fieldset>
                 </form>
-                <p id='messagenum'>{$messagenum}則留言</p>
-                <hr />
-                <div class="container" id='messageregion'>
+                <p id='messagenum'><span id='msgnum' >{$messagenum}</span>則留言</p>
+                <hr/>
+                <div class="container-fluid text-center" id='messageregion'>
                     {foreach from=$getmessage item=$messageinfo}
                     <div class="panel panel-default">
-                        <div class="panel-heading">{$messageinfo['userName']}({$messageinfo['account']})<span
-                                class='messagetime'>{$messageinfo['createtime']}</span></div>
-                        <div class="panel-body">{$messageinfo['message']}</div>
+                        <div class="panel-heading">
+                            <p class='messagename'>{$messageinfo['userName']}({$messageinfo['account']})</p>
+                            <span class='messagetime'>{$messageinfo['createtime']}</span>
+                        </div>
+                        <div class="panel-body" ><p class='messagebody'>{$messageinfo['message']}</p></div>
                     </div>
                     {/foreach}
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2  sidenav"></div>
             </div>
         </div>
 
         <script>
+
+            $().ready(function() {
+                let height = document.body.offsetHeight;
+                $('.row.content').attr('style','height:' + height + 'px');
+            })
+
             $("#messagesend").click(function () {
-                let messageform = document.getElementById('messageform');
                 let messagetext = $('#messagetext').val();
                 let conid = $('#conid').val();
                 if ((messagetext.trim()) === "") {
@@ -132,7 +161,19 @@
                             alert(result.notlogin)
                             $(window).attr('location', './login.php');
                         } else if (result.success) {
-                            location.reload();
+                            let mesinfo = result.success;
+                            let str = '';
+                                str += "<div class='panel panel-default'>";
+                                str += "<div class='panel-heading'>" + mesinfo['userName'] + "(" + mesinfo['account'] + ")";
+                                str += "<span class='messagetime'>" + mesinfo['createtime'] + "</span></div>";
+                                str += "<div class='panel-body'><p class='messagebody'>" + mesinfo['message'] + "</p></div>";
+                                str += "</div>";
+                            $("#messageregion").prepend(str);
+                            $("#resetmessage").click();
+                            let msgnum = parseInt($("#msgnum").html())+1;
+                            $("#msgnum").html(msgnum);
+                            let height = document.body.offsetHeight;
+                            $('.row.content').attr('style','height:' + height + 'px');
                         } else if (result.tofast) {
                             alert(result.tofast);
                         } else if (result) {

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2019-07-29 08:02:29
+/* Smarty version 3.1.33, created on 2019-07-30 09:10:09
   from 'C:\xampp\htdocs\MessageBook\back\smarty\smarty\temp\login\reg.html' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_5d3e8bf5b8ba44_78044873',
+  'unifunc' => 'content_5d3fed51cf32f4_13046489',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4ec4fceecc129a9b8cdc6e05ada7f13beb9232e7' => 
     array (
       0 => 'C:\\xampp\\htdocs\\MessageBook\\back\\smarty\\smarty\\temp\\login\\reg.html',
-      1 => 1564380148,
+      1 => 1564470606,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:\\xampp\\htdocs\\MessageBook\\back\\public\\header.html' => 1,
   ),
 ),false)) {
-function content_5d3e8bf5b8ba44_78044873 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5d3fed51cf32f4_13046489 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\header.html', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'留言版註冊'), 0, false);
 ?>
     <div class="container-fluid text-center">
@@ -115,13 +115,21 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
             let repassword = $('#repassword').val();
             let userName = $('#userName').val();
             let email = $('#email').val();
+            let field = ['email', 'userName', 'repassword', 'password' ,'account'];
+
+            field.forEach((item) => {
+                if ($("#" + item).val() === '') {
+                    $("#" + item).focus();
+                    return false;
+                } else {
+                    return true;
+                }
+            })
 
             if (account.trim() === "" || password.trim() === "" || repassword.trim() === "" 
             || userName.trim() === "" || email.trim() === "") {
                 $('#regerror').html("還有欄位未填");
                 return false;
-            } else {
-                $('#regerror').html("&nbsp");
             }
 
             let emailpatt = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
@@ -132,8 +140,6 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                 $('#emailInfo').html("&nbsp");
             }
 
-            let regform = document.getElementById('regform')
-            let fd = new FormData(regform);
             let res = ['account', 'password', 'repassword', 'email', 'userName'];
             for (error of res) {
                 $('#' + error + 'Info').html("&nbsp");
@@ -143,11 +149,11 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                 type: "POST",
                 dataType: "json",
                 data: {
-                    account: $('#account').val(),
-                    password: $('#password').val(),
-                    repassword: $('#repassword').val(),
-                    email: $('#email').val(),
-                    userName: $('#userName').val(),
+                    account: account,
+                    password: password,
+                    repassword: repassword,
+                    email: email,
+                    userName: userName,
                 },
                 success: function (result) {
                     if (result.success) {
@@ -188,7 +194,7 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                 accountflag = true;
                 $(this).next().attr('style', "color:gray");
             }
-            LuckButton(accountflag, passwordflag);
+            luckButton(accountflag, passwordflag);
         });
 
         $('#password').keyup(function () {
@@ -201,7 +207,7 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                 passwordflag = true;
                 $(this).next().attr('style', "color:gray");
             }
-            LuckButton(accountflag, passwordflag);
+            luckButton(accountflag, passwordflag);
         });
 
         $('#userName').keyup(function() {
@@ -216,10 +222,11 @@ $_smarty_tpl->_subTemplateRender('file:\xampp\htdocs\MessageBook\back\public\hea
                         userName = true;
                         $(this).next().attr('style', "color:gray");
                 }
-                LuckButton(accountflag, passwordflag, userName);
+                luckButton(accountflag, passwordflag, userName);
             })
 
-        function LuckButton(accountflag, passwordflag) {
+        function luckButton(accountflag, passwordflag) {
+            $('#regerror').html("&nbsp");
             if (accountflag && passwordflag && userName) {
                 $('#regsend').attr('disabled', false);
             } else {
